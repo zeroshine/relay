@@ -1,0 +1,107 @@
+<html>
+<head>
+<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js'></script>
+<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js'></script>
+<script type='text/javascript' src='http://jsplumbtoolkit.com/js/jquery.jsPlumb-1.4.1-all-min.js'></script>
+<script>
+$(function() {
+  // jsPlumb init and global setup
+  jsPlumb.setRenderMode(jsPlumb.SVG);
+  jsPlumb.importDefaults({
+    HoverPaintStyle: {strokeStyle:"rgba(251, 191, 149, 0.7)"}
+  });
+  var connectorStrokeColor = "rgba(50, 50, 200, 1)",
+      connectorHighlightStrokeColor = "rgba(180, 180, 200, 1)",
+      hoverPaintStyle = { strokeStyle:"#7ec3d9" };
+
+  function connect(id1, id2, comment) {
+    jsPlumb.connect({
+      source: id1,
+      target: id2,
+      connector:["Bezier", { curviness:70 }],
+      endpoint:"Blank",
+      anchors:["LeftMiddle", "RightMiddle"],
+      paintStyle:{
+        lineWidth:6,
+        strokeStyle:"#a7b04b",
+        outlineWidth:1,
+        outlineColor:"#666"
+      },
+      endpointStyle:{ fillStyle:"#a7b04a" },
+      hoverPaintStyle:hoverPaintStyle,
+      overlays : [
+/*        ["Label", {
+          label : comment,
+          cssClass:"component label",
+          location:0.7,
+        }],*/
+        ["Arrow", {
+          location:0.5,
+          width:20,
+          length:20,
+        }]
+      ]
+    });
+  };
+  // init
+  //jsPlumb.draggable($(".window"), { containment: "#demo" });
+  // connect
+  connect("window1", "window2", "transmission line");
+  jsPlumb.draggable(jsPlumb.getSelector(".window"));
+  jsPlumb.bind("dblclick",function(){
+    alert("R1:0.044\n X1:0.492\n R0:0.07\n X0:0.201")
+  })
+});
+
+</script>
+<style>
+  .component {
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+    background-color: white;
+    color: black;
+    font-family: helvetica;
+    padding: 0.5em;
+  }
+  .window {
+    border: 2px solid #346789;
+    width: 8em;
+    height: 8em;
+    line-height: 8em;
+    position: absolute;
+    font-size: 0.8em;
+    border-radius: 0.5em;
+  }
+  .label {
+    border: 1px solid #346789;
+    padding: 8px;
+    padding: 8px;
+  }
+  #demo {
+    width: 1000px;
+    height: 1000px;
+  }
+</style>
+</head>
+<body>
+<div id="demo">
+  <div class="component window" id="window1" style="left: 300px;"><strong>松山</strong></div>
+  <div class="component window" id="window2"><strong>敦化</strong></div>
+</body>
+<script>
+  var div = document.createElement("div");
+div.style.width = "100px";
+div.style.height = "100px";
+div.style.border = "2px";
+div.style.borderColor="#346789";
+div.style.borderRadius="0.5em"; 
+div.style.borderStyle="ridge";
+
+//div.style.borderColor="blue";
+//div.style.background = "red";
+div.style.color = "black";
+div.innerHTML = "Hello";
+
+document.body.appendChild(div);
+</script>
+</html>
