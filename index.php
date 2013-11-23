@@ -31,7 +31,7 @@
 <img class="pg" src="powergrid.jpg" align='center'>
  
 <div align="center">
-	<form name ="input" action="getData.php" method="post">
+	<form name ="input" action="getNewData.php" method="post">
 		查詢輸電線參數
 	     </br>
 	     起點:
@@ -45,7 +45,7 @@
               <option value="345kv">345kv
           </select>
           <select name="relay">
-          	<option value="SEL-x311C">SEL-331C
+          	<option value="SEL-311C">SEL-331C
           </selecr>
 		  <input type="submit" value="送出" />
 	</form>

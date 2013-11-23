@@ -1,0 +1,603 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="relaySet.js"></script>
+<script src="jsPlumb.js"></script>
+<style>
+body {
+	font-size: 24px;
+	font-weight: bold;
+}
+#answer{
+	float: right;
+	width: 600px;
+	height: 300px;
+	margin: 20px;
+}
+
+#inputForm{
+	width: 600px;
+	margin: 20px;
+	padding:5px;
+	border: 1px solid #000;
+	border-radius:5px;
+	float: left;
+}
+#msg{
+	float: left;
+}
+#graph{
+	clear: both;
+	float: left;
+	background-color: #eee;
+	border-radius: 5px;
+	border: 1px solid #ecf;
+	margin: 1%;
+	padding: 2%;
+	height: 100%;
+	width: 90%;
+}
+table{
+	width: 95%;
+	display: inline-block;
+	border: 1px solid #000;
+}
+table caption{
+	background: #666;
+	color: #FFF;
+	font-weight: bold;
+	padding: 2px;
+}
+td, th{
+	border: 1px solid #ccc;
+	text-align: center;
+	padding: 2px;
+}
+tr:nth-child(odd){
+	background-color: #eee;
+}
+td:nth-child(1){
+	color: red;
+}
+.table{
+	display: inline-block;
+	text-align: center;
+	margin: 5px;
+	display: none;
+}
+.block{
+	float: left;
+	height: 90%;
+	width: 20%;
+}
+.title{
+	border-bottom: 1px solid #000;
+	margin-bottom: 10px;
+	height: 20px;
+	float: left;
+	width: 19%;
+	text-align: center;
+}
+.title p{
+	position: relative;
+	top: -20px;
+	font-weight: bold;
+}
+#from_zone3_title, #to_zone3_title{
+	width: 10%;
+}
+#from_zone2_title, #to_zone2_title{
+	margin-top: 20px;
+	width: 20%;
+}
+#from_zone1_title, #to_zone1_title{
+	margin-top: 40px;
+	width: 15%;
+}
+#from_zone2_title {
+	border-left: 1px solid #000;
+}
+#to_zone2_title {
+	border-right: 1px solid #000;
+}
+#from_zone1_title {
+	border-left: 1px solid #000;
+}
+#to_zone1_title {
+	border-right: 1px solid #000;
+}
+#origin_title{
+	margin-top: 60px;
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	border-bottom: 0;
+	width: 8%;
+}
+.label{
+	margin-top: -20px;
+	text-align: center;
+	background-color: #ddd;
+	border-radius: 5px;
+	opacity: 0.6;
+}
+.end{
+	width: 5px;
+	height: 40px;
+	border: 1px solid #000;
+	border-radius: 3px;
+	background-color: #222;
+	position: relative;
+	left:10px;
+	margin-top: 10px;
+	margin-left: 15%;
+	margin-right: 15%;
+	margin-bottom: 50px;
+}
+.end p{
+	position: relative;
+	left: -30px;
+	top: -30px;
+}
+.end_hide {
+	width: 5px;
+	height: 40px;
+	border: 1px solid #000;
+	border-radius: 3px;
+	background-color: #222;
+	position: relative;
+	left:10px;
+	margin-top: 10px;
+	margin-left: 15%;
+	margin-right: 15%;
+	margin-bottom: 50px;
+	visibility: hidden;
+}
+
+/*origin*/
+#origin_to{
+	margin-left: 20%;
+	margin-right: 20%;
+}
+#origin_from{
+	margin-left: 20%;
+	margin-right: 20%;
+}
+#origin .end{
+	float: left;
+	margin-top: 0;
+	margin-bottom: auto;
+	height: 80%;
+}
+#origin .end p{
+	position: relative;
+	top: 20px;
+	color: green;
+}
+
+/*zone1*/
+#from_zone1 .end p, #to_zone1 .end p{	
+	color: red;
+}
+#from_zone1 .end {	
+	margin-right: 20%;
+}
+#to_zone1 .end {
+	margin-left: 80%;
+}
+
+/*zone2*/
+#from_zone2 {
+	clear: both;
+}
+#from_zone2 .end p, #to_zone2 .end p{
+	color: grey;
+}
+#from_zone2 .end {	
+	margin-right: 20%;
+}
+#to_zone2 .end {
+	margin-left: 80%;
+}
+
+</style>
+<script>
+
+$(window).resize(function(){
+      jsPlumb.repaintEverything();
+});
+
+var result;
+var from_Z = [];
+var to_Z = [];
+var from_zone2_min_index = [];
+var to_zone2_min_index = [];
+
+function getdetails(){
+	var first = $('#first').val();
+	var to = $('#to').val();
+	var kv = $('#kv').val();
+	var relay = $('#relay').val();
+	
+	$.ajax({
+		type: "POST",
+		url: "getData2.php",
+		data: {'first': first, 'to': to, 'kv': kv, 'relay': relay}
+	}).done(function( data ) {		
+		result = JSON.parse(data);		
+		if(result.data){
+			cleanUp();
+			printData(result);
+			drawData();
+		}else{
+			cleanUp();
+			$("#msg").html("無資料");
+			//console.log('no data');
+		}
+	}).fail(function(){
+		console.log('fail');
+	});
+	
+	$.ajax({
+		type: "POST",
+		url: "getData.php",
+		data: {'first': first, 'to': to, 'kv': kv, 'relay': relay}
+	}).done(function( data ) {		
+		$('#msg2').html(data);
+		console.log(data);
+	}).fail(function(){
+		console.log('fail');
+	});
+	
+}
+
+function addElement(parent,divIdName, divClassName, title){
+  var graph = document.getElementById(parent);
+  var newdiv = document.createElement('div');
+  newdiv.setAttribute('id',divIdName);
+  newdiv.setAttribute('class',divClassName);
+  newdiv.innerHTML = '<p>'+title+'</p>';
+  graph.appendChild(newdiv);
+}
+
+function isInverse(){
+	return !(result.data.origin.from == result.data.from_A[0].zone1.to || result.data.origin.from == result.data.from_A[0].zone1.from);
+}
+
+function dataPrintTitle(){
+	var output = "<tr><th>Type</th><th>Name</th><th>Zone1 Set</th><th>Zone1 Set CP</th><th>Zone1 BackUp Delay</th><th>Zone2 Set</th><th>Zone2 Set CP</th><th>Zone2 BackUp Delay</th></tr>";
+	return output;
+}
+
+function dataPrintFormat(name,r,type){
+	//"z1s":zoneOneSet,"z1sCP":zoneOneSetCP,"d2":oneBackUpDelay,"z2s":zoneTwoSet,"z2sCP":zoneTwoSetCP,"d2":20
+	var output = "<tr>"+
+				"<td> "+ type + "</td>"+
+				"<td> "+ name + "</td>"+
+				"<td> "+ r.z1s + "</td>"+
+				"<td> "+ r.z1sCP + "</td>"+
+				"<td> "+ r.d1 + "</td>"+
+				"<td> "+ r.z2s + "</td>"+
+				"<td> "+ r.z2sCP + "</td>"+
+				"<td> "+ r.d2 + "</td>"+
+				"</tr>";
+	return output;
+}
+function cleanUp(){
+	$('#graph').empty();
+	$('#msg').empty();
+	from_zone2_min_index = [];
+	to_zone2_min_index = [];
+	from_Z_p = [];
+	from_Z_g = [];
+	to_Z_p = [];
+	to_Z_g = [];
+}
+function printData(result){
+
+	addElement("graph","from_zone3_title","title","zone 3");
+	addElement("graph","from_zone2_title","title","zone 2");
+	addElement("graph","from_zone1_title","title","zone 1");
+	addElement("graph","origin_title","title","");
+	addElement("graph","to_zone1_title","title","zone 1");
+	addElement("graph","to_zone2_title","title","zone 2");
+	addElement("graph","to_zone3_title","title","zone 3");
+		
+	addElement("graph","from_zone2","block","");	
+	addElement("graph","from_zone1","block","");	
+	addElement("graph","origin","block","");
+	addElement("graph","to_zone1","block","");
+	addElement("graph","to_zone2","block","");
+	
+	var origin = result.data.origin;
+	var inverse = !(origin.from == result.data.from_A[0].zone1.to || origin.from == result.data.from_A[0].zone1.from);
+	console.log(inverse);
+	if(inverse){
+		var from_A = result.data.from_B; //array
+		var from_B = result.data.from_A; //array
+	}else{
+		var from_A = result.data.from_A; //array
+		var from_B = result.data.from_B; //array
+	}
+
+	$("#msg").html("<h2>"+origin.from+" - "+origin.to+"</h2>");
+	$("#msg").append('<div class="table"><table id="table1"><caption>'+origin.from+'</caption></table>');
+	$("#table1").append(dataPrintTitle());
+	addElement("origin","origin_from","end",origin.from);
+	addElement("origin","origin_to","end",origin.to);
+	
+	for(var i=0; i < from_A.length; i++){		
+		var r_p;
+		var r_g;
+		var a = from_A[i];
+		var title = (origin.from == a.zone1.from)? a.zone1.to : a.zone1.from;
+		var id = "from_zone_1_" + i;
+		addElement("from_zone1",id,"end",title);
+		var id2 = "from_zone_2_" + i;
+		var title2 = '';
+		var css = 'end_hide';
+		if(a.zone2.length > 0){
+			var tmp = 0;
+			var min = 0;
+			var index = 0;
+			for(var j=0; j< a.zone2.length; j++){
+				tmp = a.zone2[j].r1^2 + a.zone2[j].x1^2;				
+				if( min == 0 || tmp < min){
+					min = tmp;
+					index = j;
+				}
+			}
+			r_p = SEL311C_p_161(a.zone1.r1,a.zone1.x1,a.zone2[index].r1,a.zone2[index].x1);
+			r_g = SEL311C_g_161(a.zone1.r1,a.zone1.x1,a.zone2[index].r1,a.zone2[index].x1);
+			$("#table1").append(dataPrintFormat(a.zone1.from +" - "+ a.zone1.to,r_p,"p"));
+			$("#table1").append(dataPrintFormat(a.zone1.from +" - "+ a.zone1.to,r_g,"g"));
+			//$("#msg").append("<br/>"+ a.zone1.from +" - "+ a.zone1.to + " z1s:" + r.z1s + "Ω" + a.zone2[index].from +" - "+ a.zone2[index].to + " z2s: "+ r.z2s + "Ω");
+			title2 = (title == a.zone2[index].from)? a.zone2[index].to : a.zone2[index].from;
+			css = 'end';
+			from_zone2_min_index.push({i: index});
+		}
+		else{
+			r_p = SEL311C_p_161(a.zone1.r1,a.zone1.x1,0,0);
+			r_g = SEL311C_g_161(a.zone1.r1,a.zone1.x1,0,0);
+			$("#table1").append(dataPrintFormat(a.zone1.from +" - "+ a.zone1.to,r_p,"p"));
+			$("#table1").append(dataPrintFormat(a.zone1.from +" - "+ a.zone1.to,r_g,"g"));
+			//$("#msg").append("<br/>"+ a.zone1.from +" - "+ a.zone1.to + " z1s:" + r.z1s+ "Ω");
+			css = 'end_hide';
+			from_zone2_min_index.push({i: null});
+		}
+		addElement("from_zone2",id2,css,title2);
+		from_Z_p.push(r_p);
+		from_Z_g.push(r_g);
+	}
+	$("#msg").append('<div class="table"><table id="table2"><caption>'+origin.to+'</caption></table></div>');
+	$("#table2").append(dataPrintTitle());
+	for(var i=0; i < from_B.length; i++){
+		var r_p;
+		var r_g;
+		var a = from_B[i];
+		var title = (origin.to == a.zone1.from)? a.zone1.to : a.zone1.from;
+		var id = "to_zone_1_" + i;
+		addElement("to_zone1",id,"end",title);
+		var id2 = "to_zone_2_" + i;
+		var title2 = '';
+		var css = 'end_hide';
+		if(a.zone2.length > 0){
+			var tmp = 0;
+			var min = 0;
+			var index = 0;
+			for(var j=0; j< a.zone2.length; j++){
+				tmp = a.zone2[j].r1^2 + a.zone2[j].x1^2;
+				if( min == 0 || tmp < min){
+					min = tmp;
+					index = j;
+				}
+			}
+			r_p = SEL311C_p_161(a.zone1.r1,a.zone1.x1,a.zone2[index].r1,a.zone2[index].x1);
+			r_g = SEL311C_g_161(a.zone1.r1,a.zone1.x1,a.zone2[index].r1,a.zone2[index].x1);
+			//$("#msg").append("<br/>"+ a.zone1.from +" - "+ a.zone1.to + " z1s:" + r.z1s + "Ω" + a.zone2[index].from +" - "+ a.zone2[index].to + " z2s: "+ r.z2s + "Ω");
+			$("#table2").append(dataPrintFormat(a.zone1.from +" - "+ a.zone1.to,r_p,"p"));
+			$("#table2").append(dataPrintFormat(a.zone1.from +" - "+ a.zone1.to,r_g,"g"));
+			title2 = (title == a.zone2[index].from)? a.zone2[index].to : a.zone2[index].from;
+			css = 'end';
+			to_zone2_min_index.push( {i: index});
+		}
+		else{
+			r_p = SEL311C_p_161(a.zone1.r1,a.zone1.x1,0,0);
+			r_g = SEL311C_g_161(a.zone1.r1,a.zone1.x1,0,0);
+			//$("#msg").append("<br/>"+ a.zone1.from +" - "+ a.zone1.to + " z1s:" + r.z1s+ "Ω");
+			$("#table2").append(dataPrintFormat(a.zone1.from +" - "+ a.zone1.to,r_p,"p"));
+			$("#table2").append(dataPrintFormat(a.zone1.from +" - "+ a.zone1.to,r_g,"g"));
+			css = 'end_hide';
+			to_zone2_min_index.push( {i: null});
+		}
+		addElement("to_zone2",id2,css,title2);
+		to_Z_p.push(r_p);
+		to_Z_g.push(r_g);
+	}	
+	addElement("from_zone1","from_end","block","");
+	addElement("to_zone1","to_end","block","");	
+}
+
+function makeLabel(length,z_p,z_g){
+	return "長度: " + length + " km"; //<br/>相間: " + z_p + " Ω, 接地: " + z_g + " Ω";
+}
+
+function drawData(){
+	var inverse = isInverse();
+	var from;
+	var to;
+	
+	if(inverse){
+		from = result.data.from_B;
+		to = result.data.from_A;
+	}else{
+		from = result.data.from_A;
+		to = result.data.from_B;
+	}
+
+    jsPlumb.importDefaults({
+        Anchors: [ "TopCenter" ],
+        Endpoint : ["Dot", { radius: 2 }],
+        HoverPaintStyle : {strokeStyle: "#42a62c", lineWidth: 1 }
+    });
+	jsPlumb.connect({
+		source: $('#origin_from'),
+		target: $('#origin_to'),
+		anchor: "Center",
+		connector:[ "Straight" ],
+		paintStyle: {
+			strokeStyle: "#000000", 
+			lineWidth:1
+		},
+		overlays:[
+			["Label", {label: "<br/>長度: " + result.data.origin.length+" km", id:"label", cssClass: "label"}]
+		]
+	});
+	
+	for(var i=0; i < $('#from_zone1').children('.end').length; i++){
+		var target = "from_zone_1_" + i;
+		var target2 = "from_zone_2_" + i;
+		jsPlumb.connect({
+			source: target,
+			target: 'origin_from',
+			anchors: ["Center", "Continuous"],
+			//connector:[ "Flowchart", {midpoint: 0.9}],
+			connector:[ "Straight", {gap: 1} ],
+			paintStyle: {
+				strokeStyle: "#000000", 
+				lineWidth:1
+			},
+			overlays:[
+			["Label", {label: makeLabel(from[i].zone1.length,from_Z_p[i].z1s,from_Z_g[i].z1s), id:"label", cssClass: "label", location: 0.5}]
+			]
+		});
+		if($("#"+target2).attr('class') == 'end'){
+			jsPlumb.connect({
+				source: target2,
+				target: target,
+				anchor: "Center",
+				connector:[ "Straight" ],
+				paintStyle: {
+					strokeStyle: "#000000", 
+					lineWidth:1
+				},
+				overlays:[
+				["Label", {label: makeLabel(from[i].zone2[from_zone2_min_index[i].i].length,from_Z_p[i].z2s,from_Z_g[i].z2s), id:"label", cssClass: "label"}]//need to update
+				]
+			});
+		}
+	}
+	
+	for(var i=0; i<$('#to_zone1').children('.end').length; i++){
+		var target = "to_zone_1_" + i;
+		var target2 = "to_zone_2_" + i;
+		jsPlumb.connect({
+			source: target,
+			target: 'origin_to',
+			//anchor: "Center",
+			anchors: ["Center", "Continuous"],
+			//connector:[ "Flowchart", {midpoint: 0.9}],
+			connector:[ "Straight", {gap: 1} ],
+			paintStyle: {
+				strokeStyle: "#000000", 
+				lineWidth:1
+			},
+			overlays:[
+			["Label", {label: makeLabel(to[i].zone1.length,to_Z_p[i].z1s,to_Z_g[i].z1s), id:"label", cssClass: "label", location: 0.5}]
+			]
+		});
+		if($("#"+target2).attr('class') == 'end'){
+			jsPlumb.connect({
+				source: target2,
+				target: target,
+				anchor: "Center",
+				connector:[ "Straight" ],
+				paintStyle: {
+					strokeStyle: "#000000", 
+					lineWidth:1
+				},
+				overlays:[
+				["Label", {label: makeLabel(to[i].zone2[to_zone2_min_index[i].i].length,to_Z_p[i].z2s,to_Z_g[i].z2s), id:"label", cssClass: "label"}]//need to update
+				]
+			});
+		}
+	}
+}
+</script>
+</head>
+<body>
+	<div id="inputForm">
+		<h1>測距保護電驛標置設定平台</h1>
+	    </br>
+	    <form action="">
+		    <label>線路</label>
+		    <select id="kv" name="kv">
+	        	<option value="161kv">161kV</option>
+	            <option value="345kv">345kV</option>
+	        </select>
+	        <br/>
+		    <label>起點</label>
+	        <input id="first"type="text" name="first" size="5" />
+	        </br>
+			<label>終點</label>
+			<input id="to" type="text" name="to" size="5"/>
+			</br>
+			<label>型號</label>
+			<select id="relay" name="relay">
+	         	<option value="SEL-311C">SEL-331C</option>
+	        </select>
+	        </br>         
+			<input type="submit" id="submitBtn"/>
+		</form>
+	</div>
+<div id="msg"></div>
+<div id="answer">
+	<table>
+		<tr>
+			<td>參數</td>			
+			<td>一次側</td>
+			<td>二次側</td>
+		</tr>
+		<tr>
+			<td>Z1</td>
+			<td>2.756</td>
+			<td>0.787</td>
+		</tr>
+		<tr>
+			<td>Z2</td>
+			<td>4.028</td>
+			<td>1.151</td>	
+		</tr>
+		<tr>
+			<td>Z3</td>
+			<td>11.034</td>
+			<td>3.783</td>
+		</tr>
+		<tr>
+			<td>ZS</td>
+			<td>16.179</td>
+			<td>4.622</td>
+		</tr>
+	</table>
+
+
+</div>
+<div id="graph">
+	<div id="from_zone1" class="block"></div>
+	<div id="from_zone1" class="block"></div>
+	<div id="origin" class="block"></div>
+	<div id="to_zone1" class="block"></div>
+	<div id="to_zone2" class="block"></div>
+</div>
+<div id="msg2"></div>
+<script>
+$(function(){
+	$('#inputForm').submit(function(){
+		getdetails();
+		return false;
+	});
+});
+</script>
+	
+</body>
+</html>
