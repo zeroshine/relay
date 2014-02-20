@@ -59,9 +59,12 @@ $Z1;
 $Z2;
 $Z3;
 
-function recursive($obj,&$arr){
+function recursive($obj,&$arr,&$origin){
     if(substr($obj->to,0,1)!='#'){
-        array_push($arr,$obj);
+        if($obj->to!=$origin->from){
+            //echo $obj->to." ".$origin->from."</br>";
+            array_push($arr,$obj);
+        }
         return;
     }
     $result=mysql_query("SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$obj->to."\") or (t=\"".$obj->to."\");");
@@ -79,7 +82,7 @@ function recursive($obj,&$arr){
         $zone = new Cable;
         $zone->setCableInfo($row1);
         $zone->add($obj);
-        recursive($zone,$arr);
+        recursive($zone,$arr,$origin);
     }
 }
 
@@ -104,7 +107,7 @@ function readData(){
         }
         $zone1_c = new Cable;
         $zone1_c->setCableInfo($row1);
-        recursive($zone1_c,$GLOBALS['Zone1Array']);
+        recursive($zone1_c,$GLOBALS['Zone1Array'],$GLOBALS['root']);
     }
     $GLOBALS['MinZone1']=$GLOBALS['Zone1Array'][0];
     $GLOBALS['MaxZone1']=$GLOBALS['Zone1Array'][0];
@@ -117,6 +120,7 @@ function readData(){
         }
     }
     $MaxZone1=$GLOBALS['MaxZone1'];
+    //echo "ZZZZZZZZ</br>";
     $result=mysql_query("SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$MaxZone1->to."\") or (t=\"".$MaxZone1->to."\");");
     while ($row2 = mysql_fetch_array($result)){
         if($row2['f']!=$MaxZone1->to){
@@ -131,7 +135,7 @@ function readData(){
         }
         $zone2_c = new Cable;
         $zone2_c->setCableInfo($row2);
-        recursive($zone2_c,$GLOBALS['Zone2Array']);
+        recursive($zone2_c,$GLOBALS['Zone2Array'],$GLOBALS['MaxZone1']);
     }
     foreach ($GLOBALS["Zone2Array"] as $obj) {
         if($obj->z1<$MinZone2->z1){
@@ -139,16 +143,16 @@ function readData(){
         }
     }
     if($GLOBALS['root']->z1>=2){
-        $GLOBALS['Z1']=$GLOBALS['root']->z1*0.75;
+        $GLOBALS['Z1']=($GLOBALS['root']->z1*0.75)*0.286;
     }else{
-        $GLOBALS['Z1']=$GLOBALS['root']->z1*0.65;        
+        $GLOBALS['Z1']=($GLOBALS['root']->z1*0.65)*0.286;        
     }
     if($GLOBALS['MinZone1']->z1>=2){
-        $GLOBALS['Z2']=$GLOBALS['root']->z1+$GLOBALS['MinZone1']->z1*0.5;
+        $GLOBALS['Z2']=($GLOBALS['root']->z1+$GLOBALS['MinZone1']->z1*0.5)*0.286;
     }else{
-        $GLOBALS['Z2']=$GLOBALS['root']->z1+$GLOBALS['MinZone1']->z1*0.6;
+        $GLOBALS['Z2']=($GLOBALS['root']->z1+$GLOBALS['MinZone1']->z1*0.6)*0.286;
     }
-    $GLOBALS['Z3']=$GLOBALS['root']->z1+$GLOBALS['MaxZone1']->z1+$GLOBALS['MinZone2']->z1*0.25;
+    $GLOBALS['Z3']=($GLOBALS['root']->z1+$GLOBALS['MaxZone1']->z1+$GLOBALS['MinZone2']->z1*0.25)*0.286;
 
 }
 
@@ -189,8 +193,8 @@ function printCable(){
     }
     echo "</table>";
     echo "<table border=1>";
-    echo "<th>Z1 = ".$GLOBALS["Z1"]."</th></tr>";
-    echo "<th>Z2 = ".$GLOBALS["Z2"]."</th></tr>";
+    echo "<th>Z1 = (".$GLOBALS['root']->z1."* 0.75)*0.286 =".$GLOBALS["Z1"]."</th></tr>";
+    echo "<th>Z2 = (".$GLOBALS['root']->z1." + ".$GLOBALS['MinZone1']->z1."*0.5)*0.286 =".$GLOBALS["Z2"]."</th></tr>";
     echo "<th>Z3 = ".$GLOBALS["Z3"]."</th></tr>";
     echo "</table>";
 

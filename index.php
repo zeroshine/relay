@@ -28,7 +28,7 @@
     <h1>Taipower Relay Setting Platform</h1>
 </div>
 
-<img class="pg" src="powergrid.jpg" align='center'>
+<img class="pg" src="assets/imgs/powergrid.jpg" align='center'>
  
 <div align="center">
 	<form name ="input" action="getNewData.php" method="post">
