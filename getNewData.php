@@ -1,3 +1,18 @@
+<html>
+    <head>
+        <title>
+            Relay 
+        </title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="libs/css/bootstrap.css">
+        <style type="text/css">
+            .result {
+                width: 80%;
+                margin: 20px auto;
+            }
+        </style>
+    </head>
+    <body>
 <?php
 header("Content-Type:text/html; charset=utf-8");
 class Cable {
@@ -49,8 +64,7 @@ mysql_query("SET NAMES 'utf8'");
 mysql_query("SET CHARACTER_SET_CLIENT=utf8"); 
 mysql_query("SET CHARACTER_SET_RESULTS=utf8");
 
-$Zone1Array=array();
-$Zone2Array=array();
+
 $MaxZone1=null;
 $MinZone1=null;
 $MinZone2=null;
@@ -61,7 +75,7 @@ $Z3;
 
 function recursive($obj,&$arr,&$origin){
     if(substr($obj->to,0,1)!='#'){
-        if($obj->to!=$origin->from){
+        if($obj->to!=$origin){
             //echo $obj->to." ".$origin->from."</br>";
             array_push($arr,$obj);
         }
@@ -87,78 +101,93 @@ function recursive($obj,&$arr,&$origin){
 }
 
 function readData(){    
-    $origin = mysql_query("SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$_POST["to"]."\" and t=\"".$_POST["first"]."\") or (t=\"".$_POST["to"]."\" and f=\"".$_POST["first"]."\");");
+    $origin = mysql_query("SELECT * FROM ".$_POST['kv']." WHERE f=\"".$_POST["first"]."\" or t=\"".$_POST["first"]."\" ;") ;
     if(mysql_num_rows($origin)===0){
         return false;
     }
-    $row=mysql_fetch_array($origin);
-    if($row["f"]!=$_POST['first']){
-        $tmp=$row["f"];
-        $row["f"]=$row["t"];
-        $row["t"]=$tmp;
-    }
-    $GLOBALS["root"]->setCableInfo($row);
-    $tozone1 = mysql_query("SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$_POST["to"]."\" and t!=\"".$_POST["first"]."\") or (t=\"".$_POST["to"]."\" and f!=\"".$_POST["first"]."\");");
-    while ($row1 = mysql_fetch_array($tozone1)) {
-        if($row1['f']!=$_POST["to"]){
-            $tmp=$row1['f'];
-            $row1["f"]=$row1["t"];
-            $row1["t"]=$tmp;
+    while($row=mysql_fetch_array($origin)){
+        $Zone0Array=array();
+        $Zone1Array=array();
+        $Zone2Array=array();
+        $MaxZone0=$Zone0Array[0];
+        $MinZone0=$Zone0Array[0];
+        $MaxZone1=$Zone1Array[0];
+        $MinZone1=$Zone1Array[0];        
+        if($row["f"]!=$_POST['first']){
+            $tmp=$row["f"];
+            $row["f"]=$row["t"];
+            $row["t"]=$tmp;
         }
-        $zone1_c = new Cable;
-        $zone1_c->setCableInfo($row1);
-        recursive($zone1_c,$GLOBALS['Zone1Array'],$GLOBALS['root']);
-    }
-    $GLOBALS['MinZone1']=$GLOBALS['Zone1Array'][0];
-    $GLOBALS['MaxZone1']=$GLOBALS['Zone1Array'][0];
-    foreach ($GLOBALS["Zone1Array"] as $obj) {
-        if($obj->z1>$GLOBALS['MaxZone1']->z1){
-            $GLOBALS['MaxZone1']=$obj;
-        }
-        if($obj->z1<$GLOBALS['MinZone1']->z1){
-            $GLOBALS['MinZone1']=$obj;
-        }
-    }
-    $MaxZone1=$GLOBALS['MaxZone1'];
-    //echo "ZZZZZZZZ</br>";
-    $result=mysql_query("SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$MaxZone1->to."\") or (t=\"".$MaxZone1->to."\");");
-    while ($row2 = mysql_fetch_array($result)){
-        if($row2['f']!=$MaxZone1->to){
-            $tmp=$row2['f'];
-            $row2["f"]=$row2["t"];
-            $row2["t"]=$tmp;
-        }
-        if($row2['t']===$MaxZone1->pre){
-            if(substr($row2['t'],0,1)!='#'){
-                continue;
+        $zone0_c = new Cable;
+        $zone0_c->setCableInfo($row);
+        recursive($zone0_c,$Zone0Array,$zone0_c->from);
+        foreach ($Zone0Array as $obj) {
+            if($obj->z1<$MinZone0->z1){
+                $MinZone0=$obj;
+            }
+            if($obj->z1>$MaxZone0->z1){
+                $MaxZone0=$obj;
             }
         }
-        $zone2_c = new Cable;
-        $zone2_c->setCableInfo($row2);
-        recursive($zone2_c,$GLOBALS['Zone2Array'],$GLOBALS['MaxZone1']);
-    }
-    foreach ($GLOBALS["Zone2Array"] as $obj) {
-        if($obj->z1<$MinZone2->z1){
-            $GLOBALS['MinZone2']=$obj;
+        $tozone1 = mysql_query("SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$MaxZone0->to."\" and t!=\"".$_POST["first"]."\") or (t=\"".$MaxZone0->to."\" and f!=\"".$_POST["first"]."\");");
+        while ($row1 = mysql_fetch_array($tozone1)) {
+            if($row1['f']!=$MaxZone0->to){
+                $tmp=$row1['f'];
+                $row1["f"]=$row1["t"];
+                $row1["t"]=$tmp;
+            }
+            $zone1_c = new Cable;
+            $zone1_c->setCableInfo($row1);
+            recursive($zone1_c,$Zone1Array,$zone1_c->from);
         }
+        foreach ($Zone1Array as $obj) {
+            if($obj->z1>$MaxZone1->z1){
+                $MaxZone1=$obj;
+            }
+            if($obj->z1<$MinZone1->z1){
+                $MinZone1=$obj;
+            }
+        }
+    //echo "ZZZZZZZZ</br>";
+        $result=mysql_query("SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$MaxZone1->to."\" and t!=\"".$MaxZone1->from."\" ) or (t=\"".$MaxZone1->to."\" and f!=\"".$MaxZone1->from."\");");
+        while ($row2 = mysql_fetch_array($result)){
+            if($row2['f']!=$MaxZone1->to){
+                $tmp=$row2['f'];
+                $row2["f"]=$row2["t"];
+                $row2["t"]=$tmp;
+            }
+            if($row2['t']===$MaxZone1->pre){
+                if(substr($row2['t'],0,1)!='#'){
+                    continue;
+                }
+            }
+            $zone2_c = new Cable;
+            $zone2_c->setCableInfo($row2);
+            recursive($zone2_c,$Zone2Array,$zone2_c->from);
+        }
+        foreach ($Zone2Array as $obj) {
+            if($obj->z1<$MinZone2->z1){
+                $MinZone2=$obj;
+            }
+        }
+        if($MinZone0->z1>=2){
+            $Z1=($MinZone0->z1*0.75)*0.286;
+        }else{
+            $Z1=($MinZone0->z1*0.65)*0.286;        
+        }
+        if($MinZone1->z1>=2){
+            $Z2=($MaxZone0->z1+$MinZone1->z1*0.5)*0.286;
+        }else{
+            $Z2=($MaxZone0->z1+$MinZone1->z1*0.6)*0.286;
+        }
+        $Z3=($MaxZone0->z1+$MaxZone1->z1+$MinZone2->z1*0.25)*0.286;
+        printCable($Z1,$MinZone0,$MaxZone0,$Zone0Array,$Z2,$MinZone1,$MaxZone1,$Zone1Array,$Z3,$Zone2Array);
     }
-    if($GLOBALS['root']->z1>=2){
-        $GLOBALS['Z1']=($GLOBALS['root']->z1*0.75)*0.286;
-    }else{
-        $GLOBALS['Z1']=($GLOBALS['root']->z1*0.65)*0.286;        
-    }
-    if($GLOBALS['MinZone1']->z1>=2){
-        $GLOBALS['Z2']=($GLOBALS['root']->z1+$GLOBALS['MinZone1']->z1*0.5)*0.286;
-    }else{
-        $GLOBALS['Z2']=($GLOBALS['root']->z1+$GLOBALS['MinZone1']->z1*0.6)*0.286;
-    }
-    $GLOBALS['Z3']=($GLOBALS['root']->z1+$GLOBALS['MaxZone1']->z1+$GLOBALS['MinZone2']->z1*0.25)*0.286;
-
 }
 
 
 
-function printCable(){
+function printCable($Z1,$MinZone0,$MaxZone0,$Zone0Array,$Z2,$MinZone1,$MaxZone1,$Zone1Array,$Z3,$Zone2Array){
     echo "<table border=1>";
     echo "<th>"."來端"."</th>";
     echo "<th>"."去端"."</th>";
@@ -167,14 +196,18 @@ function printCable(){
     echo "<th>"."正相阻抗X1"."</th>";
     echo "<th>"."正相阻抗Z1"."</th>";
     echo "<tr>";
-    $root=json_decode($GLOBALS["root"]->getCableInfo());
-    echo "<td>".$_POST["first"]."</td>"."<td>".$_POST['to']."</td>";
-    echo "<td>".$root->{"length"}."</td>"."<td>".$root->{'r1'}."</td>"." ";
-    echo "<td>".$root->{'x1'}."</td><td>".$root->{'z1'}."</td><tr>";
     echo "<th colspan=19 align=center> Zone1 </th>";
+    echo "<tr>";
+    foreach ($Zone0Array as $zone) {
+        $root=$zone;
+        echo "<td>".$root->{"from"}."</td>"."<td>".$root->{'to'}."</td>";
+        echo "<td>".$root->{"length"}."</td>"."<td>".$root->{'r1'}."</td>"." ";
+        echo "<td>".$root->{'x1'}."</td><td>".$root->{'z1'}."</td><tr>";
+    }
+    echo "<th colspan=19 align=center> Zone2 </th>";
     echo "<tr>"; 
 
-    foreach ($GLOBALS["Zone1Array"] as $zone) {
+    foreach ($Zone1Array as $zone) {
         $root=$zone;
         echo "<td>".$root->{"from"}."</td>"."<td>".$root->{'to'}."</td>";
         echo "<td>".$root->{"length"}."</td>"."<td>".$root->{'r1'}."</td>"." ";
@@ -182,10 +215,10 @@ function printCable(){
     }
 
     echo "<tr>";
-    echo "<th colspan=19 align=center> Zone2 </th>";
+    echo "<th colspan=19 align=center> Zone3 </th>";
     echo "<tr>"; 
     
-    foreach ($GLOBALS["Zone2Array"] as $zone2) {
+    foreach ($GZone2Array as $zone2) {
         $root=$zone2;
         echo "<td>".$root->{"from"}."</td>"."<td>".$root->{'to'}."</td>";
         echo "<td>".$root->{"length"}."</td>"."<td>".$root->{'r1'}."</td>"." ";
@@ -193,18 +226,17 @@ function printCable(){
     }
     echo "</table>";
     echo "<table border=1>";
-    echo "<th>Z1 = (".$GLOBALS['root']->z1."* 0.75)*0.286 =".$GLOBALS["Z1"]."</th></tr>";
-    echo "<th>Z2 = (".$GLOBALS['root']->z1." + ".$GLOBALS['MinZone1']->z1."*0.5)*0.286 =".$GLOBALS["Z2"]."</th></tr>";
-    echo "<th>Z3 = ".$GLOBALS["Z3"]."</th></tr>";
+    echo "<th>Z1 = (".$MinZone0->z1."* 0.75)*0.286 =".$Z1."</th></tr>";
+    echo "<th>Z2 = (".$MaxZone0->z1." + ".$MinZone1->z1."*0.5)*0.286 =".$Z2."</th></tr>";
+    echo "<th>Z3 = (".$MaxZone0->z1." + ".$MaxZone1->z1." + ".$MinZone2"*0.25 )*0.286 =".$Z2."</th></tr>";
     echo "</table>";
-
-
 }
 
 if ($_POST["first"]==null){
 
 }else{
     readData();
-    printCable();
 }
 ?>
+</body>
+</html>
