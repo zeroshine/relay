@@ -4,6 +4,78 @@
 		"selected_items":
 		[
 			[
+				"mysql_nu",
+				"mysql_num_rows"
+			],
+			[
+				"nu",
+				"mysql_num_rows"
+			],
+			[
+				"if",
+				"if?	$… = ( … ) ? … : …"
+			],
+			[
+				"ta",
+				"tableArr"
+			],
+			[
+				"M",
+				"MaxZone0"
+			],
+			[
+				"ma",
+				"MaxZone0"
+			],
+			[
+				"Z",
+				"Zone0Array"
+			],
+			[
+				"Mi",
+				"MinZone2"
+			],
+			[
+				"MI",
+				"MinZone0"
+			],
+			[
+				"mi",
+				"MinZone0"
+			],
+			[
+				"z",
+				"Z1"
+			],
+			[
+				"Zon",
+				"Zone2Array"
+			],
+			[
+				"zon",
+				"zone2"
+			],
+			[
+				"Minz",
+				"MinZone0"
+			],
+			[
+				"fr",
+				"from"
+			],
+			[
+				"zo",
+				"zone1_c"
+			],
+			[
+				"Min",
+				"MinZone1"
+			],
+			[
+				"re",
+				"recursive"
+			],
+			[
 				"dat",
 				"datepicker2"
 			],
@@ -72,10 +144,6 @@
 				"gmp_intval"
 			],
 			[
-				"re",
-				"req"
-			],
-			[
 				"arr",
 				"array	$… = array (…)"
 			],
@@ -90,10 +158,6 @@
 			[
 				"s",
 				"src"
-			],
-			[
-				"M",
-				"map_canvas"
 			],
 			[
 				"q",
@@ -150,10 +214,6 @@
 			[
 				"nod",
 				"nodeCount"
-			],
-			[
-				"ta",
-				"table"
 			],
 			[
 				"pr",
@@ -244,10 +304,6 @@
 				"all_theta"
 			],
 			[
-				"nu",
-				"num_labels"
-			],
-			[
 				"l",
 				"lrCostFunction"
 			],
@@ -294,10 +350,6 @@
 			[
 				"mysql_",
 				"mysql_query"
-			],
-			[
-				"z",
-				"zone2start"
 			],
 			[
 				"ro",
@@ -572,6 +624,13 @@
 	},
 	"file_history":
 	[
+		"/Users/zeroshine/Dropbox/relay/relay.js",
+		"/Users/zeroshine/Dropbox/relay/index.html",
+		"/Users/zeroshine/Dropbox/relay/getNewData.php",
+		"/Users/zeroshine/Dropbox/relay/dist/css/bootstrap-select.min.css",
+		"/Users/zeroshine/Dropbox/relay/index.php",
+		"/Users/zeroshine/Downloads/relay/getNewData.php",
+		"/Users/zeroshine/Dropbox/relay/libs/css/bootstrap.css",
 		"/Users/zeroshine/Dropbox/ror/ror-zeroshine/config/routes.rb",
 		"/Users/zeroshine/Dropbox/fnet/PHP/downloadCSV.php",
 		"/Users/zeroshine/Dropbox/fnet/line.html",
@@ -628,7 +687,6 @@
 		"/Users/zeroshine/Dropbox/advantech/eclipseworkspace/autotest/branches/atca-7310/src/remoteLookbackstart.java",
 		"/Users/zeroshine/Dropbox/relay/tmp.html",
 		"/Users/zeroshine/Dropbox/fnet/draw.js",
-		"/Users/zeroshine/Dropbox/relay/index.php",
 		"/Users/zeroshine/Dropbox/coursera/ml/ex3/ex3.m",
 		"/Users/zeroshine/Dropbox/coursera/ml/ex3/fmincg.m",
 		"/Users/zeroshine/Dropbox/coursera/ml/ex3/predict.m",
@@ -693,13 +751,7 @@
 		"/Users/zeroshine/Dropbox/src/result.arff",
 		"/Users/zeroshine/Dropbox/src/recommender/features_all.csv",
 		"/Users/zeroshine/src/features.arff",
-		"/Users/zeroshine/Dropbox/src/recommender/recommenderFront.py",
-		"/Users/zeroshine/src/data.txt",
-		"/Users/zeroshine/Dropbox/src/features_reduce_pcb.arff",
-		"/Users/zeroshine/src/rawdata.txt",
-		"/Users/zeroshine/Dropbox/src/features_all.csv",
-		"/Users/zeroshine/Desktop/未命名檔案夾/p2.cpp",
-		"/Users/zeroshine/Dropbox/cpp/programming_assignment3/p1.cpp"
+		"/Users/zeroshine/Dropbox/src/recommender/recommenderFront.py"
 	],
 	"find":
 	{
