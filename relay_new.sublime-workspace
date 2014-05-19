@@ -1,0 +1,1295 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"ra",
+				"ratio"
+			],
+			[
+				"ma",
+				"MaxZoneb2"
+			],
+			[
+				"M",
+				"MaxZoneb1"
+			],
+			[
+				"z",
+				"zone1b"
+			],
+			[
+				"zo",
+				"zone1b"
+			],
+			[
+				"ba",
+				"backrow1"
+			],
+			[
+				"bac",
+				"back"
+			],
+			[
+				"mysql_fe",
+				"mysql_fetch_array"
+			],
+			[
+				"b",
+				"back"
+			],
+			[
+				"le",
+				"length"
+			],
+			[
+				"nw",
+				"newlist"
+			],
+			[
+				"l",
+				"list"
+			],
+			[
+				"bt",
+				"btn"
+			],
+			[
+				"a",
+				"asize"
+			],
+			[
+				"asi",
+				"asize_l"
+			],
+			[
+				"ta",
+				"table"
+			],
+			[
+				"va",
+				"var"
+			],
+			[
+				"in",
+				"insertelement"
+			],
+			[
+				"mysql_nu",
+				"mysql_num_rows"
+			],
+			[
+				"nu",
+				"mysql_num_rows"
+			],
+			[
+				"if",
+				"if?	$… = ( … ) ? … : …"
+			],
+			[
+				"Z",
+				"Zone0Array"
+			],
+			[
+				"Mi",
+				"MinZone2"
+			],
+			[
+				"MI",
+				"MinZone0"
+			],
+			[
+				"mi",
+				"MinZone0"
+			],
+			[
+				"Zon",
+				"Zone2Array"
+			],
+			[
+				"zon",
+				"zone2"
+			],
+			[
+				"Minz",
+				"MinZone0"
+			],
+			[
+				"fr",
+				"from"
+			],
+			[
+				"Min",
+				"MinZone1"
+			],
+			[
+				"re",
+				"recursive"
+			],
+			[
+				"dat",
+				"datepicker2"
+			],
+			[
+				"da",
+				"datepicker1"
+			],
+			[
+				"f",
+				"fetch"
+			],
+			[
+				"data",
+				"datatype"
+			],
+			[
+				"P",
+				"POST"
+			],
+			[
+				"be",
+				"begin"
+			],
+			[
+				"ti",
+				"time"
+			],
+			[
+				"end",
+				"end_time"
+			],
+			[
+				"w",
+				"width"
+			],
+			[
+				"c",
+				"chart"
+			],
+			[
+				"y",
+				"ynum"
+			],
+			[
+				"x",
+				"xnum"
+			],
+			[
+				"FDR",
+				"FDR_type"
+			],
+			[
+				"co",
+				"console"
+			],
+			[
+				"con",
+				"console"
+			],
+			[
+				"intva",
+				"gmp_intval"
+			],
+			[
+				"arr",
+				"array	$… = array (…)"
+			],
+			[
+				"array_p",
+				"array_push"
+			],
+			[
+				"dta",
+				"datatype"
+			],
+			[
+				"s",
+				"src"
+			],
+			[
+				"q",
+				"query1"
+			],
+			[
+				"strto",
+				"strtotime"
+			],
+			[
+				"fdd",
+				"fdds"
+			],
+			[
+				"fe",
+				"fetch1"
+			],
+			[
+				"date_tim",
+				"date_timezone_get"
+			],
+			[
+				"bo",
+				"border-width"
+			],
+			[
+				"border-",
+				"border-color"
+			],
+			[
+				"pos",
+				"position"
+			],
+			[
+				"opt",
+				"opti_sol"
+			],
+			[
+				"op",
+				"opti_c"
+			],
+			[
+				"node",
+				"nodeCount"
+			],
+			[
+				"e",
+				"edges"
+			],
+			[
+				"nod",
+				"nodeCount"
+			],
+			[
+				"pr",
+				"print"
+			],
+			[
+				"put",
+				"put_tmp"
+			],
+			[
+				"pu",
+				"put_tmp"
+			],
+			[
+				"put_",
+				"put_table"
+			],
+			[
+				"i",
+				"items"
+			],
+			[
+				"TH",
+				"Theta1"
+			],
+			[
+				"T",
+				"Theta2"
+			],
+			[
+				"de",
+				"delta_1"
+			],
+			[
+				"si",
+				"sigma3"
+			],
+			[
+				"Th",
+				"Theta2"
+			],
+			[
+				"del",
+				"delta_2"
+			],
+			[
+				"sigma",
+				"sigma3"
+			],
+			[
+				"la",
+				"lambda"
+			],
+			[
+				"fp",
+				"fprintf"
+			],
+			[
+				"t",
+				"Theta2"
+			],
+			[
+				"j",
+				"jsPlumb"
+			],
+			[
+				"wi",
+				"window"
+			],
+			[
+				"Js",
+				"jsPlumb"
+			],
+			[
+				"th",
+				"Theta1"
+			],
+			[
+				"all",
+				"all_theta"
+			],
+			[
+				"al",
+				"all_theta"
+			],
+			[
+				"tmp",
+				"tmpx"
+			],
+			[
+				"gr",
+				"grad"
+			],
+			[
+				"S",
+				"size"
+			],
+			[
+				"X",
+				"X_norm"
+			],
+			[
+				"the",
+				"theta"
+			],
+			[
+				"F",
+				"FDR994"
+			],
+			[
+				"FD",
+				"FDR991"
+			],
+			[
+				"FDr",
+				"FDR991"
+			],
+			[
+				"mysql_n",
+				"mysql_num_rows"
+			],
+			[
+				"mysql_",
+				"mysql_query"
+			],
+			[
+				"ro",
+				"row"
+			],
+			[
+				"ce",
+				"center"
+			],
+			[
+				"fir",
+				"first"
+			],
+			[
+				"SE",
+				"SELECT"
+			],
+			[
+				"fu",
+				"function"
+			],
+			[
+				"json",
+				"json_encode"
+			],
+			[
+				"up",
+				"updatefreq"
+			],
+			[
+				"res",
+				"result"
+			],
+			[
+				"B",
+				"B0"
+			],
+			[
+				"my",
+				"mysql_query"
+			],
+			[
+				"mysql_s",
+				"mysql_select_db"
+			],
+			[
+				"p",
+				"print"
+			],
+			[
+				"te",
+				"text-align"
+			],
+			[
+				"sort",
+				"sortdic"
+			],
+			[
+				"cl",
+				"cluster0list"
+			],
+			[
+				"d",
+				"dis1"
+			],
+			[
+				"dis",
+				"dis4"
+			],
+			[
+				"di",
+				"dis3"
+			],
+			[
+				"it",
+				"itemset"
+			],
+			[
+				"tr",
+				"transaction_index"
+			],
+			[
+				"fi",
+				"first"
+			],
+			[
+				"str",
+				"string"
+			],
+			[
+				"line",
+				"line_num"
+			],
+			[
+				"lin",
+				"line_num"
+			],
+			[
+				"en",
+				"end"
+			],
+			[
+				"v",
+				"vector	std::vector"
+			],
+			[
+				"inc",
+				"include"
+			],
+			[
+				"IN",
+				"include"
+			],
+			[
+				"C",
+				"Connect"
+			],
+			[
+				"conn",
+				"connect"
+			],
+			[
+				"for",
+				"forsend"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 4493,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "getbus.php",
+			"settings":
+			{
+				"buffer_size": 479,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "getNewData.php",
+			"settings":
+			{
+				"buffer_size": 12900,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "libs/js/relay.js",
+			"settings":
+			{
+				"buffer_size": 12340,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				":w",
+				":w - Save"
+			],
+			[
+				"",
+				"Package Control: Install Package"
+			],
+			[
+				"pa",
+				"Package Control: Install Package"
+			],
+			[
+				"git",
+				"Git: Status"
+			],
+			[
+				"git:di",
+				"Git: Diff All"
+			],
+			[
+				"git st",
+				"Git: Status"
+			],
+			[
+				"set synta m",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"sy",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"SF",
+				"SFTP: Add Alternate Remote Mapping…"
+			],
+			[
+				"bro",
+				"SFTP: Browse Server…"
+			],
+			[
+				"sftp",
+				"Preferences: SFTP Settings"
+			],
+			[
+				"sf",
+				"SFTP: Browse Server…"
+			],
+			[
+				"panel",
+				"Set Syntax: SFTP Output Panel"
+			],
+			[
+				"br",
+				"SFTP: Browse Server…"
+			],
+			[
+				"sft",
+				"SFTP: Browse Server…"
+			],
+			[
+				"s",
+				"SFTP: Edit Server…"
+			],
+			[
+				"serv",
+				"SFTP: Browse Server…"
+			],
+			[
+				"pack",
+				"Package Control: Remove Package"
+			],
+			[
+				"clan",
+				"SublimeClang: Clear cache"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"Inst",
+				"Package Control: Install Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"p",
+				"Package Control: Install Package"
+			],
+			[
+				"sub",
+				"Preferences: SublimeClang Settings – Default"
+			],
+			[
+				"packe",
+				"Package Control: Install Package"
+			],
+			[
+				":c",
+				"Set Syntax: C++"
+			],
+			[
+				":q",
+				"Set Syntax: SQL"
+			],
+			[
+				":make",
+				"Set Syntax: Makefile"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 521.0
+	},
+	"console":
+	{
+		"height": 167.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/zeroshine/Dropbox/relay_new/getNewData2.php",
+		"/Users/zeroshine/Dropbox/relay_new/libs/js/relay.js",
+		"/Users/zeroshine/Dropbox/relay_new/libs/css/table.css",
+		"/Users/zeroshine/Dropbox/relay_new/relay_new.sublime-workspace",
+		"/Users/zeroshine/Library/Application Support/Sublime Text 2/Packages/User/sftp_servers/lab228pc",
+		"/Users/zeroshine/Dropbox/relay/10.txt",
+		"/Users/zeroshine/Dropbox/relay/relay.js",
+		"/Users/zeroshine/Dropbox/relay/index.html",
+		"/Users/zeroshine/Dropbox/relay/getNewData.php",
+		"/Users/zeroshine/Dropbox/relay/dist/css/bootstrap-select.min.css",
+		"/Users/zeroshine/Dropbox/relay/index.php",
+		"/Users/zeroshine/Downloads/relay/getNewData.php",
+		"/Users/zeroshine/Dropbox/relay/libs/css/bootstrap.css",
+		"/Users/zeroshine/Dropbox/ror/ror-zeroshine/config/routes.rb",
+		"/Users/zeroshine/Dropbox/fnet/PHP/downloadCSV.php",
+		"/Users/zeroshine/Dropbox/fnet/line.html",
+		"/Users/zeroshine/Dropbox/fnet/JS/Ajax.js",
+		"/Users/zeroshine/Dropbox/fnet/post.py",
+		"/Users/zeroshine/Dropbox/fnet/PHP/getFTFreq.php",
+		"/Users/zeroshine/Dropbox/fnet/JS/drawfreq.js",
+		"/Users/zeroshine/Dropbox/fnet/index.php",
+		"/Users/zeroshine/Dropbox/fnet/PHP/getData.php",
+		"/Users/zeroshine/Desktop/b02901000/p6_1.cpp",
+		"/Users/zeroshine/Dropbox/fnet/PHP/getGFreq.php",
+		"/Users/zeroshine/Dropbox/fnet/PHP/post.py",
+		"/Users/zeroshine/Dropbox/fnet/JS/theme.js",
+		"/Users/zeroshine/Dropbox/fnet/getData.php",
+		"/Users/zeroshine/Dropbox/fnet/CSS/style.css",
+		"/Users/zeroshine/Library/Application Support/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
+		"/Users/zeroshine/Dropbox/fnet/PHP/getfreq.php",
+		"/Users/zeroshine/Dropbox/fnet/PHP/test.php",
+		"/Users/zeroshine/Documents/test.csv",
+		"/Users/zeroshine/Dropbox/fnet/test.html",
+		"/Users/zeroshine/Dropbox/test.tex",
+		"/Users/zeroshine/Dropbox/fnet/JS/drawstock.js",
+		"/Users/zeroshine/Dropbox/fnet/JS/drawStaticFreq.js",
+		"/Users/zeroshine/Downloads/p1.py",
+		"/Users/zeroshine/Downloads/test.in",
+		"/Users/zeroshine/Dropbox/fnet/demo.html",
+		"/Users/zeroshine/Dropbox/fnet/updatefreq.js",
+		"/Users/zeroshine/Dropbox/fnet/drawfreq.js",
+		"/Users/zeroshine/Dropbox/fnet/style.css",
+		"/Users/zeroshine/Dropbox/fnet/drawmap.js",
+		"/Users/zeroshine/Dropbox/fnet/server.py",
+		"/Users/zeroshine/Dropbox/course/alg/b97901069-pa3/src/nodeArray.cpp",
+		"/Users/zeroshine/Dropbox/taipower/161p.py",
+		"/Users/zeroshine/Dropbox/fnet/drawStaticFreq.js",
+		"/Users/zeroshine/Dropbox/coursera/DO/coloring/data/gc_20_1",
+		"/Users/zeroshine/Dropbox/coursera/DO/coloring/solver.py",
+		"/Users/zeroshine/Dropbox/coursera/DO/knapsack/solver.py",
+		"/Users/zeroshine/Dropbox/advantech/eclipseworkspace/autotest/branches/atca-7310/src/AMPP2_showrun.java",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex4/sigmoidGradient.m",
+		"/Users/zeroshine/Dropbox/advantech/eclipseworkspace/autotest/branches/atca-7310/src/enableoam.java",
+		"/Users/zeroshine/Dropbox/advantech/eclipseworkspace/autotest/branches/atca-7310/src/lookbackpksize.java",
+		"/Users/zeroshine/Dropbox/advantech/eclipseworkspace/autotest/branches/atca-7310/src/N9_1007_1.java",
+		"/Users/zeroshine/Dropbox/advantech/eclipseworkspace/autotest/branches/atca-7310/src/telnetConn.java",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex4/nnCostFunction.m",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex4/ex4.m",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex4/randInitializeWeights.m",
+		"/Users/zeroshine/Dropbox/http.py",
+		"/Users/zeroshine/Dropbox/fnet/getGFreq.php",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex3/lrCostFunction.m",
+		"/Users/zeroshine/Dropbox/fnet/theme.js",
+		"/Users/zeroshine/Dropbox/advantech/eclipseworkspace/autotest/branches/atca-7310/src/N9_1013.java",
+		"/Users/zeroshine/Dropbox/advantech/eclipseworkspace/autotest/branches/atca-7310/src/para.java",
+		"/Users/zeroshine/Dropbox/advantech/eclipseworkspace/autotest/branches/atca-7310/src/linkMonitor.java",
+		"/Users/zeroshine/Dropbox/advantech/eclipseworkspace/autotest/branches/atca-7310/src/remoteLookbackstart.java",
+		"/Users/zeroshine/Dropbox/relay/tmp.html",
+		"/Users/zeroshine/Dropbox/fnet/draw.js",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex3/ex3.m",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex3/fmincg.m",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex3/predict.m",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex3/predictOneVsAll.m",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex3/oneVsAll.m",
+		"/Users/zeroshine/Downloads/tmp.html",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex2/ex2.m",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex2/mapFeature.m",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex2/costFunctionReg.m",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex3/sigmoid.m",
+		"/Users/zeroshine/Library/Application Support/Sublime Text 2/Packages/User/Matlab.sublime-settings",
+		"/Users/zeroshine/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/Users/zeroshine/Dropbox/relay/sftp-config.json",
+		"/Users/zeroshine/Dropbox/relay/sftp-config-alt.json",
+		"/Users/zeroshine/Dropbox/fnet/2013-04-20 20.25.38.jpg",
+		"/var/folders/nq/_8j36s191wvf8f5y5c8wh0jm0000gn/T/sublime-sftp-browse-1372323388/fnet/relay/style.css",
+		"/var/folders/nq/_8j36s191wvf8f5y5c8wh0jm0000gn/T/sublime-sftp-browse-1372323119/fnet/relay/index.php",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex1/ex1_multi.m",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex1/gradientDescent.m",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex1/computeCostMulti.m",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex1/gradientDescentMulti.m",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex1/normalEqn.m",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex1/plotData.m",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex1/ex1data2.txt",
+		"/Users/zeroshine/Dropbox/coursera/ml/ex1/warmUpExercise.m",
+		"/var/folders/nq/_8j36s191wvf8f5y5c8wh0jm0000gn/T/sublime-sftp-browse-1368182648/LMDE/var/www/rest.php",
+		"/Users/zeroshine/Library/Application Support/Sublime Text 2/Packages/User/sftp_servers/LMDE",
+		"/var/folders/nq/_8j36s191wvf8f5y5c8wh0jm0000gn/T/sublime-sftp-browse-1367912585/LMDE/var/www/index.html",
+		"/Users/zeroshine/Dropbox/twisted/server.py",
+		"/Users/zeroshine/Downloads/Highcharts-3.0.1/examples/dynamic-update/index.htm",
+		"/Users/zeroshine/Dropbox/fnet/generate.py",
+		"/Users/zeroshine/Dropbox/fnet/f.csv",
+		"/Users/zeroshine/Dropbox/fnet/sftp-config.json",
+		"/Users/zeroshine/Library/Application Support/Sublime Text 2/Packages/SFTP/SFTP.sublime-settings",
+		"/var/folders/nq/_8j36s191wvf8f5y5c8wh0jm0000gn/T/sublime-sftp-browse-1365647081/fnet/relay/index.html",
+		"/var/folders/nq/_8j36s191wvf8f5y5c8wh0jm0000gn/T/sublime-sftp-browse-1365511021/Server/home/PowerServer_NTUEE/zeroshine/server.py",
+		"/Users/zeroshine/Library/Application Support/Sublime Text 2/Packages/User/sftp_servers/sftp-config.json",
+		"/Users/zeroshine/Library/Application Support/Sublime Text 2/Packages/User/sftp_servers/Server",
+		"/var/folders/nq/_8j36s191wvf8f5y5c8wh0jm0000gn/T/sublime-sftp-browse-1365500210/sftp-config.json/home/PowerServer_NTUEE/zeroshine/main.cpp",
+		"/Users/zeroshine/Library/Application Support/Sublime Text 2/Packages/SublimeClang/SublimeClang.sublime-settings",
+		"/Users/zeroshine/Library/Application Support/Sublime Text 2/Packages/User/sftp_servers/fnet",
+		"/Users/zeroshine/Dropbox/taipower/parse.py",
+		"/Users/zeroshine/Dropbox/index.html",
+		"/var/folders/nq/_8j36s191wvf8f5y5c8wh0jm0000gn/T/sublime-sftp-browse-1358769655/sftp-config.json/home/PowerServer_NTUEE/zeroshine/Fault_Location_new.cpp",
+		"/var/folders/nq/_8j36s191wvf8f5y5c8wh0jm0000gn/T/sublime-sftp-browse-1358774603/sftp-config.json/home/PowerServer_NTUEE/zeroshine/add.cpp",
+		"/var/folders/nq/_8j36s191wvf8f5y5c8wh0jm0000gn/T/sublime-sftp-browse-1358774824/sftp-config.json/home/PowerServer_NTUEE/zeroshine/main.cpp",
+		"/var/folders/nq/_8j36s191wvf8f5y5c8wh0jm0000gn/T/sublime-sftp-browse-1358770148/sftp-config.json/home/PowerServer_NTUEE/zeroshine/Fault_Location.cpp",
+		"/var/folders/nq/_8j36s191wvf8f5y5c8wh0jm0000gn/T/sublime-sftp-browse-1358759970/sftp-config.json/home/PowerServer_NTUEE/zeroshine/Fault_Location.cpp",
+		"/Users/zeroshine/Dropbox/wams/add.cpp",
+		"/Users/zeroshine/Dropbox/wams/main.cpp",
+		"/var/folders/nq/_8j36s191wvf8f5y5c8wh0jm0000gn/T/sublime-sftp-browse-1358687682/sftp-config.json/home/PowerServer_NTUEE/zeroshine/main.cpp",
+		"/Users/zeroshine/Dropbox/src/corpusList.py",
+		"/Users/zeroshine/src/cluster3.txt",
+		"/Users/zeroshine/src/cluster2.txt",
+		"/Users/zeroshine/src/cluster1.txt",
+		"/Users/zeroshine/src/cluster0.txt",
+		"/Users/zeroshine/Dropbox/src/recommender/corpusList.py",
+		"/Users/zeroshine/src/data3.txt",
+		"/Users/zeroshine/src/data2.txt"
+	],
+	"find":
+	{
+		"height": 37.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"first",
+			"firsr",
+			"KV",
+			"    ",
+			"phasor",
+			"para",
+			"/para",
+			"prompt",
+			"200",
+			"script",
+			"style",
+			"text",
+			"～",
+			"Total",
+			"  │                                     │                                             │      ",
+			"│                                          │                                               │ ",
+			"center",
+			"180",
+			"*",
+			"180",
+			"*",
+			"if",
+			"num",
+			")(",
+			"cluster2",
+			",",
+			"cl",
+			"-",
+			"+",
+			"123octaveFreq4",
+			"*",
+			"-",
+			"+",
+			":",
+			",",
+			"md",
+			"\"",
+			"mxl",
+			"xml",
+			"zip",
+			",bach/",
+			",,",
+			" ",
+			"\"",
+			"\",\\",
+			"\n"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "index.html",
+					"settings":
+					{
+						"buffer_size": 4493,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4490,
+								4490
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": true,
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "getbus.php",
+					"settings":
+					{
+						"buffer_size": 479,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								333,
+								333
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": true,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "getNewData.php",
+					"settings":
+					{
+						"buffer_size": 12900,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3939,
+								3939
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": true,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 21.0,
+						"translation.y": 2122.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "libs/js/relay.js",
+					"settings":
+					{
+						"buffer_size": 12340,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								670,
+								670
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": true,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2435.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 34.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.clang":
+	{
+		"height": 53.0
+	},
+	"output.exec":
+	{
+		"height": 136.0
+	},
+	"output.git":
+	{
+		"height": 136.0
+	},
+	"output.sftp":
+	{
+		"height": 31.0
+	},
+	"replace":
+	{
+		"height": 68.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"po",
+				"post.py"
+			],
+			[
+				"p",
+				"PHP/post.py"
+			],
+			[
+				"",
+				"/Users/zeroshine/Dropbox/wams/connect.cpp"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"/Users/zeroshine/Dropbox/latex_thesis/thesis.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 208.0,
+	"status_bar_visible": true
+}

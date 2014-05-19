@@ -1,9 +1,0 @@
-('C:\\Dropbox\\relay\\dist\\psseparse.exe',
- False,
- False,
- 'tool.ico',
- None,
- [],
- None,
- False,
- 1395209904L)

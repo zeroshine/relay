@@ -1,23 +1,7 @@
-<html>
-    <head>
-        <title>
-            Relay 
-        </title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="libs/css/bootstrap.css">
-        <style type="text/css">
-            .result {
-                width: 80%;
-                margin: 20px auto;
-            }
-        </style>
-    </head>
-    <body>
 <?php
 class Cable {
     //declare variables
-    var $from,$to,$length,$r1,$x1,$z1,$pre;
-        
+    var $from,$to,$length,$r1,$x1,$z1,$pre,$break,$cap;        
     function setCableInfo($row) {
         $this->from = $row['f'];
         $this->pre = $row['f'];
@@ -26,7 +10,12 @@ class Cable {
         $this->turns = $row['ckt'];
         $this->r1 = $row['R1'];
         $this->x1 = $row['X1'];
+        $this->r0 = $row['R0'];
+        $this->x0 = $row['X0'];
         $this->z1 = sqrt(pow($this->r1,2)+pow($this->x1,2));
+        $this->z0 = sqrt(pow($this->r0,2)+pow($this->x0,2));
+        $this->break=$row['break'];
+        $this->cap=$row['cap'];
     }
     
     function getCableInfo() {
@@ -47,21 +36,23 @@ class Cable {
         $this->length = $this->length+$obj->length;
         $this->r1 =$this->r1+$obj->r1;
         $this->x1 = $this->x1+$obj->x1;
+        $this->r0 =$this->r0+$obj->r0;
+        $this->x0 = $this->x0+$obj->x0;
         $this->z1 = sqrt(pow($this->x1,2)+pow($this->r1,2));
-
+        $this->z0 = sqrt(pow($this->x0,2)+pow($this->r0,2));
     }
 }
 
 class Obj_json{
-    var $name,$Z1,$Zone0Array,$MinZone0,$MaxZone0,$Zone1Array,$MinZone1,$MaxZone1,$Zone2Array,$MinZone2;
+    var $from,$name,$Z1,$Zone0Array,$MinZone0,$MaxZone0,$Zone1Array,$MinZone1,$MaxZone1,$Zone2Array,$MinZone2;
 }
 
-$con = mysql_connect("localhost","lab228","lab228");
+$con = mysql_connect("localhost","root","lab228");
 if (!$con){
     die('Could not connect: ' . mysql_error());
 }
 
-mysql_select_db("lab228",$con);
+mysql_select_db("relay",$con);
 mysql_query("SET NAMES 'utf8'"); 
 mysql_query("SET CHARACTER_SET_CLIENT=utf8"); 
 mysql_query("SET CHARACTER_SET_RESULTS=utf8");
@@ -82,7 +73,7 @@ function recursive($obj,&$arr,&$origin){
             $row1["t"]=$tmp;
         }
         if($row1['t']===$obj->pre){
-            if(substr($row2['t'],0,1)!='#'){
+            if(substr($row1['t'],0,1)!='#'){
                 continue;
             }
         }
@@ -93,7 +84,13 @@ function recursive($obj,&$arr,&$origin){
     }
 }
 
-function readData(){    
+function readData(){ 
+    $break = mysql_query("SELECT * FROM bus WHERE break=0");
+    $breakBus=array();
+    while($row=mysql_fetch_array($break)){
+        array_push($breakBus,$row["name"]);
+    }   
+    //echo $_POST["first"];//.$_POST["first"]." ;
     $origin = mysql_query("SELECT * FROM ".$_POST['kv']." WHERE f=\"".$_POST["first"]."\" or t=\"".$_POST["first"]."\" ;") ;
     if(mysql_num_rows($origin)===0){
         return false;
@@ -125,6 +122,9 @@ function readData(){
             }
         }
         $tozone1 = mysql_query("SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$MaxZone0->to."\" and t!=\"".$MaxZone0->pre."\") or (t=\"".$MaxZone0->to."\" and f!=\"".$MaxZone0->pre."\");");
+        if(mysql_num_rows($tozone1)===0 || $MaxZone0->break===0 || in_array($MaxZone0->to,$breakBus) ){
+            $tozone1 = mysql_query("SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$MaxZone0->to."\") or (t=\"".$MaxZone0->to."\");");
+        }
         while ($row1 = mysql_fetch_array($tozone1)) {
             if($row1['f']!=$MaxZone0->to){
                 $tmp=$row1['f'];
@@ -146,6 +146,9 @@ function readData(){
             }
         }
         $result=mysql_query("SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$MaxZone1->to."\" and t!=\"".$MaxZone1->pre."\" ) or (t=\"".$MaxZone1->to."\" and f!=\"".$MaxZone1->pre."\");");
+        if(mysql_num_rows($result)===0 || $MaxZone1->break===0 || in_array($MaxZone1->to,$breakBus)){
+            $result=mysql_query("SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$MaxZone1->to."\") or (t=\"".$MaxZone1->to."\" and f!=\"".$MaxZone1->pre."\");");
+        } 
         while ($row2 = mysql_fetch_array($result)){
             if($row2['f']!=$MaxZone1->to){
                 $tmp=$row2['f'];
@@ -167,28 +170,65 @@ function readData(){
                 $MinZone2=$obj;
             }
         }
-        if($MinZone0->z1>=2){
-            $Z1=($MinZone0->z1*0.75)*0.286;
+        //$ratio_str=$_POST["ratio"];
+        $ratio=(float)$_POST["ratio"];
+        if($_POST['kv']="161kv"){
+            if($MinZone0->z1>=2){
+                $Z1=($MinZone0->z1*0.75)*$ratio;
+            }else{
+                $Z1=($MinZone0->z1*0.65)*$ratio;        
+            }
+            if($MinZone1->z1>=2){
+                $Z2=($MaxZone0->z1+$MinZone1->z1*0.5)*$ratio;
+            }else{
+                $Z2=($MaxZone0->z1+$MinZone1->z1*0.6)*$ratio;
+            }
+            $Z3=($MaxZone0->z1+$MaxZone1->z1+$MinZone2->z1*0.25)*$ratio;
+            $obj=new Obj_json;
+            $obj->name=$row["t"];
+            $obj->from=$_POST["first"];
+            $obj->Zone0Array=$Zone0Array;
+            $obj->MinZone0= $MinZone0;
+            $obj->MaxZone0= $MaxZone0;
+            $obj->Zone1Array=$Zone1Array;
+            $obj->MinZone1 = $MinZone1;
+            $obj->MaxZone1 = $MaxZone1;
+            $obj->Zone2Array=$Zone2Array;
+            $obj->MinZone2 = $MinZone2;
+            $obj->Z1=$Z1;
+            $obj->Z2=$Z2;
+            $obj->Z3=$Z3;
+            $obj->cap=$MaxZone0->cap;
+            array_push($objArray,$obj);
         }else{
-            $Z1=($MinZone0->z1*0.65)*0.286;        
+            if($MinZone0->z1>=5){
+                $Z1=($MinZone0->z1*0.85)*$ratio;
+            }else{
+                $Z1=($MinZone0->z1*0.8)*$ratio;        
+            }
+            if($MinZone1->z1>=2){
+                $Z2=($MaxZone0->z1+$MinZone1->z1*0.5)*$ratio;
+            }else{
+                $Z2=($MaxZone0->z1+$MinZone1->z1*0.6)*$ratio;
+            }
+            $Z3=($MaxZone0->z1+$MaxZone1->z1+$MinZone2->z1*0.25)*$ratio;
+            $obj=new Obj_json;
+            $obj->name=$row["t"];
+            $obj->from=$_POST["first"];
+            $obj->Zone0Array=$Zone0Array;
+            $obj->MinZone0= $MinZone0;
+            $obj->MaxZone0= $MaxZone0;
+            $obj->Zone1Array=$Zone1Array;
+            $obj->MinZone1 = $MinZone1;
+            $obj->MaxZone1 = $MaxZone1;
+            $obj->Zone2Array=$Zone2Array;
+            $obj->MinZone2 = $MinZone2;
+            $obj->Z1=$Z1;
+            $obj->Z2=$Z2;
+            $obj->Z3=$Z3;
+            $obj->cap=$MaxZone0->cap;
+            array_push($objArray,$obj);
         }
-        if($MinZone1->z1>=2){
-            $Z2=($MaxZone0->z1+$MinZone1->z1*0.5)*0.286;
-        }else{
-            $Z2=($MaxZone0->z1+$MinZone1->z1*0.6)*0.286;
-        }
-        $Z3=($MaxZone0->z1+$MaxZone1->z1+$MinZone2->z1*0.25)*0.286;
-        $obj=new Obj_json;
-        $obj->name=$row["t"];
-        $obj->Zone0Array=$Zone0Array;
-        $obj->MinZone0= $MinZone0;
-        $obj->MaxZone0= $MaxZone0;
-        $obj->Zone1Array=$Zone1Array;
-        $obj->MinZone1 = $MinZone1;
-        $obj->MaxZone1 = $MaxZone1;
-        $obj->Zone2Array=$Zone2Array;
-        $obj->MinZone2 = $MinZone2;
-        array_push($objArray,$obj);
         /*
         echo json_encode(array($row["t"]=>array('Z1'=>$Z1
             ,'Zone0Array' =>$Zone0Array
@@ -201,9 +241,9 @@ function readData(){
             ,'MinZone2'=> $MinZone2
             )));
         */
-        printCable($Z1,$MinZone0,$MaxZone0,$Zone0Array,$Z2,$MinZone1,$MaxZone1,$Zone1Array,$Z3,$Zone2Array,$MinZone2);
+        //printCable($Z1,$MinZone0,$MaxZone0,$Zone0Array,$Z2,$MinZone1,$MaxZone1,$Zone1Array,$Z3,$Zone2Array,$MinZone2);
     }
-    //echo json_encode($objArray);
+    echo json_encode($objArray);
 }
 
 
@@ -248,9 +288,9 @@ function printCable($Z1,$MinZone0,$MaxZone0,$Zone0Array,$Z2,$MinZone1,$MaxZone1,
     }
     echo "</table>";
     echo "<table class=\"table table-striped table-bordered table-hover\">";
-    echo "<th>Z1 = (".$MinZone0->z1."* 0.75)*0.286 =".$Z1."</th></tr>";
-    echo "<th>Z2 = (".$MaxZone0->z1." + ".$MinZone1->z1."*0.5)*0.286 =".$Z2."</th></tr>";
-    echo "<th>Z3 = (".$MaxZone0->z1." + ".$MaxZone1->z1." + ".$MinZone2->z1."*0.25 )*0.286 =".$Z3."</th></tr>";
+    echo "<th>Z1 = (".$MinZone0->z1."* 0.75)*$ratio =".$Z1."</th></tr>";
+    echo "<th>Z2 = (".$MaxZone0->z1." + ".$MinZone1->z1."*0.5)*$ratio =".$Z2."</th></tr>";
+    echo "<th>Z3 = (".$MaxZone0->z1." + ".$MaxZone1->z1." + ".$MinZone2->z1."*0.25 )*$ratio =".$Z3."</th></tr>";
     echo "</table></div>";
 }
 
@@ -261,6 +301,3 @@ if ($_POST["first"]==null){
     readData();
 }
 ?>
-
-</body>
-</html>

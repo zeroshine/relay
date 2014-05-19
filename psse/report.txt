@@ -1,0 +1,48 @@
+     PTI INTERACTIVE POWER SYSTEM SIMULATOR--PSS瓻      THU, MAY 08 2014  13:45
+1027る畃筿奸瑈瓜(╰参璽更36180.8MW)
+璽更ゑㄒ场41.3%,い场28.6%(狥场),玭场30.1%
+
+UNBALANCES APPLIED:
+
+LINE TO GROUND FAULT AT BUS   1082 [砍笷#2      18.000]   PHASE 1
+  L-G Z =    0.000        0.000
+
+LINE TO LINE TO GROUND FAULT AT BUS   1082 [砍笷#2      18.000]   EXCLUDED PHASE 1
+  L-L Z =    0.000        0.000       L-G Z =    0.000        0.000
+
+
+                    SEQUENCE THEVENIN IMPEDANCES AT FAULTED BUSES
+
+  BUS# X-- NAME --X BASKV          ZERO              POSITIVE            NEGATIVE
+  1082 砍笷#2      18.000    0.00030  0.04657    0.00022  0.01745    0.00022  0.01745     PTI INTERACTIVE POWER SYSTEM SIMULATOR--PSS瓻      THU, MAY 08 2014  13:45
+1027る畃筿奸瑈瓜(╰参璽更36180.8MW)
+璽更ゑㄒ场41.3%,い场28.6%(狥场),玭场30.1%
+
+THREE PHASE FAULT AT BUS   1082 [砍笷#2      18.000]:
+
+SEQUENCE              RE(V0)    IM(V0)    RE(V+)    IM(V+)    RE(V-)    IM(V-)   RE(3V0)   IM(3V0)
+PHASE                 RE(VA)    IM(VA)    RE(VB)    IM(VB)    RE(VC)    IM(VC)
+
+  1082 (P.U.)         0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000
+砍笷#2      18.000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000
+
+SEQUENCE              RE(I0)    IM(I0)    RE(I+)    IM(I+)    RE(I-)    IM(I-)   RE(3I0)   IM(3I0)
+PHASE                 RE(IA)    IM(IA)    RE(IB)    IM(IB)    RE(IC)    IM(IC)
+
+MACHINE 2             0.0000    0.0000    0.1383  -21.4701    0.0000    0.0000    0.0000    0.0000
+                      0.1383  -21.4701  -18.6627   10.6153   18.5245   10.8548
+
+FROM   1080 CKT 1     0.0000    0.0000    0.6949  -35.6590    0.0000    0.0000    0.0000    0.0000
+砍笷E     345.00    0.6949  -35.6590  -31.2291   17.2277   30.5341   18.4313
+
+
+SUM OF CONTRIBUTIONS INTO BUS   1082 [砍笷#2      18.000]:
+
+  1082                0.0000    0.0000    0.8332  -57.1291    0.0000    0.0000    0.0000    0.0000
+砍笷#2      18.000    0.8332  -57.1291  -49.8918   27.8429   49.0586   29.2861
+
+
+FAULT CURRENT AT BUS   1082 [砍笷#2      18.000]:
+
+  1082                0.0000    0.0000    0.8332  -57.1291    0.0000    0.0000    0.0000    0.0000
+砍笷#2      18.000    0.8332  -57.1291  -49.8918   27.8429   49.0586   29.2861

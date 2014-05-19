@@ -5,12 +5,12 @@
 </title>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
   <script src="dist/js/bootstrap-select.min.js"></script>
   <link href="dist/css/bootstrap-select.min.css" rel="stylesheet">
   <script src="dist/js/bootstrap.min.js"></script>
   <link href="dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="table.css" rel="stylesheet">
+  <link href="libs/css/table.css" rel="stylesheet">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <body>
@@ -23,30 +23,94 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" >Taipower Relay Setting Platform</a>
+          <!-- <a class="navbar-brand" >Relay Setting Platform</a> -->
         </div>
         <div class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right" role="form" method="post" >
+          <form class="navbar-form navbar-left" role="form" method="post" >
             <div class="form-group">
-              <input type="text" name="first" id="bus" placeholder="Bus" class="form-control">
+              <input type="text" name="first" id="bus" placeholder="Bus" class="form-control" value="汐止">
             </div>
             <select name="kv" class="selectpicker form-group" id="kv">
               <option value="161kv">161kv
               <option value="345kv">345kv
-              <option value="psse">psse
+              <!-- <option value="psse">psse -->
+            </select>
+            <select name="relay" class="selectpicker form-group" id="relay">
+              <option value="SEL311">SEL311
+              <option value="MDAR">MDAR
             </select>
             <div class="form-group">
-              <input type="text" name="ratio" id="ratio" placeholder="ct/pt ratio" class="form-control">
+              <input type="text" name="ratio" id="ratio" placeholder="ct/pt" class="form-control" value=0.286>
             </div>
-            <button type="submit" id="navbtm" class="btn btn-success">GO</button>
+            <button type="submit" id="navbtm"  class="btn btn-success">GO</button>
+            <button type="submit" id="diff"  class="btn btn-success">Diff</button>
+
           </form>
         </div><!--/.navbar-collapse -->
       </div>
     </div>
-
-<div id = "container"></div>
-<div id = "leftbar"></div>
-<script src="relay.js"></script>
+<div id ="content">
+  <div id = "container"></div>
+  <div id = "psseResult"></div>
+</div>
+<div id = "rightitem"></div>
+<div id = "leftbar">
+ <div id="updiv">
+   <a>Python file:</a>
+    <div class="input-group">
+        <input type="file" name="pyfile" id="pyfile" class="form-control">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="submit" name="submit" value="upload" id="pyupload" >upload</button>
+        </span>
+    </div>
+    <a>sav file:</a>
+    <div class="input-group">
+      <input type="file" name="savfile" id="savfile" class="form-control">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="submit" name="submit" value="upload" id="savupload">upload</button>
+      </span>
+    </div>
+    <a>seq file:</a>
+    <div class="input-group">
+      <input type="file" name="seqfile" id="seqfile" class="form-control">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="submit" name="submit" value="upload" id="sequpload">upload</button>
+      </span>
+    </div> 
+    
+    <button type="submit" class="btn btn-success" style="width:50% ;margin-top:10px; margin-buttom:10px" id="runpsse">Run PSSE</button>
+    </br>
+    </br>
+    <a>Bus voltage: Mag</a>
+    <div class="input-group">
+        <input type="text" id="busvr" class="form-control">
+    </div>
+    <a>Bus voltage: Ang</a>
+    <div class="input-group">
+        <input type="text" id="busvi" class="form-control">
+    </div>
+    <a>Bus current: Mag</a>
+    <div class="input-group">
+      <input type="text" id="busir" class="form-control">
+    </div>
+    <a>Bus current: Ang</a>
+    <div class="input-group">
+      <input type="text" id="busii" class="form-control">
+    </div>
+    <a>Impedence: R</a>
+    <div class="input-group">
+      <input type="text" id="zr" class="form-control">
+    </div>
+    <a>Impedence: X</a>
+    <div class="input-group">
+      <input type="text" id="zi" class="form-control">
+    </div> 
+    <button type="submit" class="btn btn-success" style="width:50% ;margin-top:10px;margin-buttom:10px" id="locate">Fault Location</button>
+  </br>
+    <a style="font-size:20px" id="result"></a>
+</div>  
+</div>
+<script src="libs/js/relay.js"></script>
 
 </body>
 </html>
