@@ -22,7 +22,6 @@ var postgetnewdata= function(pkv,relay,ratio,data){
                 table += "<th> Z2 = "+obj[bj].Z2+"</th><tr>";
                 table += "<th> Z3 = "+obj[bj].Z3+"</th><tr>";
                 table += "<th> Zs = "+obj[bj].Zs+"</th><tr>";
-
                 var kv=0;
                 var fac=0;
                 if(pkv=="161kv" || pkv=="161kv_new" ){
@@ -75,6 +74,26 @@ var postgetnewdata= function(pkv,relay,ratio,data){
                     table += "<th> PANG ="+pang+"</th><tr>";
                     table += "<th> GANG ="+gang+"</th><tr>";
                     table += "<th> Z0/Z1 ="+z01+"</th><tr>";
+                }else if(($('#relay').val())=="GRZ100"){
+                    table += "<th> Z1S = "+obj[bj].Z1+"</th><tr>";
+                    table += "<th> Z2S = "+obj[bj].Z2+"</th><tr>";
+                    table += "<th> Z3S = "+obj[bj].Z3+"</th><tr>";
+                    table += "<th> KRS = "+100*parseFloat(obj[bj].MaxZone0.r0)/parseFloat(obj[bj].MaxZone0.r1)+"</th><tr>";
+                    table += "<th> KRM = "+100*parseFloat(obj[bj].MaxZone0.rm)/parseFloat(obj[bj].MaxZone0.r1)+"</th><tr>";
+                    table += "<th> KXS = "+100*parseFloat(obj[bj].MaxZone0.x0)/parseFloat(obj[bj].MaxZone0.x1)+"</th><tr>";
+                    table += "<th> KXM = "+100*parseFloat(obj[bj].MaxZone0.xm)/parseFloat(obj[bj].MaxZone0.x1)+"</th><tr>";
+                    table += "<th> EF  = "+943/400*0.5+"</th><tr>";
+                    table += "<th> OCH = "+1646/400*0.8+"</th><tr>";
+                    var Z3FL=358.613/(1000*parseFloat(obj[bj].l3s))*259.21;
+                    var Z1FL=3*358.613/(1000*parseFloat(obj[bj].l1g))*259.21;
+                    table += "<th> Z3FL = "+Z3FL+"</th><tr>";
+                    table += "<th> Z1FL = "+Z1FL+"</th><tr>";
+                    table += "<th> SO1  = "+(Z1FL-2*Z3FL)*parseFloat(ratio)+"</th><tr>";
+                    var Z3FR=358.613/(1000*parseFloat(obj[bj].r3s))*259.21;
+                    var Z1FR=3*358.613/(1000*parseFloat(obj[bj].r1g))*259.21;
+                    table += "<th> Z3FR = "+Z3FR+"</th><tr>";
+                    table += "<th> Z1FR = "+Z1FR+"</th><tr>";
+                    table += "<th> SO2  = "+(Z1FR-2*Z3FR)*parseFloat(ratio)+"</th><tr>";
                 }
                 table += "</table>";
                 table += "<h3>Picked Cable</h3>"

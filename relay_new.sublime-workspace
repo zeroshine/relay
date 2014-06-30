@@ -4,16 +4,32 @@
 		"selected_items":
 		[
 			[
-				"ra",
-				"ratio"
+				"di",
+				"display"
 			],
 			[
-				"ma",
-				"MaxZoneb2"
+				"pa",
+				"parseFloat"
+			],
+			[
+				"Z1",
+				"Z1FL"
+			],
+			[
+				"Z3",
+				"Z3FL"
 			],
 			[
 				"M",
-				"MaxZoneb1"
+				"MaxZone0"
+			],
+			[
+				"ma",
+				"MaxZone0"
+			],
+			[
+				"ra",
+				"ratio"
 			],
 			[
 				"z",
@@ -452,10 +468,6 @@
 				"dis4"
 			],
 			[
-				"di",
-				"dis3"
-			],
-			[
 				"it",
 				"itemset"
 			],
@@ -502,10 +514,6 @@
 			[
 				"conn",
 				"connect"
-			],
-			[
-				"for",
-				"forsend"
 			]
 		]
 	},
@@ -515,7 +523,7 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 4493,
+				"buffer_size": 4720,
 				"line_ending": "Unix"
 			}
 		},
@@ -531,7 +539,7 @@
 			"file": "getNewData.php",
 			"settings":
 			{
-				"buffer_size": 12900,
+				"buffer_size": 13859,
 				"line_ending": "Unix"
 			}
 		},
@@ -539,7 +547,15 @@
 			"file": "libs/js/relay.js",
 			"settings":
 			{
-				"buffer_size": 12340,
+				"buffer_size": 15090,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "libs/css/table.css",
+			"settings":
+			{
+				"buffer_size": 402,
 				"line_ending": "Unix"
 			}
 		}
@@ -550,6 +566,10 @@
 		"height": 392.0,
 		"selected_items":
 		[
+			[
+				"alu",
+				"Preferences: Alignment Key Bindings – User"
+			],
 			[
 				":w",
 				":w - Save"
@@ -671,7 +691,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 521.0
+		"width": 593.0
 	},
 	"console":
 	{
@@ -688,6 +708,9 @@
 	},
 	"file_history":
 	[
+		"/Users/zeroshine/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/Users/zeroshine/Library/Application Support/Sublime Text 2/Packages/User/Default (OSX).sublime-keymap",
+		"/Users/zeroshine/Library/Application Support/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
 		"/Users/zeroshine/Dropbox/relay_new/getNewData2.php",
 		"/Users/zeroshine/Dropbox/relay_new/libs/js/relay.js",
 		"/Users/zeroshine/Dropbox/relay_new/libs/css/table.css",
@@ -716,7 +739,6 @@
 		"/Users/zeroshine/Dropbox/fnet/JS/theme.js",
 		"/Users/zeroshine/Dropbox/fnet/getData.php",
 		"/Users/zeroshine/Dropbox/fnet/CSS/style.css",
-		"/Users/zeroshine/Library/Application Support/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
 		"/Users/zeroshine/Dropbox/fnet/PHP/getfreq.php",
 		"/Users/zeroshine/Dropbox/fnet/PHP/test.php",
 		"/Users/zeroshine/Documents/test.csv",
@@ -768,7 +790,6 @@
 		"/Users/zeroshine/Dropbox/coursera/ml/ex2/costFunctionReg.m",
 		"/Users/zeroshine/Dropbox/coursera/ml/ex3/sigmoid.m",
 		"/Users/zeroshine/Library/Application Support/Sublime Text 2/Packages/User/Matlab.sublime-settings",
-		"/Users/zeroshine/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
 		"/Users/zeroshine/Dropbox/relay/sftp-config.json",
 		"/Users/zeroshine/Dropbox/relay/sftp-config-alt.json",
 		"/Users/zeroshine/Dropbox/fnet/2013-04-20 20.25.38.jpg",
@@ -814,8 +835,7 @@
 		"/Users/zeroshine/src/cluster1.txt",
 		"/Users/zeroshine/src/cluster0.txt",
 		"/Users/zeroshine/Dropbox/src/recommender/corpusList.py",
-		"/Users/zeroshine/src/data3.txt",
-		"/Users/zeroshine/src/data2.txt"
+		"/Users/zeroshine/src/data3.txt"
 	],
 	"find":
 	{
@@ -833,6 +853,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"post[\"relay\"]",
 			"first",
 			"firsr",
 			"KV",
@@ -904,15 +925,15 @@
 					"file": "index.html",
 					"settings":
 					{
-						"buffer_size": 4493,
+						"buffer_size": 4720,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4490,
-								4490
+								0,
+								0
 							]
 						],
 						"settings":
@@ -940,6 +961,10 @@
 								"bh_curly_center",
 								"bh_curly_open",
 								"bh_curly_close",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
 								"bh_default",
 								"bh_default_center",
 								"bh_default_open",
@@ -969,7 +994,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 420.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -986,8 +1011,8 @@
 						"selection":
 						[
 							[
-								333,
-								333
+								117,
+								117
 							]
 						],
 						"settings":
@@ -1015,6 +1040,10 @@
 								"bh_curly_center",
 								"bh_curly_open",
 								"bh_curly_close",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
 								"bh_default",
 								"bh_default_center",
 								"bh_default_open",
@@ -1054,15 +1083,15 @@
 					"file": "getNewData.php",
 					"settings":
 					{
-						"buffer_size": 12900,
+						"buffer_size": 13859,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3939,
-								3939
+								9026,
+								9033
 							]
 						],
 						"settings":
@@ -1090,6 +1119,10 @@
 								"bh_curly_center",
 								"bh_curly_open",
 								"bh_curly_close",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
 								"bh_default",
 								"bh_default_center",
 								"bh_default_open",
@@ -1118,8 +1151,8 @@
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
-						"translation.x": 21.0,
-						"translation.y": 2122.0,
+						"translation.x": 0.0,
+						"translation.y": 34.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1129,15 +1162,15 @@
 					"file": "libs/js/relay.js",
 					"settings":
 					{
-						"buffer_size": 12340,
+						"buffer_size": 15090,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								670,
-								670
+								4608,
+								4608
 							]
 						],
 						"settings":
@@ -1165,6 +1198,10 @@
 								"bh_curly_center",
 								"bh_curly_open",
 								"bh_curly_close",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
 								"bh_default",
 								"bh_default_center",
 								"bh_default_open",
@@ -1194,7 +1231,85 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2435.0,
+						"translation.y": 3539.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "libs/css/table.css",
+					"settings":
+					{
+						"buffer_size": 402,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								285,
+								285
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": true,
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1281,7 +1396,7 @@
 		[
 			[
 				"",
-				"/Users/zeroshine/Dropbox/latex_thesis/thesis.sublime-project"
+				"/Users/zeroshine/Dropbox/fnet/fnet.sublime-project"
 			]
 		],
 		"width": 380.0

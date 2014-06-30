@@ -23,7 +23,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <!-- <a class="navbar-brand" >Relay Setting Platform</a> -->
+          <!-- <a class="navbar-brand" >電驛設定平台</a> -->
         </div>
         <div class="navbar-collapse collapse">
           <form class="navbar-form navbar-left" role="form" method="post" >
@@ -38,6 +38,7 @@
             <select name="relay" class="selectpicker form-group" id="relay">
               <option value="SEL311">SEL311
               <option value="MDAR">MDAR
+              <option value="GRZ100">GRZ100
             </select>
             <div class="form-group">
               <input type="text" name="ratio" id="ratio" placeholder="ct/pt" class="form-control" value=0.286>
@@ -49,67 +50,75 @@
         </div><!--/.navbar-collapse -->
       </div>
     </div>
+    
 <div id ="content">
+  <div id="title">
+      <h1>台電電驛設定平台</h1>    
+      </br>
+    </div>
+
   <div id = "container"></div>
   <div id = "psseResult"></div>
-</div>
-<div id = "rightitem"></div>
-<div id = "leftbar">
- <div id="updiv">
-   <a>Python file:</a>
-    <div class="input-group">
-        <input type="file" name="pyfile" id="pyfile" class="form-control">
+  <div id = "rightitem"></div>
+  <div id = "leftbar">
+   <div id="updiv">
+     <a>Python file:</a>
+      <div class="input-group">
+          <input type="file" name="pyfile" id="pyfile" class="form-control">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="submit" name="submit" value="upload" id="pyupload" >upload</button>
+          </span>
+      </div>
+      <a>sav file:</a>
+      <div class="input-group">
+        <input type="file" name="savfile" id="savfile" class="form-control">
         <span class="input-group-btn">
-          <button class="btn btn-default" type="submit" name="submit" value="upload" id="pyupload" >upload</button>
+          <button class="btn btn-default" type="submit" name="submit" value="upload" id="savupload">upload</button>
         </span>
-    </div>
-    <a>sav file:</a>
-    <div class="input-group">
-      <input type="file" name="savfile" id="savfile" class="form-control">
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="submit" name="submit" value="upload" id="savupload">upload</button>
-      </span>
-    </div>
-    <a>seq file:</a>
-    <div class="input-group">
-      <input type="file" name="seqfile" id="seqfile" class="form-control">
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="submit" name="submit" value="upload" id="sequpload">upload</button>
-      </span>
-    </div> 
-    
-    <button type="submit" class="btn btn-success" style="width:50% ;margin-top:10px; margin-buttom:10px" id="runpsse">Run PSSE</button>
-    </br>
-    </br>
-    <a>Bus voltage: Mag</a>
-    <div class="input-group">
-        <input type="text" id="busvr" class="form-control">
-    </div>
-    <a>Bus voltage: Ang</a>
-    <div class="input-group">
-        <input type="text" id="busvi" class="form-control">
-    </div>
-    <a>Bus current: Mag</a>
-    <div class="input-group">
-      <input type="text" id="busir" class="form-control">
-    </div>
-    <a>Bus current: Ang</a>
-    <div class="input-group">
-      <input type="text" id="busii" class="form-control">
-    </div>
-    <a>Impedence: R</a>
-    <div class="input-group">
-      <input type="text" id="zr" class="form-control">
-    </div>
-    <a>Impedence: X</a>
-    <div class="input-group">
-      <input type="text" id="zi" class="form-control">
-    </div> 
-    <button type="submit" class="btn btn-success" style="width:50% ;margin-top:10px;margin-buttom:10px" id="locate">Fault Location</button>
-  </br>
-    <a style="font-size:20px" id="result"></a>
-</div>  
+      </div>
+      <a>seq file:</a>
+      <div class="input-group">
+        <input type="file" name="seqfile" id="seqfile" class="form-control">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="submit" name="submit" value="upload" id="sequpload">upload</button>
+        </span>
+      </div> 
+      
+      <button type="submit" class="btn btn-success" style="width:50% ;margin-top:10px; margin-buttom:10px" id="runpsse">Run PSSE</button>
+      </br>
+      </br>
+      <a>Bus voltage: Mag</a>
+      <div class="input-group">
+          <input type="text" id="busvr" class="form-control">
+      </div>
+      <a>Bus voltage: Ang</a>
+      <div class="input-group">
+          <input type="text" id="busvi" class="form-control">
+      </div>
+      <a>Bus current: Mag</a>
+      <div class="input-group">
+        <input type="text" id="busir" class="form-control">
+      </div>
+      <a>Bus current: Ang</a>
+      <div class="input-group">
+        <input type="text" id="busii" class="form-control">
+      </div>
+      <a>Impedence: R</a>
+      <div class="input-group">
+        <input type="text" id="zr" class="form-control">
+      </div>
+      <a>Impedence: X</a>
+      <div class="input-group">
+        <input type="text" id="zi" class="form-control">
+      </div> 
+      <button type="submit" class="btn btn-success" style="width:50% ;margin-top:10px;margin-buttom:10px" id="locate">Fault Location</button>
+      </br>
+      <a style="font-size:20px" id="result"></a>
+    </div>  
+  </div>
 </div>
+
+
 <script src="libs/js/relay.js"></script>
 
 </body>
