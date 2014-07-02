@@ -26,16 +26,17 @@ var postgetnewdata= function(pkv,relay,ratio,data){
                 var fac=0;
                 if(pkv=="161kv" || pkv=="161kv_new" ){
                     kv=161;
-                    fac=0.
+                    fac=0.9;
                 }
                 if(pkv=="345kv"){
                     kv=345;
+                    fac=0.78;
                 }
-                if(relay=="SEL311"){            
+                if(($('#relay').val())=="SEL311(L)"){            
                     table += "<th> Z1P=Z1MG=XG1= "+obj[bj].Z1+"</th><tr>";
                     table += "<th> Z2P=Z2MG=XG2=XG3= "+obj[bj].Z2+"</th><tr>";
                     table += "<th> Z4P=Z4MG=XG4= "+obj[bj].Z3+"</th><tr>";
-                    table += "<th> ZLF=ZLR = "+kv*kv/parseFloat(obj[bj].cap)*parseFloat(ratio)+"</th><tr>";
+                    table += "<th> ZLF=ZLR = "+kv*kv/parseFloat(obj[bj].cap)*parseFloat(ratio)*fac+"</th><tr>";
                     table += "<th> RG1 = "+10*0.8*parseFloat(ratio)+"</th><tr>";
                     table += "<th> RG2 = "+10*parseFloat(ratio)+"</th><tr>";
                     table += "<th> RG2 = "+10*1.2*parseFloat(ratio)+"</th><tr>";
@@ -125,36 +126,71 @@ var postgetnewdata= function(pkv,relay,ratio,data){
 
                 table += "<h3>All Cable Information</h3>"
                 table += "<table class=\"table table-striped table-bordered table-hover\">";
-                table += "<th>來端</th><th>去端</th><th>長度</th><th>正相阻抗R1</th><th>正相阻抗X1</th><th>正相阻抗Z1</th><tr>";
+                table += "<th>來端</th><th>去端</th><th>長度</th><th>正相阻抗R1</th><th>正相阻抗X1</th><th>正相阻抗Z1</th><th>搭接點</th><tr>";
                 table += "<th colspan=19 align=center> Zone1 </th><tr>";
                 for(var c in obj[bj].Zone0Array){
                     var cable=obj[bj].Zone0Array[c];
                     table +="<td>"+cable.from+"</td><td>"+cable.to+"</td><td>"+cable.length+"</td><td>";
-                    table +=cable.r1+"</td><td>"+cable.x1+"</td><td>"+cable.z1+"</td><tr>";
+                    table +=cable.r1+"</td><td>"+cable.x1+"</td><td>"+cable.z1+"</td>";
+                    table+='<td>'
+                    for(var t in cable.ta){
+                        var ta=cable.ta[t];
+                        table+=ta+','
+                    }
+                    table+='</td>'
+                    table+="</tr>";
                 }
                 table += "<th colspan=19 align=center> Zone2 </th><tr>";
                 for(var c in obj[bj].Zone1Array){
                     var cable=obj[bj].Zone1Array[c];
                     table +="<td>"+cable.from+"</td><td>"+cable.to+"</td><td>"+cable.length+"</td><td>";
-                    table +=cable.r1+"</td><td>"+cable.x1+"</td><td>"+cable.z1+"</td><tr>";
+                    table +=cable.r1+"</td><td>"+cable.x1+"</td><td>"+cable.z1+"</td>";
+                    table+='<td>'
+                    for(var t in cable.ta){
+                        var ta=cable.ta[t];
+                        table+=ta+','
+                    }
+                    table+='</td>'
+                    table+="</tr>";
                 }
                 table += "<th colspan=19 align=center> Zone3 </th><tr>";
                 for(var c in obj[bj].Zone2Array){
                     var cable=obj[bj].Zone2Array[c];
                     table +="<td>"+cable.from+"</td><td>"+cable.to+"</td><td>"+cable.length+"</td><td>";
-                    table +=cable.r1+"</td><td>"+cable.x1+"</td><td>"+cable.z1+"</td><tr>";
+                    table +=cable.r1+"</td><td>"+cable.x1+"</td><td>"+cable.z1+"</td>";
+                    table+='<td>'
+                    for(var t in cable.ta){
+                        var ta=cable.ta[t];
+                        table+=ta+','
+                    }
+                    table+='</td>'
+                    table+="</tr>";
                 }
                 table += "<th colspan=19 align=center> Zoneb1 </th><tr>";
                 for(var c in obj[bj].Zoneb1Array){
                     var cable=obj[bj].Zoneb1Array[c];
                     table +="<td>"+cable.from+"</td><td>"+cable.to+"</td><td>"+cable.length+"</td><td>";
-                    table +=cable.r1+"</td><td>"+cable.x1+"</td><td>"+cable.z1+"</td><tr>";
+                    table +=cable.r1+"</td><td>"+cable.x1+"</td><td>"+cable.z1+"</td>";
+                    table+='<td>'
+                    for(var t in cable.ta){
+                        var ta=cable.ta[t];
+                        table+=ta+','
+                    }
+                    table+='</td>'
+                    table+="</tr>";
                 }
                 table += "<th colspan=19 align=center> Zoneb2 </th><tr>";
                 for(var c in obj[bj].Zoneb2Array){
                     var cable=obj[bj].Zoneb2Array[c];
                     table +="<td>"+cable.from+"</td><td>"+cable.to+"</td><td>"+cable.length+"</td><td>";
-                    table +=cable.r1+"</td><td>"+cable.x1+"</td><td>"+cable.z1+"</td><tr>";
+                    table +=cable.r1+"</td><td>"+cable.x1+"</td><td>"+cable.z1+"</td>";
+                    table+='<td>'
+                    for(var t in cable.ta){
+                        var ta=cable.ta[t];
+                        table+=ta+','
+                    }
+                    table+='</td>'
+                    table+="</tr>";
                 }
                 tableArr.push(table) ;
             }

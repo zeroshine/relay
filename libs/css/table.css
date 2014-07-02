@@ -26,7 +26,7 @@
 	top:51px;
 	left: 20%;
 	width: 60%;
-	z-index: 9999;
+	z-index: 1;
 	background-color: #FFF;
 }
 #container{

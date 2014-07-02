@@ -1,7 +1,8 @@
 <?php
 class Cable {
     //declare variables
-    var $from,$to,$length,$r1,$x1,$z1,$pre,$break,$cap;        
+    var $from,$to,$length,$r1,$x1,$z1,$pre,$break,$cap;    
+    var $ta=array();    
     function setCableInfo($row) {
         $this->from = $row['f'];
         $this->pre = $row['f'];
@@ -44,6 +45,7 @@ class Cable {
         $this->xm = $this->xm+$obj->xm;
         $this->z1 = sqrt(pow($this->x1,2)+pow($this->r1,2));
         $this->z0 = sqrt(pow($this->x0,2)+pow($this->r0,2));
+        array_push($this->ta, $this->pre);
     }
 }
 
