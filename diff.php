@@ -47,15 +47,7 @@ class Obj_json{
     var $from,$name,$Z1,$Z2,$Z3,$Zs,$Zone0Array,$MinZone0,$MaxZone0,$Zone1Array,$MinZone1,$MaxZone1,$Zone2Array,$MinZone2,$lineid;
 }
     
-$con = mysqli_connect("localhost","root","lab228","relay");
-if (!$con){
-    die('Could not connect: ' . mysqli_error());
-}
 
-// mysqli_select_db("relay",$con);
-mysqli_query($con,"SET NAMES 'utf8'"); 
-mysqli_query($con,"SET CHARACTER_SET_CLIENT=utf8"); 
-mysqli_query($con,"SET CHARACTER_SET_RESULTS=utf8");
 
 function recursive($obj,&$arr,&$origin){
     //echo $obj->to." ".$origin->from."\n";
@@ -87,7 +79,31 @@ function recursive($obj,&$arr,&$origin){
     }
 }
 
-function readData(){ 
+function recursiveRead($name,$id,&$arr,&$objArray){
+    //echo $obj->to." ".$origin->from."\n";
+    if(substr($name,-2,-1)!='#' ||substr($name,-3,-2)!='#'){
+        readData($name,$objArray);
+        $result = array();
+        array_push($result, $name);
+        array_push($result, $id);
+        array_push($arr,$result);
+        return;
+    }
+    $result=mysqli_query($con,"SELECT * FROM ".$_POST['kv']." WHERE ((f=\"".$name."\" and id!=\"".$id."\" ) 
+        or (t=\"".$name."\" and id!=\"".$id."\")) and break=1;");
+    while ($row1 = mysqli_fetch_array($result)){
+        if($row1['f']!=$name){
+            $tmp=$row1['f'];
+            $row1["f"]=$row1["t"];
+            $row1["t"]=$tmp;
+        }
+        // echo $row1["f"]." ".$row1["t"]."recursive\n";
+        recursiveRead($row1['t'],$row1['id'],$arr,$objArray);
+    }
+
+}
+
+function diff(){
     $con = mysqli_connect("localhost","relay","lab228","relay");
     if (!$con){
         die('Could not connect: ' . mysqli_error());
@@ -97,7 +113,100 @@ function readData(){
     mysqli_query($con,"SET NAMES 'utf8'"); 
     mysqli_query($con,"SET CHARACTER_SET_CLIENT=utf8"); 
     mysqli_query($con,"SET CHARACTER_SET_RESULTS=utf8");
+	$dresult=mysqli_query($con,"SELECT 161kv_new.* FROM 161kv_new
+	Left JOIN 161kv ON 161kv.id = 161kv_new.id
+	WHERE 161kv.f!=161kv_new.f 
+	or 161kv.t!=161kv_new.t 
+	or 161kv.lineid!=161kv_new.lineid 
+	or 161kv.cap!=161kv_new.cap 
+	or 161kv.length!=161kv_new.length 
+	or 161kv.R1!=161kv_new.R1 
+	or 161kv.X1!=161kv_new.X1 
+	or 161kv.R0!=161kv_new.R0 
+	or 161kv.X0!=161kv_new.X0
+	or 161kv.id is NULL
+	");
+    $objArray=array();
+	while($row=mysqli_fetch_array($dresult)){
+		$arr=array();
+        recursiveRead($row['f'],$row['id'],$arr,$objArray);
+        foreach ($arr as $result) {
+		    $f1=mysqli_query($con,"SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$result[0]."\" and id !=\"".$result[1]."\")
+			 or (t=\"".$result[0]."\" and id !=\"".$result[1]."\")
+			 and break=1");
+    		while ($row1=mysqli_fetch_array($f1)) {
+    			if($row1["f"]!=$result[0]){
+                	$tmp=$row1["f"];
+                	$row1["f"]=$row1["t"];
+                	$row1["t"]=$tmp;
+            	}
+            	$arr1=array();
+                recursiveRead($row1['t'],$row1['id'],$arr1,$objArray);
+                foreach ($arr1 as $result1) {
+            	    $f2=mysqli_query($con,"SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$result1[0]."\" and id !=\"".$result1[1]."\")
+    			     or (t=\"".$result1[0]."\" and id !=\"".$result1[1]."\")
+    			     and break=1");
+                    while ($row2=mysqli_fetch_array($f2)) {
+                        if($row2["f"]!=$result[0]){
+                            $tmp=$row2["f"];
+                            $row2["f"]=$row2["t"];
+                            $row2["t"]=$tmp;
+                        }
+                        $arr2=array();
+                        recursiveRead($row2['t'],$row2['id'],$arr2,$objArray);
+                    }
+                }	
+    		}
+        }
+		$arr=array();
+        recursiveRead($row['t'],$row['id'],$arr,$objArray);
+        foreach ($arr as $result) {
+            $f1=mysqli_query($con,"SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$result[0]."\" and id !=\"".$result[1]."\")
+             or (t=\"".$result[0]."\" and id !=\"".$result[1]."\")
+             and break=1");
+            while ($row1=mysqli_fetch_array($f1)) {
+                if($row1["f"]!=$result[0]){
+                    $tmp=$row1["f"];
+                    $row1["f"]=$row1["t"];
+                    $row1["t"]=$tmp;
+                }
+                $arr1=array();
+                recursiveRead($row1['t'],$row1['id'],$arr1,$objArray);
+                foreach ($arr1 as $result1) {
+                    $f2=mysqli_query($con,"SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$result1[0]."\" and id !=\"".$result1[1]."\")
+                     or (t=\"".$result1[0]."\" and id !=\"".$result1[1]."\")
+                     and break=1");
+                    // echo "SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$result1[0]."\" id !=\"".$result1[1]."\")
+                    //  or (t=\"".$result1[0]."\" and id !=\"".$result1[1]."\")
+                    //  and break=1";
+                    while ($row2=mysqli_fetch_array($f2)) {
+                        if($row2["f"]!=$result[0]){
+                            $tmp=$row2["f"];
+                            $row2["f"]=$row2["t"];
+                            $row2["t"]=$tmp;
+                        }
+                        $arr2=array();
+                        recursiveRead($row2['t'],$row2['id'],$arr2,$objArray);
+                    }
+                }   
+            }
+        }
 
+	}
+    echo json_encode($objArray);        
+
+}
+
+function readData($p,&$objArray){ 
+    $con = mysqli_connect("localhost","relay","lab228","relay");
+    if (!$con){
+        die('Could not connect: ' . mysqli_error());
+    }
+
+    // mysqli_select_db("relay",$con);
+    mysqli_query($con,"SET NAMES 'utf8'"); 
+    mysqli_query($con,"SET CHARACTER_SET_CLIENT=utf8"); 
+    mysqli_query($con,"SET CHARACTER_SET_RESULTS=utf8");
     $break = mysqli_query($con,"SELECT * FROM ".$_POST['kv']."bus WHERE break=0");
     //echo "SELECT * FROM ".$_POST['kv']."bus WHERE break=0";
     $breakBus=array();
@@ -105,11 +214,11 @@ function readData(){
         array_push($breakBus,$row["name"]);
     }   
     //echo "SELECT * FROM ".$_POST['kv']." WHERE f=\"".$_POST["first"]."\" or t=\"".$_POST["first"]."\" ;\n" ;
-    $origin = mysqli_query($con,"SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$_POST["first"]."\" or t=\"".$_POST["first"]."\" ) and break = 1  ;") ;
+    $origin = mysqli_query($con,"SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$p."\" or t=\"".$p."\" ) and break = 1  ;") ;
     if(mysqli_num_rows($origin)===0){
         return false;
     }
-    $objArray=array();
+    
     while($row=mysqli_fetch_array($origin)){
         $Zone0Array=array();
         $Zone1Array=array();
@@ -120,16 +229,16 @@ function readData(){
         $Z2=null;
         $Z3=null;
         $Zs=null;        
-        if($row["f"]!=$_POST['first']){
+        if($row["f"]!=$p){
             $tmp=$row["f"];
             $row["f"]=$row["t"];
             $row["t"]=$tmp;
         }
-        $back=mysqli_query($con,"SELECT * FROM ".$_POST['kv']." WHERE ((f=\"".$_POST["first"]."\" and id!=\"".$row['id']."\") 
-            or (t=\"".$_POST["first"]."\" and id!=\"".$row['id']."\")) and break=1 ;");
+        $back=mysqli_query($con,"SELECT * FROM ".$_POST['kv']." WHERE ((f=\"".$p."\" and id!=\"".$row['id']."\") 
+            or (t=\"".$p."\" and id!=\"".$row['id']."\")) and break=1 ;");
         // echo "SELECT * FROM ".$_POST['kv']." WHERE ((f=\"".$_POST["first"]."\" and id!=\"".$row['id']."\")  or (t=\"".$_POST["first"]."\" id!=\"".$row['id']."\")) and break=1 ;";
         while ($backrow1=mysqli_fetch_array($back)) {
-            if($backrow1["f"]!=$_POST['first']){
+            if($backrow1["f"]!=$p){
                 $tmp=$backrow1["f"];
                 $backrow1["f"]=$backrow1["t"];
                 $backrow1["t"]=$tmp;
@@ -281,7 +390,7 @@ function readData(){
             $Zs=($MaxZoneb1->z1+$MaxZoneb2->z1)*$ratio;
         }
         $toq = mysqli_query($con,"SELECT * FROM ".$_POST['kv']."bus WHERE name=\"".$row['t']."\"");
-        $fromq = mysqli_query($con,"SELECT * FROM ".$_POST['kv']."bus WHERE name=\"".$_POST["first"]."\"");
+        $fromq = mysqli_query($con,"SELECT * FROM ".$_POST['kv']."bus WHERE name=\"".$p."\"");
         $l3s=0;
         $l1g=0;
         $r3s=0;
@@ -297,7 +406,7 @@ function readData(){
         $test=0;
         $obj=new Obj_json;
         $obj->name=$row["t"];
-        $obj->from=$_POST["first"];
+        $obj->from=$p;
         $obj->lineid=$row["lineid"];
         $obj->Zone0Array=$Zone0Array;
         $obj->MinZone0= $MinZone0;
@@ -322,17 +431,11 @@ function readData(){
         $obj->cap=$MaxZone0->cap;
         array_push($objArray,$obj);
     }
-    echo json_encode($objArray);
+    
 }
 
 
 
+diff(); 
 
-
-if ($_POST["first"]==null){
-
-}else{
-    //echo "<h1>電驛標置設定計算結果</h1>";
-    readData();
-}
 ?>

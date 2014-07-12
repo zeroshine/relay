@@ -14,7 +14,7 @@ var postgetnewdata= function(pkv,relay,ratio,data){
             var tableArr=[];
             for(var bj in obj){
                 var table="";
-                list.push("<button type=\"button\" class=\"btn btn-lg btn-default\" id=\"line"+bj+"\">"+ obj[bj].from+" to "+ obj[bj].name +"</button>");
+                list.push("<button type=\"button\" class=\"btn btn-lg btn-default\" id=\"line"+bj+"\">"+ obj[bj].from+" to "+ obj[bj].name+" "+obj[bj].lineid+"線</button>");
                 table += "<h2>"+ obj[bj].from+" to "+ obj[bj].name +"</h2>"
                 table += "<h3>Relay setting value</h3>"
                 table += "<table class=\"table table-striped table-bordered table-hover\">";
@@ -95,6 +95,45 @@ var postgetnewdata= function(pkv,relay,ratio,data){
                     table += "<th> Z3FR = "+Z3FR+"</th><tr>";
                     table += "<th> Z1FR = "+Z1FR+"</th><tr>";
                     table += "<th> SO2  = "+(Z1FR-2*Z3FR)*parseFloat(ratio)+"</th><tr>";
+                }else if($('#relay').val()=="GE D60"){
+                    table += "<th> Z1 = "+obj[bj].Z1+"</th><tr>";
+                    table += "<th> Z2 = "+obj[bj].Z2+"</th><tr>";
+                    table += "<th> Z3 = "+obj[bj].Z3+"</th><tr>";
+                    r1=parseFloat(obj[bj].MinZone0.r1);
+                    x1=parseFloat(obj[bj].MinZone0.x1);
+                    var r1=parseFloat(obj[bj].MinZone0.r1);
+                    var x1=parseFloat(obj[bj].MinZone0.x1);
+                    var r0=parseFloat(obj[bj].MinZone0.r0);
+                    var x0=parseFloat(obj[bj].MinZone0.x0);
+                    var gang=(Math.atan(x0/r0)*180/3.14159265359);
+                    var pang=(Math.atan(x1/r1)*180/3.14159265359);
+                    table += "<th> RCA = "+pang+"</th><tr>";
+                    table += "<th> ANG = "+gang-pang+"</th><tr>";
+                    var blx1=1.25*(25+r1)*parseFloat(ratio)*1.37;
+                    var blx4=2.5*(25+r1)*parseFloat(ratio)*1.37;
+                    var z41=0.9*4*parseFloat(obj[bj].Z1);
+                    var qrb1,qrb2,qrb3,qlb1,qlb2,qlb3;
+                    qrb1=blx1;
+                    if(blx1>z41){
+                        qrb1=z41;
+                    }else if(blx1<0.02){
+                        qrb1=0.02;
+                    }
+                    qlb1=qrb1/2*0.971;
+                    qrb2=qrb1*parseFloat(obj[bj].Z2)/parseFloat(obj[bj].Z1);
+                    qlb2=qlb1*parseFloat(obj[bj].Z2)/parseFloat(obj[bj].Z1);
+                    qrb3=qrb2*parseFloat(obj[bj].Z3)/parseFloat(obj[bj].Z2);
+                    qlb3=qlb2*parseFloat(obj[bj].Z3)/parseFloat(obj[bj].Z2);
+                    table += "<th> Z1 QRB = "+qrb1+"</th><tr>";
+                    table += "<th> Z1 QLB= "+qlb1+"</th><tr>";
+                    table += "<th> Z2 QRB= "+qrb2+"</th><tr>";
+                    table += "<th> Z2 QLB= "+qlb2+"</th><tr>";
+                    table += "<th> Z3 QRB= "+qrb1+"</th><tr>";
+                    table += "<th> Z3 QLB= "+qlb1+"</th><tr>";
+
+
+
+
                 }
                 table += "</table>";
                 table += "<h3>Picked Cable</h3>"
@@ -223,58 +262,65 @@ $("#navbtm").click(function(event){
 });
 $("#diff").click(function(event){
     event.preventDefault();
-    $.post("getbus.php",{kv:$('#kv').val()},function(data){
-        console.log(data);
-        obj = $.parseJSON(data);
-        var table_need=[];
-        var list=[];
-        var str=$('#kv').val()+"_new";
-        console.log(obj)
-        for (var bus in obj) {
-            var insertelement=[];
-            var insertelement_new=[];
-            var begin=obj[bus];
-            $.ajax({
-                type:"POST",
-                url:"getNewData.php", 
-                data:{first:begin,kv:$('#kv').val(),relay:$('#relay').val(),ratio:$('#ratio').val()},
-                async:false,
-                success:function(data) {
-                    //console.log(data);
-                    insertelement=postgetnewdata($('#kv').val(),$('#relay').val(),$('#ratio').val(),data);
-                    //console.log(insertelement_new);
-                }        
-            });
-            $.ajax({
-                type:"POST",
-                url:"getNewData.php", 
-                data:{first:begin,kv:str,relay:$('#relay').val(),ratio:$('#ratio').val()},
-                async:false,
-                success:function(data) {
-                    //console.log(data);
-                    insertelement_new=postgetnewdata($('#kv').val(),$('#relay').val(),$('#ratio').val(),data);
-                    //console.log(insertelement_new);
-                }        
-            });
-            var asize=insertelement_new[0];
-            var bsize=insertelement[0];
-            var newlist=insertelement_new[1];
-            var asize_l=asize.length;
-            for(var i=0 ; i<asize_l;++i){
-                var a=asize[i].split("Picked Cable");
-                console.log(a[0]);
-                var b=bsize[i].split("Picked Cable");
-                console.log(b[0]);
-                if(i>bsize.length){
-                    table_need.push(asize[i]);
-                }else if(a[0]!=b[0]){
-                    table_need.push(asize[i]);
-                    list.push(newlist[i]);
-                }
-            }    
-        }
-        insert(table_need,list);
-    });   
+    $.post("diff.php", {kv:$('#kv').val(),relay:$('#relay').val(),ratio:$('#ratio').val()},
+        function(data) {
+            console.log($('#kv').val()+"\n");
+            console.log(data);
+            var insertelement=postgetnewdata($('#kv').val(),$('#relay').val(),$('#ratio').val(),data);
+            insert(insertelement[0],insertelement[1]);
+        });
+    // $.post("getbus.php",{kv:$('#kv').val()},function(data){
+    //     console.log(data);
+    //     obj = $.parseJSON(data);
+    //     var table_need=[];
+    //     var list=[];
+    //     var str=$('#kv').val()+"_new";
+    //     console.log(obj)
+    //     for (var bus in obj) {
+    //         var insertelement=[];
+    //         var insertelement_new=[];
+    //         var begin=obj[bus];
+    //         $.ajax({
+    //             type:"POST",
+    //             url:"getNewData.php", 
+    //             data:{first:begin,kv:$('#kv').val(),relay:$('#relay').val(),ratio:$('#ratio').val()},
+    //             async:false,
+    //             success:function(data) {
+    //                 //console.log(data);
+    //                 insertelement=postgetnewdata($('#kv').val(),$('#relay').val(),$('#ratio').val(),data);
+    //                 //console.log(insertelement_new);
+    //             }        
+    //         });
+    //         $.ajax({
+    //             type:"POST",
+    //             url:"getNewData.php", 
+    //             data:{first:begin,kv:str,relay:$('#relay').val(),ratio:$('#ratio').val()},
+    //             async:false,
+    //             success:function(data) {
+    //                 //console.log(data);
+    //                 insertelement_new=postgetnewdata($('#kv').val(),$('#relay').val(),$('#ratio').val(),data);
+    //                 //console.log(insertelement_new);
+    //             }        
+    //         });
+    //         var asize=insertelement_new[0];
+    //         var bsize=insertelement[0];
+    //         var newlist=insertelement_new[1];
+    //         var asize_l=asize.length;
+    //         for(var i=0 ; i<asize_l;++i){
+    //             var a=asize[i].split("Picked Cable");
+    //             console.log(a[0]);
+    //             var b=bsize[i].split("Picked Cable");
+    //             console.log(b[0]);
+    //             if(i>bsize.length){
+    //                 table_need.push(asize[i]);
+    //             }else if(a[0]!=b[0]){
+    //                 table_need.push(asize[i]);
+    //                 list.push(newlist[i]);
+    //             }
+    //         }    
+    //     }
+    //     insert(table_need,list);
+    // });   
 }); 
 $("#pyupload").click(function(event){
     event.preventDefault();
