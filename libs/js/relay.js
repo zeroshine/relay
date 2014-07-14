@@ -7,6 +7,112 @@ $(window).on('load', function () {
             // $('.selectpicker').selectpicker('hide');
 });
 
+var detaildata=function(pkv,relay,ratio,data){
+            obj = $.parseJSON(data);
+            //console.log(obj[1].name);
+            var list=[];
+            var tableArr=[];
+            for(var bj in obj){
+                var table="";
+                table += "<h3>Picked Cable</h3>"
+                table += "<table class=\"table table-striped table-bordered table-hover\">";
+                table += "<th></th><th>來端</th><th>去端</th><th>id</th><th>長度</th><th>正相阻抗R1</th><th>正相阻抗X1</th><th>正相阻抗Z1</th><tr>";
+                table += "<td>Minimum Zone1</td><td>"+obj[bj].MinZone0.from+"</td><td>"+obj[bj].MinZone0.to+"</td><td>"+obj[bj].MinZone0.lineid+"</td><td>"+obj[bj].MinZone0.length+"</td><td>";
+                table +=obj[bj].MinZone0.r1+"</td><td>"+obj[bj].MinZone0.x1+"</td><td>"+obj[bj].MinZone0.z1+"</td><tr>";
+                table += "<td>Maximum Zone1</td><td>"+obj[bj].MaxZone0.from+"</td><td>"+obj[bj].MaxZone0.to+"</td><td>"+obj[bj].MaxZone0.lineid+"</td><td>"+obj[bj].MaxZone0.length+"</td><td>";
+                table +=obj[bj].MaxZone0.r1+"</td><td>"+obj[bj].MaxZone0.x1+"</td><td>"+obj[bj].MaxZone0.z1+"</td><tr>";
+                if(obj[bj].MaxZone1!=null){
+                    table += "<td>Minimum Zone2</td><td>"+obj[bj].MinZone1.from+"</td><td>"+obj[bj].MinZone1.to+"</td><td>"+obj[bj].MinZone1.lineid+"</td><td>"+obj[bj].MinZone1.length+"</td><td>";
+                    table +=obj[bj].MinZone1.r1+"</td><td>"+obj[bj].MinZone1.x1+"</td><td>"+obj[bj].MinZone1.z1+"</td><tr>";
+                    table += "<td>Maximum Zone2</td><td>"+obj[bj].MaxZone1.from+"</td><td>"+obj[bj].MaxZone1.to+"</td><td>"+obj[bj].MaxZone1.lineid+"</td><td>"+obj[bj].MaxZone1.length+"</td><td>";
+                    table +=obj[bj].MaxZone1.r1+"</td><td>"+obj[bj].MaxZone1.x1+"</td><td>"+obj[bj].MaxZone1.z1+"</td><tr>";
+                }
+                if(obj[bj].MinZone2!=null){
+                    table += "<td>Minimum Zone3</td><td>"+obj[bj].MinZone2.from+"</td><td>"+obj[bj].MinZone2.to+"</td><td>"+obj[bj].MinZone2.lineid+"</td><td>"+obj[bj].MinZone2.length+"</td><td>";
+                    table +=obj[bj].MinZone2.r1+"</td><td>"+obj[bj].MinZone2.x1+"</td><td>"+obj[bj].MinZone2.z1+"</td><tr>";
+                }
+                if(obj[bj].MaxZoneb1!=null){
+                    table += "<td>Maximum Zoneb1</td><td>"+obj[bj].MaxZoneb1.from+"</td><td>"+obj[bj].MaxZoneb1.to+"</td><td>"+obj[bj].MaxZoneb1.lineid+"</td><td>"+obj[bj].MaxZoneb1.length+"</td><td>";
+                    table +=obj[bj].MaxZoneb1.r1+"</td><td>"+obj[bj].MaxZoneb1.x1+"</td><td>"+obj[bj].MaxZoneb1.z1+"</td><tr>";
+                }
+                if(obj[bj].MaxZoneb2!=null){
+                    table += "<td>Maximum Zoneb2</td><td>"+obj[bj].MaxZoneb2.from+"</td><td>"+obj[bj].MaxZoneb2.to+"</td><td>"+obj[bj].MaxZoneb2.lineid+"</td><td>"+obj[bj].MaxZoneb2.length+"</td><td>";
+                    table +=obj[bj].MaxZoneb2.r1+"</td><td>"+obj[bj].MaxZoneb2.x1+"</td><td>"+obj[bj].MaxZoneb2.z1+"</td><tr>";
+                }
+                table += "</table>";
+                table += "<h3>All Cable Information</h3>"
+                table += "<table class=\"table table-striped table-bordered table-hover\">";
+                table += "<th>來端</th><th>去端<th>id</th></th><th>長度</th><th>正相阻抗R1</th><th>正相阻抗X1</th><th>正相阻抗Z1</th><th>搭接點</th><tr>";
+                table += "<th colspan=19 align=center> Zone1 </th><tr>";
+                for(var c in obj[bj].Zone0Array){
+                    var cable=obj[bj].Zone0Array[c];
+                    table +="<td>"+cable.from+"</td><td>"+cable.to+"</td><td>"+cable.lineid+"</td><td>"+cable.length+"</td><td>";
+                    table +=cable.r1+"</td><td>"+cable.x1+"</td><td>"+cable.z1+"</td>";
+                    table+='<td>'
+                    for(var t in cable.ta){
+                        var ta=cable.ta[t];
+                        table+=ta+','
+                    }
+                    table+='</td>'
+                    table+="</tr>";
+                }
+                table += "<th colspan=19 align=center> Zone2 </th><tr>";
+                for(var c in obj[bj].Zone1Array){
+                    var cable=obj[bj].Zone1Array[c];
+                    table +="<td>"+cable.from+"</td><td>"+cable.to+"</td><td>"+cable.lineid+"</td><td>"+cable.length+"</td><td>";
+                    table +=cable.r1+"</td><td>"+cable.x1+"</td><td>"+cable.z1+"</td>";
+                    table+='<td>'
+                    for(var t in cable.ta){
+                        var ta=cable.ta[t];
+                        table+=ta+','
+                    }
+                    table+='</td>'
+                    table+="</tr>";
+                }
+                table += "<th colspan=19 align=center> Zone3 </th><tr>";
+                for(var c in obj[bj].Zone2Array){
+                    var cable=obj[bj].Zone2Array[c];
+                    table +="<td>"+cable.from+"</td><td>"+cable.to+"</td><td>"+cable.lineid+"</td><td>"+cable.length+"</td><td>";
+                    table +=cable.r1+"</td><td>"+cable.x1+"</td><td>"+cable.z1+"</td>";
+                    table+='<td>'
+                    for(var t in cable.ta){
+                        var ta=cable.ta[t];
+                        table+=ta+','
+                    }
+                    table+='</td>'
+                    table+="</tr>";
+                }
+                table += "<th colspan=19 align=center> Zoneb1 </th><tr>";
+                for(var c in obj[bj].Zoneb1Array){
+                    var cable=obj[bj].Zoneb1Array[c];
+                    table +="<td>"+cable.from+"</td><td>"+cable.to+"</td><td>"+cable.lineid+"</td><td>"+cable.length+"</td><td>";
+                    table +=cable.r1+"</td><td>"+cable.x1+"</td><td>"+cable.z1+"</td>";
+                    table+='<td>'
+                    for(var t in cable.ta){
+                        var ta=cable.ta[t];
+                        table+=ta+','
+                    }
+                    table+='</td>'
+                    table+="</tr>";
+                }
+                table += "<th colspan=19 align=center> Zoneb2 </th><tr>";
+                for(var c in obj[bj].Zoneb2Array){
+                    var cable=obj[bj].Zoneb2Array[c];
+                    table +="<td>"+cable.from+"</td><td>"+cable.to+"</td><td>"+cable.lineid+"</td><td>"+cable.length+"</td><td>";
+                    table +=cable.r1+"</td><td>"+cable.x1+"</td><td>"+cable.z1+"</td>";
+                    table+='<td>'
+                    for(var t in cable.ta){
+                        var ta=cable.ta[t];
+                        table+=ta+','
+                    }
+                    table+='</td>'
+                    table+="</tr>";
+                }
+                tableArr.push(table) ;
+            }
+            return tableArr;
+};
+
 var postgetnewdata= function(pkv,relay,ratio,data){
             obj = $.parseJSON(data);
             //console.log(obj[1].name);
@@ -130,113 +236,14 @@ var postgetnewdata= function(pkv,relay,ratio,data){
                     table += "<th> Z2 QLB= "+qlb2+"</th><tr>";
                     table += "<th> Z3 QRB= "+qrb1+"</th><tr>";
                     table += "<th> Z3 QLB= "+qlb1+"</th><tr>";
-
-
-
-
                 }
                 table += "</table>";
-                table += "<h3>Picked Cable</h3>"
-                table += "<table class=\"table table-striped table-bordered table-hover\">";
-                table += "<th></th><th>來端</th><th>去端</th><th>長度</th><th>正相阻抗R1</th><th>正相阻抗X1</th><th>正相阻抗Z1</th><tr>";
-                table += "<td>Minimum Zone1</td><td>"+obj[bj].MinZone0.from+"</td><td>"+obj[bj].MinZone0.to+"</td><td>"+obj[bj].MinZone0.length+"</td><td>";
-                table +=obj[bj].MinZone0.r1+"</td><td>"+obj[bj].MinZone0.x1+"</td><td>"+obj[bj].MinZone0.z1+"</td><tr>";
-                table += "<td>Maximum Zone1</td><td>"+obj[bj].MaxZone0.from+"</td><td>"+obj[bj].MaxZone0.to+"</td><td>"+obj[bj].MaxZone0.length+"</td><td>";
-                table +=obj[bj].MaxZone0.r1+"</td><td>"+obj[bj].MaxZone0.x1+"</td><td>"+obj[bj].MaxZone0.z1+"</td><tr>";
-                if(obj[bj].MaxZone1!=null){
-                    table += "<td>Minimum Zone2</td><td>"+obj[bj].MinZone1.from+"</td><td>"+obj[bj].MinZone1.to+"</td><td>"+obj[bj].MinZone1.length+"</td><td>";
-                    table +=obj[bj].MinZone1.r1+"</td><td>"+obj[bj].MinZone1.x1+"</td><td>"+obj[bj].MinZone1.z1+"</td><tr>";
-                    table += "<td>Maximum Zone2</td><td>"+obj[bj].MaxZone1.from+"</td><td>"+obj[bj].MaxZone1.to+"</td><td>"+obj[bj].MaxZone1.length+"</td><td>";
-                    table +=obj[bj].MaxZone1.r1+"</td><td>"+obj[bj].MaxZone1.x1+"</td><td>"+obj[bj].MaxZone1.z1+"</td><tr>";
-                }
-                if(obj[bj].MinZone2!=null){
-                    table += "<td>Minimum Zone3</td><td>"+obj[bj].MinZone2.from+"</td><td>"+obj[bj].MinZone2.to+"</td><td>"+obj[bj].MinZone2.length+"</td><td>";
-                    table +=obj[bj].MinZone2.r1+"</td><td>"+obj[bj].MinZone2.x1+"</td><td>"+obj[bj].MinZone2.z1+"</td><tr>";
-                }
-                if(obj[bj].MaxZoneb1!=null){
-                    table += "<td>Maximum Zoneb1</td><td>"+obj[bj].MaxZoneb1.from+"</td><td>"+obj[bj].MaxZoneb1.to+"</td><td>"+obj[bj].MaxZoneb1.length+"</td><td>";
-                    table +=obj[bj].MaxZoneb1.r1+"</td><td>"+obj[bj].MaxZoneb1.x1+"</td><td>"+obj[bj].MaxZoneb1.z1+"</td><tr>";
-                }
-                if(obj[bj].MaxZoneb2!=null){
-                    table += "<td>Maximum Zoneb2</td><td>"+obj[bj].MaxZoneb2.from+"</td><td>"+obj[bj].MaxZoneb2.to+"</td><td>"+obj[bj].MaxZoneb2.length+"</td><td>";
-                    table +=obj[bj].MaxZoneb2.r1+"</td><td>"+obj[bj].MaxZoneb2.x1+"</td><td>"+obj[bj].MaxZoneb2.z1+"</td><tr>";
-                }
-                table += "</table>";
-
-                table += "<h3>All Cable Information</h3>"
-                table += "<table class=\"table table-striped table-bordered table-hover\">";
-                table += "<th>來端</th><th>去端</th><th>長度</th><th>正相阻抗R1</th><th>正相阻抗X1</th><th>正相阻抗Z1</th><th>搭接點</th><tr>";
-                table += "<th colspan=19 align=center> Zone1 </th><tr>";
-                for(var c in obj[bj].Zone0Array){
-                    var cable=obj[bj].Zone0Array[c];
-                    table +="<td>"+cable.from+"</td><td>"+cable.to+"</td><td>"+cable.length+"</td><td>";
-                    table +=cable.r1+"</td><td>"+cable.x1+"</td><td>"+cable.z1+"</td>";
-                    table+='<td>'
-                    for(var t in cable.ta){
-                        var ta=cable.ta[t];
-                        table+=ta+','
-                    }
-                    table+='</td>'
-                    table+="</tr>";
-                }
-                table += "<th colspan=19 align=center> Zone2 </th><tr>";
-                for(var c in obj[bj].Zone1Array){
-                    var cable=obj[bj].Zone1Array[c];
-                    table +="<td>"+cable.from+"</td><td>"+cable.to+"</td><td>"+cable.length+"</td><td>";
-                    table +=cable.r1+"</td><td>"+cable.x1+"</td><td>"+cable.z1+"</td>";
-                    table+='<td>'
-                    for(var t in cable.ta){
-                        var ta=cable.ta[t];
-                        table+=ta+','
-                    }
-                    table+='</td>'
-                    table+="</tr>";
-                }
-                table += "<th colspan=19 align=center> Zone3 </th><tr>";
-                for(var c in obj[bj].Zone2Array){
-                    var cable=obj[bj].Zone2Array[c];
-                    table +="<td>"+cable.from+"</td><td>"+cable.to+"</td><td>"+cable.length+"</td><td>";
-                    table +=cable.r1+"</td><td>"+cable.x1+"</td><td>"+cable.z1+"</td>";
-                    table+='<td>'
-                    for(var t in cable.ta){
-                        var ta=cable.ta[t];
-                        table+=ta+','
-                    }
-                    table+='</td>'
-                    table+="</tr>";
-                }
-                table += "<th colspan=19 align=center> Zoneb1 </th><tr>";
-                for(var c in obj[bj].Zoneb1Array){
-                    var cable=obj[bj].Zoneb1Array[c];
-                    table +="<td>"+cable.from+"</td><td>"+cable.to+"</td><td>"+cable.length+"</td><td>";
-                    table +=cable.r1+"</td><td>"+cable.x1+"</td><td>"+cable.z1+"</td>";
-                    table+='<td>'
-                    for(var t in cable.ta){
-                        var ta=cable.ta[t];
-                        table+=ta+','
-                    }
-                    table+='</td>'
-                    table+="</tr>";
-                }
-                table += "<th colspan=19 align=center> Zoneb2 </th><tr>";
-                for(var c in obj[bj].Zoneb2Array){
-                    var cable=obj[bj].Zoneb2Array[c];
-                    table +="<td>"+cable.from+"</td><td>"+cable.to+"</td><td>"+cable.length+"</td><td>";
-                    table +=cable.r1+"</td><td>"+cable.x1+"</td><td>"+cable.z1+"</td>";
-                    table+='<td>'
-                    for(var t in cable.ta){
-                        var ta=cable.ta[t];
-                        table+=ta+','
-                    }
-                    table+='</td>'
-                    table+="</tr>";
-                }
                 tableArr.push(table) ;
             }
             
             return [tableArr,list];
 };
-function insert(tableArr,list){
+function insert(tableArr,list,detail){
     $('#container').html("");
     var btnlist="<div class=\"btn-group-vertical btn-block\">";
     for(var btn in list){
@@ -245,9 +252,9 @@ function insert(tableArr,list){
     btnlist+="</div>";
     $("#rightitem").html(btnlist).delegate('button', 'click', function (e) {
         var i = $(e.currentTarget).index();
-        $('#container').html(tableArr[i]);
+        $('#container').html(tableArr[i]+detail[i]);
     });
-    $('#container').html(tableArr[0]);
+    $('#container').html(tableArr[0]+detail[0]);
 
 }
 $("#navbtm").click(function(event){
@@ -257,70 +264,79 @@ $("#navbtm").click(function(event){
             //console.log($('#kv').val()+"\n");
             console.log(data);
             var insertelement=postgetnewdata($('#kv').val(),$('#relay').val(),$('#ratio').val(),data);
-            insert(insertelement[0],insertelement[1]);
+            var detail=detaildata($('#kv').val(),$('#relay').val(),$('#ratio').val(),data);
+            insert(insertelement[0],insertelement[1],detail);
         });
 });
 $("#diff").click(function(event){
     event.preventDefault();
+    var table_need=[];
+    var detail_need=[];
+    var list_need=[];
     $.post("diff.php", {kv:$('#kv').val(),relay:$('#relay').val(),ratio:$('#ratio').val()},
         function(data) {
-            console.log($('#kv').val()+"\n");
-            console.log(data);
-            var insertelement=postgetnewdata($('#kv').val(),$('#relay').val(),$('#ratio').val(),data);
-            insert(insertelement[0],insertelement[1]);
+            // console.log($('#kv').val()+"\n");
+            // console.log(data);
+            var insertelement=[];
+            var insertelement_new=[];
+            var detail_new=[];
+            var obj = $.parseJSON(data);
+            console.log(obj);
+            for(var bus in obj){
+                console.log(bus);
+                var str=($('#kv').val())+"_new";
+                var objbus=obj[bus];
+                console.log(objbus);
+                console.log("data1");
+                $.ajax({
+                    type:"POST",
+                    url:"getNewData.php", 
+                    data:{first:objbus,kv:$('#kv').val(),relay:$('#relay').val(),ratio:$('#ratio').val()},
+                    async:false,    
+                }).done(function(data) {
+                        // console.log(data);
+                        // data1=$.parseJSON(data);
+                        insertelement=postgetnewdata($('#kv').val(),$('#relay').val(),$('#ratio').val(),data);
+                        
+                        //console.log(insertelement_new);
+                    }   );
+                console.log("data2");
+                $.ajax({
+                    type:"POST",
+                    url:"getNewData.php", 
+                    data:{first:objbus,kv:str,relay:$('#relay').val(),ratio:$('#ratio').val()},
+                    async:false,
+        
+                }).done(function(data) {
+                        // console.log(data);
+                        // data2=$.parseJSON(data);
+                        insertelement_new=postgetnewdata(str,$('#relay').val(),$('#ratio').val(),data);
+                        detail_new=detaildata(str,$('#relay').val(),$('#ratio').val(),data);
+                        //console.log(insertelement_new);
+                    });
+                var newtable=[];
+                newtable=insertelement_new[0];
+                var oldtable=insertelement[0];
+                var newlist=insertelement_new[1];
+                // var table_need=[];
+                // var list=[];
+                var size=newtable.length;
+                for(var i=0 ; i < newtable.length;++i){
+                    if(i>oldtable.length){
+                        table_need.push(newtable[i]);
+                        detail_need.push(detail_new[i])
+                        list_need.push(newlist[i]);
+                    }else if(newtable[i]!=oldtable[i]){
+                        table_need.push(newtable[i]);
+                        detail_need.push(detail_new[i]);
+                        list_need.push(newlist[i]);
+                    }
+                }    
+            }
+            console.log(table_need);
+            insert(table_need,list_need,detail_need);    
         });
-    // $.post("getbus.php",{kv:$('#kv').val()},function(data){
-    //     console.log(data);
-    //     obj = $.parseJSON(data);
-    //     var table_need=[];
-    //     var list=[];
-    //     var str=$('#kv').val()+"_new";
-    //     console.log(obj)
-    //     for (var bus in obj) {
-    //         var insertelement=[];
-    //         var insertelement_new=[];
-    //         var begin=obj[bus];
-    //         $.ajax({
-    //             type:"POST",
-    //             url:"getNewData.php", 
-    //             data:{first:begin,kv:$('#kv').val(),relay:$('#relay').val(),ratio:$('#ratio').val()},
-    //             async:false,
-    //             success:function(data) {
-    //                 //console.log(data);
-    //                 insertelement=postgetnewdata($('#kv').val(),$('#relay').val(),$('#ratio').val(),data);
-    //                 //console.log(insertelement_new);
-    //             }        
-    //         });
-    //         $.ajax({
-    //             type:"POST",
-    //             url:"getNewData.php", 
-    //             data:{first:begin,kv:str,relay:$('#relay').val(),ratio:$('#ratio').val()},
-    //             async:false,
-    //             success:function(data) {
-    //                 //console.log(data);
-    //                 insertelement_new=postgetnewdata($('#kv').val(),$('#relay').val(),$('#ratio').val(),data);
-    //                 //console.log(insertelement_new);
-    //             }        
-    //         });
-    //         var asize=insertelement_new[0];
-    //         var bsize=insertelement[0];
-    //         var newlist=insertelement_new[1];
-    //         var asize_l=asize.length;
-    //         for(var i=0 ; i<asize_l;++i){
-    //             var a=asize[i].split("Picked Cable");
-    //             console.log(a[0]);
-    //             var b=bsize[i].split("Picked Cable");
-    //             console.log(b[0]);
-    //             if(i>bsize.length){
-    //                 table_need.push(asize[i]);
-    //             }else if(a[0]!=b[0]){
-    //                 table_need.push(asize[i]);
-    //                 list.push(newlist[i]);
-    //             }
-    //         }    
-    //     }
-    //     insert(table_need,list);
-    // });   
+    
 }); 
 $("#pyupload").click(function(event){
     event.preventDefault();

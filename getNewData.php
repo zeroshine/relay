@@ -103,9 +103,14 @@ function readData(){
     $breakBus=array();
     while($row=mysqli_fetch_array($break)){
         array_push($breakBus,$row["name"]);
-    }   
+    }
+    // if($_POST["kv"]=="161kv_new"){
+    //     echo $_POST["first"];
+    // }
+    $test="SELECT * FROM ".$_POST["kv"]." WHERE (f=\"".$_POST["first"]."\" or t=\"".$_POST["first"]."\" ) and break = 1  ;";
     //echo "SELECT * FROM ".$_POST['kv']." WHERE f=\"".$_POST["first"]."\" or t=\"".$_POST["first"]."\" ;\n" ;
-    $origin = mysqli_query($con,"SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$_POST["first"]."\" or t=\"".$_POST["first"]."\" ) and break = 1  ;") ;
+    
+    $origin = mysqli_query($con,$test) ;
     if(mysqli_num_rows($origin)===0){
         return false;
     }
