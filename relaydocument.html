@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>relaydocument</title>
+<link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
+<script type="text/javascript" src="https://stackedit.io/libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body><div class="container"><h1 id="台電測距電驛標置平台操作手冊"><center>台電測距電驛標置平台操作手冊</center></h1>
+
+<hr>
+
+<h2 id="環境需求以及預先安裝軟體">環境需求以及預先安裝軟體</h2>
+
+<p>作業系統 : Windows 7 64bit(recommendation) <br>
+瀏覽器 : 僅支援Google chrome, Firefox  <br>
+PSS/E : 32版  <br>
+瀏覽器 : Chrome or Firefox （<strong>不支援IE</strong>） <br>
+編輯器 : Notepad++ <a href="http://notepad-plus-plus.org/">http://notepad-plus-plus.org/</a> <br>
+辦公室軟體：LibreOffice <a href="https://zh-tw.libreoffice.org/">https://zh-tw.libreoffice.org/</a> <br>
+python2.7版: <a href="https://www.python.org/">https://www.python.org/</a></p>
+
+<hr><div class="se-section-delimiter"></div>
+
+<h2 id="網頁伺服器架設">網頁伺服器架設</h2>
+
+<h3 id="wamp安裝"><strong>WAMP安裝</strong></h3>
+
+<p>官方網站：<a href="http://www.wampserver.com/en/">http://www.wampserver.com/en/</a> <br>
+WAMP為一個包含Apache PHP PHPmyadmin 的套件包，下載符合作業系統位元的安裝檔並執行即可</p>
+
+<h3 id="wamp設定"><strong>WAMP設定</strong></h3>
+
+<h4 id="python執行功能">python執行功能</h4>
+
+<p>控制台-&gt;系統與安全性-&gt;windows安全性-&gt;系統防火牆 確定apache http server被允取通過防火牆 <br>
+用notepad++開啟c:\wamp\bin\apache\apache2.4.9\conf\httpd.conf <br>
+搜尋Directory “C:/wamp/www” <br>
+增加options +ExecCGI <br>
+如下所式</p>
+
+<pre class="prettyprint prettyprinted"><code><span class="tag">&lt;Directory</span><span class="pln"> </span><span class="atv">"C:/wamp/www"</span><span class="tag">&gt;</span><span class="pln">
+Options Indexes FolloeSympLinks
+Options +ExecCGI
+</span><span class="tag">&lt;/Directory&gt;</span></code></pre>
+
+<p>搜尋IfModule mime_module <br>
+在AddHandler cgi-script .cgi後面 <br>
+加入.py <br>
+如下所示</p>
+
+<pre class="prettyprint prettyprinted"><code><span class="tag">&lt;IfModule</span><span class="pln"> </span><span class="atn">mime_module</span><span class="tag">&gt;</span><span class="pln">
+AddHandler cgi-script .cgi .py
+</span><span class="tag">&lt;/IfModule&gt;</span></code></pre>
+
+<p>左鍵點選桌面右下角WAMP程式icon-&gt;put online 在瀏覽器上輸入自己的ip理應可以看到起始頁 <br>
+<img src="http://i.imgur.com/Ob9gwId.png" style="width : 100%"></p>
+
+<h3 id="phpmyadmin-設定"><strong>phpmyadmin 設定</strong></h3>
+
+<h4 id="1-讓遠端使用者可以操作資料庫"><strong>1. 讓遠端使用者可以操作資料庫</strong></h4>
+
+<p>用notepad++開啟c:\wamp\alias\phpmyadmin.conf 把</p>
+
+<pre class="prettyprint prettyprinted"><code><span class="tag">&lt;IfDefine</span><span class="pln"> </span><span class="atn">APACHE24</span><span class="tag">&gt;</span><span class="pln">
+Require local
+</span><span class="tag">&lt;/IfDefine&gt;</span></code></pre>
+
+<p>修改成</p>
+
+<pre class="prettyprint prettyprinted"><code><span class="tag">&lt;IfDefine</span><span class="pln"> </span><span class="atn">APACHE24</span><span class="tag">&gt;</span><span class="pln">
+Require all granted
+</span><span class="tag">&lt;/IfDefine&gt;</span></code></pre>
+
+<p>點選桌面右下方wamp圖示Restart All Services重新啟動 <br>
+輸入主機後加上/phpmyadmin，如http:/xxx.xxx.xxx.xxx/phpmyadmin即可進入管理頁面 <br>
+注意語系這邊要選英文 中文有時候會有錯誤。 <br>
+<img src="http://i.imgur.com/gTD6UCY.png" style="width:100%"></p>
+
+<h4 id="2-設定登入介面"><strong>2. 設定登入介面</strong></h4>
+
+<p>用notepad++開啟c:\wamp\app\phpmyadmin4.1.14\config.inc.php</p>
+
+<pre class="prettyprint prettyprinted"><code><span class="pln">$cfg</span><span class="pun">[</span><span class="str">'Servers'</span><span class="pun">][</span><span class="pln">$i</span><span class="pun">][</span><span class="str">'auth_type'</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="str">'cookie'</span><span class="pun">;</span><span class="pln">
+$cfg</span><span class="pun">[</span><span class="str">'Servers'</span><span class="pun">][</span><span class="pln">$i</span><span class="pun">][</span><span class="str">'user'</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="str">''</span><span class="pun">;</span></code></pre>
+
+<p>點選桌面右下方wamp圖示Restart All Services重新啟動 <br>
+輸入主機後加上/phpmyadmin，如http:/xxx.xxx.xxx.xxx/phpmyadmin即可看到登入頁面 <br>
+<img src="http://i.imgur.com/NeuHDRx.png" style="width : 60%">  </p>
+
+<h4 id="3修改root使用者密碼-以及新增資料庫使用者"><strong>3.修改root使用者密碼 以及新增資料庫使用者</strong></h4>
+
+<p>在網頁上方點選使用者-&gt;root localhost -&gt;編輯權限-&gt;修改密碼 <br>
+刪除掉非root使用者 <br>
+在網頁上方點選資料庫建立一個新資料庫叫做relay <br>
+新增使用者relay <br>
+並給予relay資料庫relay的所有權限</p>
+
+<h4 id="4匯入sql資料表"><strong>4.匯入.sql資料表</strong></h4>
+
+<p>點選relay進入relay資料庫-&gt;匯入-&gt;選擇檔案 <br>
+將161kv.sql 161kvbus.sql 161kv_new.sql 161kv_newbus.sql 345kv.sql 345kvbus.sql 345kv_new.sql 345kv_newbus.sql\ <br>
+逐一匯入資料庫中</p>
+
+<p><img src="http://i.imgur.com/1nIcBhR.png" style="width : 100%"></p>
+
+<p>完成後在上方點選結構中應該可以看到161kv 161kvbus 161kv_new 161kv_newbus 345kv 345kvbus 345kv_new 345kv_newbus等資料表</p>
+
+<p><img src="http://i.imgur.com/vJgqpZD.png" style="width : 100%">  </p>
+
+<h4 id="5導入www內容"><strong>5.導入www內容</strong></h4>
+
+<p>將C:\wamp\www內容清空，放入程式碼 <br>
+用瀏覽器連入即可使用但是要記得把php裡面跟mysql連結的密碼改掉。</p>
+
+<hr>
+
+<h2 id="操作說明">操作說明</h2>
+
+<h3 id="匯流排查詢"><strong>匯流排查詢</strong></h3>
+
+<p>在上方的搜尋列輸入依序輸入匯流排名稱、線路、電驛型別 <br>
+點下go按鈕即可在網頁右方產出與輸入匯流排相連的匯流排輸電線，以及網頁下方產生相對應的標誌值報標置值。 <br>
+<img src="http://i.imgur.com/Zj1w0OZ.png" style="width:100%"></p>
+
+<h3 id="匯流排更動差異"><strong>匯流排更動差異</strong></h3>
+
+<p>若新的輸電線參數表有更動的時候，以161kv SEL311為例，將在phpmyadmin當中將新的輸電線資料表以及匯流排資料表匯入161kv_ <strong>new</strong>以及161kv_ <strong>new</strong> bus這兩個資料表當中，在網頁介面選取輸電線電壓、電驛型態，按下上方的Diff即可展現新電驛標置與舊電驛標誌不一樣的報表，以汐止民權線更動為例。 <br>
+<img src="http://i.imgur.com/djCV3DV.png" style="width:100%"></p>
+
+<h3 id="psse模擬"><strong>PSS/E模擬</strong></h3>
+
+<p>在左側點選上傳你要運行PSSE模擬用PSSE record功能記錄下來python macro script，接著點擊upload，還有.sav檔，.seq檔均用相同手法上傳了以後，點選run PSSE，即可得到 <br>
+<img src="http://i.imgur.com/9M8JsFj.png" style="width:100%"></p>
+
+<p>而python 的macro script前面需加上以下這段程式碼</p>
+
+<pre class="prettyprint prettyprinted"><code><span class="com">#!C:/Python25/python</span><span class="pln">
+</span><span class="kwd">import</span><span class="pln"> os</span><span class="pun">,</span><span class="pln">sys
+sys</span><span class="pun">.</span><span class="pln">path</span><span class="pun">.</span><span class="pln">append</span><span class="pun">(</span><span class="pln">r</span><span class="str">"C:\Program Files (x86)\PTI\PSSE32\PSSBIN"</span><span class="pun">)</span><span class="pln">
+os</span><span class="pun">.</span><span class="pln">environ</span><span class="pun">[</span><span class="str">'PATH'</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="pun">(</span><span class="pln">r</span><span class="str">"C:\Program Files (x86)\PTI\PSSE32\PSSBIN;"</span><span class="pln">
+                      </span><span class="pun">+</span><span class="pln"> os</span><span class="pun">.</span><span class="pln">environ</span><span class="pun">[</span><span class="str">'PATH'</span><span class="pun">])</span></code></pre>
+
+<p>其餘PSSE的操作說明請詳閱調度處的PSS/E32的操作手冊</p>
+
+<h3 id="故障定位"><strong>故障定位</strong></h3>
+
+<p>依序輸入匯流排電壓電流，即可求出故障點距離source端的百分比 <br>
+<img src="http://i.imgur.com/ODyzmKS.png"></p>
+
+<hr>
+
+<h2 id="程式碼架構與維護">程式碼架構與維護</h2>
+
+<h3 id="基礎語言介紹與架構"><strong>基礎語言介紹與架構</strong></h3>
+
+<p>程式碼的架構主要可以分成前端跟後端兩個部分，後端是指server的部份，這部份包括php python MySQL資料庫，程式運行在server端。前端是指client的部份，由使用者的瀏覽器來運行，包括html javascript css，而前端跟後端主要是靠ajax進行溝通。使用到的語言如下</p>
+
+<h4 id="1html"><strong>1.HTML</strong></h4>
+
+<p>全名為HyperText Markup Language，為用來表示網頁元素跟排版的標記語言。</p>
+
+<h4 id="2css"><strong>2.CSS</strong></h4>
+
+<p>全名為Cascading Style Sheets，為用來改變特定網頁元素的樣式跟排版的語言。</p>
+
+<h4 id="3javascript"><strong>3.Javascript</strong></h4>
+
+<p>一種直譯式程式語言，主要用來增加網頁的可互動性，包括用網頁元素的事件綁定，如滑鼠移動、點擊等事件的觸發，以及利用ajax跟後端Server的資料交換或其他互動。</p>
+
+<h4 id="4php"><strong>4.PHP</strong></h4>
+
+<p>server 的語言，主要用來跟資料庫連結用跟ajax做互動。</p>
+
+<h4 id="5python"><strong>5.Python</strong></h4>
+
+<p>直譯式的語言，現在非常流行，易懂好寫而且有很多擴充模組可以跟很多程式做互動，在這邊用來上傳檔案用。</p>
+
+<h4 id="6mysql"><strong>6.MySQL</strong></h4>
+
+<p>開源的關聯式資料庫，用來存放資料的table用，有結構化的SQL語言可以進行資料庫的操作。</p>
+
+<h4 id="7jquery"><strong>7.Jquery</strong></h4>
+
+<p>為一種javascript的函式庫，可以大幅省下javascript的開發時間。</p>
+
+<h4 id="8bootstrap"><strong>8.Bootstrap</strong></h4>
+
+<p>為一種javascript的函式庫套件，可以幫網頁元素快速套入美觀的樣式。</p>
+
+<p>整體程式的架構如下表示，前端用bootstrap跟table.css去調整規定index.html裡面的元素樣式， <br>
+relay.js的工作主要是負責把按鈕點擊事件的觸發綁定在index.html的元素上，還有跟php的ajax資料交換以及跟python的上傳檔案，以及拿到輸電線資料後的各型電驛計算。 <br>
+getNewData.php負責從資料庫中獲取查詢與匯流排相連的輸電線的資料，並算出跳過搭接點的zone1,zone2,zone3的輸電線參數，並回傳給前端使用。 <br>
+diff.php則是負責找出跟新舊資料表不一致的的輸電線，並回傳與其相連的zone1,zone2匯流排的名稱</p>
+
+<p><img src="http://i.imgur.com/EHEyFcq.jpg" style="width:100%"></p>
+
+<h3 id="重要程式碼">重要程式碼</h3>
+
+<p>getNewData.php(1)</p>
+
+<pre class="prettyprint prettyprinted"><code><span class="kwd">class</span><span class="pln"> </span><span class="typ">Cable</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="com">//declare variables</span><span class="pln">
+    </span><span class="kwd">var</span><span class="pln"> $id</span><span class="pun">,</span><span class="pln">$fid</span><span class="pun">,</span><span class="pln">$from</span><span class="pun">,</span><span class="pln">$tid</span><span class="pun">,</span><span class="pln">$to</span><span class="pun">,</span><span class="pln">$lineid</span><span class="pun">,</span><span class="pln">$length</span><span class="pun">,</span><span class="pln">$r1</span><span class="pun">,</span><span class="pln">$x1</span><span class="pun">,</span><span class="pln">$z1</span><span class="pun">,</span><span class="pln">$pre</span><span class="pun">,</span><span class="pln">$break</span><span class="pun">,</span><span class="pln">$cap</span><span class="pun">;</span><span class="pln">    
+    </span><span class="kwd">var</span><span class="pln"> $ta</span><span class="pun">=</span><span class="pln">array</span><span class="pun">();</span><span class="pln">    
+    </span><span class="kwd">function</span><span class="pln"> setCableInfo</span><span class="pun">(</span><span class="pln">$row</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">id</span><span class="pun">=</span><span class="pln">$row</span><span class="pun">[</span><span class="str">"id"</span><span class="pun">];</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="kwd">from</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> $row</span><span class="pun">[</span><span class="str">'f'</span><span class="pun">];</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">fid</span><span class="pun">=</span><span class="pln">$row</span><span class="pun">[</span><span class="str">'fid'</span><span class="pun">];</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">pre </span><span class="pun">=</span><span class="pln"> $row</span><span class="pun">[</span><span class="str">'f'</span><span class="pun">];</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">tid </span><span class="pun">=</span><span class="pln"> $row</span><span class="pun">[</span><span class="str">'tid'</span><span class="pun">];</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">to </span><span class="pun">=</span><span class="pln"> $row</span><span class="pun">[</span><span class="str">'t'</span><span class="pun">];</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">lineid</span><span class="pun">=</span><span class="pln"> $row</span><span class="pun">[</span><span class="str">'lineid'</span><span class="pun">];</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">length </span><span class="pun">=</span><span class="pln"> $row</span><span class="pun">[</span><span class="str">'length'</span><span class="pun">];</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">r1 </span><span class="pun">=</span><span class="pln"> $row</span><span class="pun">[</span><span class="str">'R1'</span><span class="pun">];</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">x1 </span><span class="pun">=</span><span class="pln"> $row</span><span class="pun">[</span><span class="str">'X1'</span><span class="pun">];</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">r0 </span><span class="pun">=</span><span class="pln"> $row</span><span class="pun">[</span><span class="str">'R0'</span><span class="pun">];</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">x0 </span><span class="pun">=</span><span class="pln"> $row</span><span class="pun">[</span><span class="str">'X0'</span><span class="pun">];</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">z1 </span><span class="pun">=</span><span class="pln"> sqrt</span><span class="pun">(</span><span class="pln">pow</span><span class="pun">(</span><span class="pln">$this</span><span class="pun">-&gt;</span><span class="pln">r1</span><span class="pun">,</span><span class="lit">2</span><span class="pun">)+</span><span class="pln">pow</span><span class="pun">(</span><span class="pln">$this</span><span class="pun">-&gt;</span><span class="pln">x1</span><span class="pun">,</span><span class="lit">2</span><span class="pun">));</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">z0 </span><span class="pun">=</span><span class="pln"> sqrt</span><span class="pun">(</span><span class="pln">pow</span><span class="pun">(</span><span class="pln">$this</span><span class="pun">-&gt;</span><span class="pln">r0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">)+</span><span class="pln">pow</span><span class="pun">(</span><span class="pln">$this</span><span class="pun">-&gt;</span><span class="pln">x0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">));</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="kwd">break</span><span class="pun">=</span><span class="pln">$row</span><span class="pun">[</span><span class="str">'break'</span><span class="pun">];</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">cap</span><span class="pun">=</span><span class="pln">$row</span><span class="pun">[</span><span class="str">'cap'</span><span class="pun">];</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="kwd">function</span><span class="pln"> add</span><span class="pun">(</span><span class="pln">$obj</span><span class="pun">){</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">pre</span><span class="pun">=</span><span class="pln"> $this</span><span class="pun">-&gt;</span><span class="kwd">from</span><span class="pun">;</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="kwd">from</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> $obj</span><span class="pun">-&gt;</span><span class="kwd">from</span><span class="pun">;</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">length </span><span class="pun">=</span><span class="pln"> $this</span><span class="pun">-&gt;</span><span class="pln">length</span><span class="pun">+</span><span class="pln">$obj</span><span class="pun">-&gt;</span><span class="pln">length</span><span class="pun">;</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">r1 </span><span class="pun">=</span><span class="pln">$this</span><span class="pun">-&gt;</span><span class="pln">r1</span><span class="pun">+</span><span class="pln">$obj</span><span class="pun">-&gt;</span><span class="pln">r1</span><span class="pun">;</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">x1 </span><span class="pun">=</span><span class="pln"> $this</span><span class="pun">-&gt;</span><span class="pln">x1</span><span class="pun">+</span><span class="pln">$obj</span><span class="pun">-&gt;</span><span class="pln">x1</span><span class="pun">;</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">r0 </span><span class="pun">=</span><span class="pln">$this</span><span class="pun">-&gt;</span><span class="pln">r0</span><span class="pun">+</span><span class="pln">$obj</span><span class="pun">-&gt;</span><span class="pln">r0</span><span class="pun">;</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">x0 </span><span class="pun">=</span><span class="pln"> $this</span><span class="pun">-&gt;</span><span class="pln">x0</span><span class="pun">+</span><span class="pln">$obj</span><span class="pun">-&gt;</span><span class="pln">x0</span><span class="pun">;</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">z1 </span><span class="pun">=</span><span class="pln"> sqrt</span><span class="pun">(</span><span class="pln">pow</span><span class="pun">(</span><span class="pln">$this</span><span class="pun">-&gt;</span><span class="pln">x1</span><span class="pun">,</span><span class="lit">2</span><span class="pun">)+</span><span class="pln">pow</span><span class="pun">(</span><span class="pln">$this</span><span class="pun">-&gt;</span><span class="pln">r1</span><span class="pun">,</span><span class="lit">2</span><span class="pun">));</span><span class="pln">
+        $this</span><span class="pun">-&gt;</span><span class="pln">z0 </span><span class="pun">=</span><span class="pln"> sqrt</span><span class="pun">(</span><span class="pln">pow</span><span class="pun">(</span><span class="pln">$this</span><span class="pun">-&gt;</span><span class="pln">x0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">)+</span><span class="pln">pow</span><span class="pun">(</span><span class="pln">$this</span><span class="pun">-&gt;</span><span class="pln">r0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">));</span><span class="pln">
+        </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">$this</span><span class="pun">-&gt;</span><span class="pln">cap</span><span class="pun">&gt;</span><span class="pln">$obj</span><span class="pun">-&gt;</span><span class="pln">cap</span><span class="pun">){</span><span class="pln">
+            $this</span><span class="pun">-&gt;</span><span class="pln">cap</span><span class="pun">=</span><span class="pln">$obj</span><span class="pun">-&gt;</span><span class="pln">cap</span><span class="pun">;</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+        array_push</span><span class="pun">(</span><span class="pln">$this</span><span class="pun">-&gt;</span><span class="pln">ta</span><span class="pun">,</span><span class="pln"> $this</span><span class="pun">-&gt;</span><span class="pln">pre</span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></code></pre>
+
+<p>這邊一開始就先定義了cable這個class，這個class包含了兩個function add 跟setCableInfo。setCableInfo是把MySQL抓到的輸電線列複製到這個物件帶的各個輸電線變數當中，而add function則是用多端線路中在把搭接點兩側的的線路加總成一條線路。</p>
+
+<p>getNewData.php(2)</p>
+
+<pre class="prettyprint prettyprinted"><code><span class="kwd">function</span><span class="pln"> readData</span><span class="pun">(){</span><span class="pln"> 
+    $con </span><span class="pun">=</span><span class="pln"> mysqli_connect</span><span class="pun">(</span><span class="str">"localhost"</span><span class="pun">,</span><span class="str">"relay"</span><span class="pun">,</span><span class="str">"lab228"</span><span class="pun">,</span><span class="str">"relay"</span><span class="pun">);</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(!</span><span class="pln">$con</span><span class="pun">){</span><span class="pln">
+        </span><span class="kwd">die</span><span class="pun">(</span><span class="str">'Could not connect: '</span><span class="pln"> </span><span class="pun">.</span><span class="pln"> mysqli_error</span><span class="pun">());</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    mysqli_query</span><span class="pun">(</span><span class="pln">$con</span><span class="pun">,</span><span class="str">"SET NAMES 'utf8'"</span><span class="pun">);</span><span class="pln"> 
+    mysqli_query</span><span class="pun">(</span><span class="pln">$con</span><span class="pun">,</span><span class="str">"SET CHARACTER_SET_CLIENT=utf8"</span><span class="pun">);</span><span class="pln"> 
+    mysqli_query</span><span class="pun">(</span><span class="pln">$con</span><span class="pun">,</span><span class="str">"SET CHARACTER_SET_RESULTS=utf8"</span><span class="pun">);</span><span class="pln">
+
+    $break </span><span class="pun">=</span><span class="pln"> mysqli_query</span><span class="pun">(</span><span class="pln">$con</span><span class="pun">,</span><span class="str">"SELECT * FROM "</span><span class="pun">.</span><span class="pln">$_POST</span><span class="pun">[</span><span class="str">'kv'</span><span class="pun">].</span><span class="str">"bus WHERE break=0"</span><span class="pun">);</span><span class="pln">
+    </span><span class="com">//echo "SELECT * FROM ".$_POST['kv']."bus WHERE break=0";</span><span class="pln">
+    $breakBus</span><span class="pun">=</span><span class="pln">array</span><span class="pun">();</span><span class="pln">
+    </span><span class="kwd">while</span><span class="pun">(</span><span class="pln">$row</span><span class="pun">=</span><span class="pln">mysqli_fetch_array</span><span class="pun">(</span><span class="pln">$break</span><span class="pun">)){</span><span class="pln">
+        array_push</span><span class="pun">(</span><span class="pln">$breakBus</span><span class="pun">,</span><span class="pln">$row</span><span class="pun">[</span><span class="str">"name"</span><span class="pun">]);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    $test</span><span class="pun">=</span><span class="str">"SELECT * FROM "</span><span class="pun">.</span><span class="pln">$_POST</span><span class="pun">[</span><span class="str">"kv"</span><span class="pun">].</span><span class="str">" WHERE (f=\""</span><span class="pun">.</span><span class="pln">$_POST</span><span class="pun">[</span><span class="str">"first"</span><span class="pun">].</span><span class="str">"\" or t=\""</span><span class="pun">.</span><span class="pln">$_POST</span><span class="pun">[</span><span class="str">"first"</span><span class="pun">].</span><span class="str">"\" ) and break = 1  ;"</span><span class="pun">;</span><span class="pln">
+
+    $origin </span><span class="pun">=</span><span class="pln"> mysqli_query</span><span class="pun">(</span><span class="pln">$con</span><span class="pun">,</span><span class="pln">$test</span><span class="pun">)</span><span class="pln"> </span><span class="pun">;</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">mysqli_num_rows</span><span class="pun">(</span><span class="pln">$origin</span><span class="pun">)===</span><span class="lit">0</span><span class="pun">){</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="kwd">false</span><span class="pun">;</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    $objArray</span><span class="pun">=</span><span class="pln">array</span><span class="pun">();</span><span class="pln">
+    </span><span class="kwd">while</span><span class="pun">(</span><span class="pln">$row</span><span class="pun">=</span><span class="pln">mysqli_fetch_array</span><span class="pun">(</span><span class="pln">$origin</span><span class="pun">)){</span><span class="pln">
+        $Zone0Array</span><span class="pun">=</span><span class="pln">array</span><span class="pun">();</span><span class="pln">
+        $Zone1Array</span><span class="pun">=</span><span class="pln">array</span><span class="pun">();</span><span class="pln">
+        $Zone2Array</span><span class="pun">=</span><span class="pln">array</span><span class="pun">();</span><span class="pln">
+        $Zoneb1Array</span><span class="pun">=</span><span class="pln">array</span><span class="pun">();</span><span class="pln">
+        $Zoneb2Array</span><span class="pun">=</span><span class="pln">array</span><span class="pun">();</span><span class="pln">
+        $Z1</span><span class="pun">=</span><span class="kwd">null</span><span class="pun">;</span><span class="pln">
+        $Z2</span><span class="pun">=</span><span class="kwd">null</span><span class="pun">;</span><span class="pln">
+        $Z3</span><span class="pun">=</span><span class="kwd">null</span><span class="pun">;</span><span class="pln">
+        $Zs</span><span class="pun">=</span><span class="kwd">null</span><span class="pun">;</span><span class="pln">        
+        </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">$row</span><span class="pun">[</span><span class="str">"f"</span><span class="pun">]!=</span><span class="pln">$_POST</span><span class="pun">[</span><span class="str">'first'</span><span class="pun">]){</span><span class="pln">
+            $tmp</span><span class="pun">=</span><span class="pln">$row</span><span class="pun">[</span><span class="str">"f"</span><span class="pun">];</span><span class="pln">
+            $row</span><span class="pun">[</span><span class="str">"f"</span><span class="pun">]=</span><span class="pln">$row</span><span class="pun">[</span><span class="str">"t"</span><span class="pun">];</span><span class="pln">
+            $row</span><span class="pun">[</span><span class="str">"t"</span><span class="pun">]=</span><span class="pln">$tmp</span><span class="pun">;</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+        $zone0_c </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Cable</span><span class="pun">;</span><span class="pln">
+        $zone0_c</span><span class="pun">-&gt;</span><span class="pln">setCableInfo</span><span class="pun">(</span><span class="pln">$row</span><span class="pun">);</span><span class="pln">
+        $MaxZone0</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Cable</span><span class="pun">;</span><span class="pln">
+        $MinZone0</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Cable</span><span class="pun">;</span><span class="pln">
+        recursive</span><span class="pun">(</span><span class="pln">$zone0_c</span><span class="pun">,</span><span class="pln">$Zone0Array</span><span class="pun">,</span><span class="pln">$zone0_c</span><span class="pun">-&gt;</span><span class="kwd">from</span><span class="pun">);</span><span class="com">// jump # node</span><span class="pln">
+        </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">count</span><span class="pun">(</span><span class="pln">$Zone0Array</span><span class="pun">)&gt;</span><span class="lit">0</span><span class="pun">){</span><span class="pln">
+            $MaxZone0</span><span class="pun">=</span><span class="pln">$Zone0Array</span><span class="pun">[</span><span class="lit">0</span><span class="pun">];</span><span class="pln">
+            $MinZone0</span><span class="pun">=</span><span class="pln">$Zone0Array</span><span class="pun">[</span><span class="lit">0</span><span class="pun">];</span><span class="pln">
+            </span><span class="kwd">foreach</span><span class="pln"> </span><span class="pun">(</span><span class="pln">$Zone0Array </span><span class="kwd">as</span><span class="pln"> $obj</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+                </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">$obj</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">&lt;=</span><span class="pln">$MinZone0</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">){</span><span class="pln">
+                    $MinZone0</span><span class="pun">=</span><span class="pln">$obj</span><span class="pun">;</span><span class="pln">
+                </span><span class="pun">}</span><span class="pln">
+                </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">$obj</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">&gt;=</span><span class="pln">$MaxZone0</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">){</span><span class="pln">
+                    $MaxZone0</span><span class="pun">=</span><span class="pln">$obj</span><span class="pun">;</span><span class="pln">
+                </span><span class="pun">}</span><span class="pln">
+            </span><span class="pun">}</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+        $tozone1 </span><span class="pun">=</span><span class="pln"> mysqli_query</span><span class="pun">(</span><span class="pln">$con</span><span class="pun">,</span><span class="str">"SELECT * FROM "</span><span class="pun">.</span><span class="pln">$_POST</span><span class="pun">[</span><span class="str">'kv'</span><span class="pun">].</span><span class="str">" WHERE ((f=\""</span><span class="pun">.</span><span class="pln">$MaxZone0</span><span class="pun">-&gt;</span><span class="pln">to</span><span class="pun">.</span><span class="str">"\" and id !=\""</span><span class="pun">.</span><span class="pln">$MaxZoneb1</span><span class="pun">-&gt;</span><span class="pln">lineid</span><span class="pun">.</span><span class="str">"\") or (t=\""</span><span class="pun">.</span><span class="pln">$MaxZone0</span><span class="pun">-&gt;</span><span class="pln">to</span><span class="pun">.</span><span class="str">"\" and id !=\""</span><span class="pun">.</span><span class="pln">$MaxZone0</span><span class="pun">-&gt;</span><span class="pln">id</span><span class="pun">.</span><span class="str">"\")) and break=1;"</span><span class="pun">);</span><span class="pln">
+        </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">mysqli_num_rows</span><span class="pun">(</span><span class="pln">$tozone1</span><span class="pun">)===</span><span class="lit">0</span><span class="pln"> </span><span class="pun">||</span><span class="pln"> in_array</span><span class="pun">(</span><span class="pln">$MaxZone0</span><span class="pun">-&gt;</span><span class="pln">to</span><span class="pun">,</span><span class="pln">$breakBus</span><span class="pun">)</span><span class="pln"> </span><span class="pun">){</span><span class="pln">
+            $tozone1 </span><span class="pun">=</span><span class="pln"> mysqli_query</span><span class="pun">(</span><span class="pln">$con</span><span class="pun">,</span><span class="str">"SELECT * FROM "</span><span class="pun">.</span><span class="pln">$_POST</span><span class="pun">[</span><span class="str">'kv'</span><span class="pun">].</span><span class="str">" WHERE ((f=\""</span><span class="pun">.</span><span class="pln">$MaxZone0</span><span class="pun">-&gt;</span><span class="pln">to</span><span class="pun">.</span><span class="str">"\" and t=\""</span><span class="pun">.</span><span class="pln">$MaxZone0</span><span class="pun">-&gt;</span><span class="pln">pre</span><span class="pun">.</span><span class="str">"\") or (t=\""</span><span class="pun">.</span><span class="pln">$MaxZone0</span><span class="pun">-&gt;</span><span class="pln">to</span><span class="pun">.</span><span class="str">"\" and f=\""</span><span class="pun">.</span><span class="pln">$MaxZone0</span><span class="pun">-&gt;</span><span class="pln">pre</span><span class="pun">.</span><span class="str">"\"  )) and break=1;"</span><span class="pun">);</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+        </span><span class="kwd">while</span><span class="pln"> </span><span class="pun">(</span><span class="pln">$row1 </span><span class="pun">=</span><span class="pln"> mysqli_fetch_array</span><span class="pun">(</span><span class="pln">$tozone1</span><span class="pun">))</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+            </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">$row1</span><span class="pun">[</span><span class="str">'f'</span><span class="pun">]!=</span><span class="pln">$MaxZone0</span><span class="pun">-&gt;</span><span class="pln">to</span><span class="pun">){</span><span class="pln">
+                $tmp</span><span class="pun">=</span><span class="pln">$row1</span><span class="pun">[</span><span class="str">'f'</span><span class="pun">];</span><span class="pln">
+                $row1</span><span class="pun">[</span><span class="str">"f"</span><span class="pun">]=</span><span class="pln">$row1</span><span class="pun">[</span><span class="str">"t"</span><span class="pun">];</span><span class="pln">
+                $row1</span><span class="pun">[</span><span class="str">"t"</span><span class="pun">]=</span><span class="pln">$tmp</span><span class="pun">;</span><span class="pln">
+            </span><span class="pun">}</span><span class="pln">
+            $zone1_c </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Cable</span><span class="pun">;</span><span class="pln">
+            $zone1_c</span><span class="pun">-&gt;</span><span class="pln">setCableInfo</span><span class="pun">(</span><span class="pln">$row1</span><span class="pun">);</span><span class="pln">
+            </span><span class="com">//echo "zone1c\n";</span><span class="pln">
+            recursive</span><span class="pun">(</span><span class="pln">$zone1_c</span><span class="pun">,</span><span class="pln">$Zone1Array</span><span class="pun">,</span><span class="pln">$zone1_c</span><span class="pun">-&gt;</span><span class="kwd">from</span><span class="pun">);</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+        $MaxZone1</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Cable</span><span class="pun">;</span><span class="pln">
+        $MinZone1</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Cable</span><span class="pun">;</span><span class="pln">
+        </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">count</span><span class="pun">(</span><span class="pln">$Zone1Array</span><span class="pun">)&gt;</span><span class="lit">0</span><span class="pun">){</span><span class="pln">
+            $MaxZone1</span><span class="pun">=</span><span class="pln">$Zone1Array</span><span class="pun">[</span><span class="lit">0</span><span class="pun">];</span><span class="pln">
+            $MinZone1</span><span class="pun">=</span><span class="pln">$Zone1Array</span><span class="pun">[</span><span class="lit">0</span><span class="pun">];</span><span class="pln">
+            </span><span class="kwd">foreach</span><span class="pln"> </span><span class="pun">(</span><span class="pln">$Zone1Array </span><span class="kwd">as</span><span class="pln"> $obj</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+                </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">$obj</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">&gt;=</span><span class="pln">$MaxZone1</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">){</span><span class="pln">
+                    $MaxZone1</span><span class="pun">=</span><span class="pln">$obj</span><span class="pun">;</span><span class="pln">
+                </span><span class="pun">}</span><span class="pln">
+                </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">$obj</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">&lt;=</span><span class="pln">$MinZone1</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">){</span><span class="pln">
+                    $MinZone1</span><span class="pun">=</span><span class="pln">$obj</span><span class="pun">;</span><span class="pln">
+                </span><span class="pun">}</span><span class="pln">
+            </span><span class="pun">}</span><span class="pln">
+        </span><span class="pun">}</span></code></pre>
+
+<p>這裡只擷取部分readData的function作說明，一開始連結到資料庫後，用sql找出f=post傳進來的bus name或是t=post傳進來的bus name的輸電線，mysql_fetch_array會將這些滿足sql條件的集合抓出第一個，然後接著找zone0，recursive function會把多端線路的查詢結果放到第二個參數的array中，接著遍歷此陣列中最大最小的z1抓出來，接著繼續進行zone2的部份以此類推，另外如果遇到點在breakbus的集合這邊就要反向查詢</p>
+
+<p>getNewData.php(3)</p>
+
+<pre class="prettyprint prettyprinted"><code><span class="kwd">function</span><span class="pln"> recursive</span><span class="pun">(</span><span class="pln">$obj</span><span class="pun">,&amp;</span><span class="pln">$arr</span><span class="pun">,&amp;</span><span class="pln">$origin</span><span class="pun">){</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$obj</span><span class="pun">-&gt;</span><span class="pln">to</span><span class="pun">,-</span><span class="lit">2</span><span class="pun">,-</span><span class="lit">1</span><span class="pun">)!=</span><span class="str">'#'</span><span class="pln"> </span><span class="pun">||</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$obj</span><span class="pun">-&gt;</span><span class="pln">to</span><span class="pun">,-</span><span class="lit">3</span><span class="pun">,-</span><span class="lit">2</span><span class="pun">)!=</span><span class="str">'#'</span><span class="pun">){</span><span class="pln">
+        array_push</span><span class="pun">(</span><span class="pln">$arr</span><span class="pun">,</span><span class="pln">$obj</span><span class="pun">);</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pun">;</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    $result</span><span class="pun">=</span><span class="pln">mysqli_query</span><span class="pun">(</span><span class="pln">$con</span><span class="pun">,</span><span class="str">"SELECT * FROM "</span><span class="pun">.</span><span class="pln">$_POST</span><span class="pun">[</span><span class="str">'kv'</span><span class="pun">].</span><span class="str">" WHERE ((f=\""</span><span class="pun">.</span><span class="pln">$obj</span><span class="pun">-&gt;</span><span class="pln">to</span><span class="pun">.</span><span class="str">"\" and id!=\""</span><span class="pun">.</span><span class="pln">$obj</span><span class="pun">-&gt;</span><span class="pln">id</span><span class="pun">.</span><span class="str">"\" ) 
+        or (t=\""</span><span class="pun">.</span><span class="pln">$obj</span><span class="pun">-&gt;</span><span class="pln">to</span><span class="pun">.</span><span class="str">"\" and id!=\""</span><span class="pun">.</span><span class="pln">$obj</span><span class="pun">-&gt;</span><span class="pln">id</span><span class="pun">.</span><span class="str">"\")) and break=1;"</span><span class="pun">);</span><span class="pln">
+    </span><span class="kwd">while</span><span class="pln"> </span><span class="pun">(</span><span class="pln">$row1 </span><span class="pun">=</span><span class="pln"> mysqli_fetch_array</span><span class="pun">(</span><span class="pln">$result</span><span class="pun">)){</span><span class="pln">
+        </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">$row1</span><span class="pun">[</span><span class="str">'f'</span><span class="pun">]!=</span><span class="pln">$obj</span><span class="pun">-&gt;</span><span class="pln">to</span><span class="pun">){</span><span class="pln">
+            $tmp</span><span class="pun">=</span><span class="pln">$row1</span><span class="pun">[</span><span class="str">'f'</span><span class="pun">];</span><span class="pln">
+            $row1</span><span class="pun">[</span><span class="str">"f"</span><span class="pun">]=</span><span class="pln">$row1</span><span class="pun">[</span><span class="str">"t"</span><span class="pun">];</span><span class="pln">
+            $row1</span><span class="pun">[</span><span class="str">"t"</span><span class="pun">]=</span><span class="pln">$tmp</span><span class="pun">;</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+        </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">$row1</span><span class="pun">[</span><span class="str">'t'</span><span class="pun">]===</span><span class="pln">$obj</span><span class="pun">-&gt;</span><span class="pln">pre</span><span class="pun">){</span><span class="pln">
+            </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$row1</span><span class="pun">[</span><span class="str">'t'</span><span class="pun">],</span><span class="lit">0</span><span class="pun">,-</span><span class="lit">2</span><span class="pun">)!=</span><span class="str">'#'</span><span class="pun">){</span><span class="pln">
+                </span><span class="kwd">continue</span><span class="pun">;</span><span class="pln">
+            </span><span class="pun">}</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+        $zone </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Cable</span><span class="pun">;</span><span class="pln">
+        $zone</span><span class="pun">-&gt;</span><span class="pln">setCableInfo</span><span class="pun">(</span><span class="pln">$row1</span><span class="pun">);</span><span class="pln">
+        $zone</span><span class="pun">-&gt;</span><span class="pln">add</span><span class="pun">(</span><span class="pln">$obj</span><span class="pun">);</span><span class="pln">
+        recursive</span><span class="pun">(</span><span class="pln">$zone</span><span class="pun">,</span><span class="pln">$arr</span><span class="pun">,</span><span class="pln">$origin</span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></code></pre>
+
+<p>recursive function就是一開始會設定終結的條件，以及最後的地方會自己呼叫自己。在這邊終結條件為找到的下一個bus倒數第二個字第三個字不是# 舊把此線路放到陣列當中。如果是#的話，則會把遮條書店線往下搜尋相鄰的線在繼續遞迴直到遇到終結條件為止。</p>
+
+<p>getNewData.php(4)</p>
+
+<pre class="prettyprint prettyprinted"><code><span class="pln">        $ratio</span><span class="pun">=(</span><span class="kwd">float</span><span class="pun">)</span><span class="pln">$_POST</span><span class="pun">[</span><span class="str">"ratio"</span><span class="pun">];</span><span class="pln">
+        </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">$_POST</span><span class="pun">[</span><span class="str">'kv'</span><span class="pun">]==</span><span class="str">"161kv"</span><span class="pln"> </span><span class="pun">||</span><span class="pln"> $_POST</span><span class="pun">[</span><span class="str">'kv'</span><span class="pun">]==</span><span class="str">"161kv_new"</span><span class="pun">){</span><span class="pln">
+            </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">$MinZone0</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">&gt;=</span><span class="lit">2</span><span class="pun">){</span><span class="pln">
+                $Z1</span><span class="pun">=(</span><span class="pln">$MinZone0</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">*</span><span class="lit">0.75</span><span class="pun">)*</span><span class="pln">$ratio</span><span class="pun">;</span><span class="pln">
+            </span><span class="pun">}</span><span class="kwd">else</span><span class="pun">{</span><span class="pln">
+                $Z1</span><span class="pun">=(</span><span class="pln">$MinZone0</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">*</span><span class="lit">0.65</span><span class="pun">)*</span><span class="pln">$ratio</span><span class="pun">;</span><span class="pln">        
+            </span><span class="pun">}</span><span class="pln">
+            </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">$MinZone1</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">&gt;=</span><span class="lit">2</span><span class="pun">){</span><span class="pln">
+                $Z2</span><span class="pun">=(</span><span class="pln">$MaxZone0</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">+</span><span class="pln">$MinZone1</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">*</span><span class="lit">0.5</span><span class="pun">)*</span><span class="pln">$ratio</span><span class="pun">;</span><span class="pln">
+            </span><span class="pun">}</span><span class="kwd">else</span><span class="pun">{</span><span class="pln">
+                $Z2</span><span class="pun">=(</span><span class="pln">$MaxZone0</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">+</span><span class="pln">$MinZone1</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">*</span><span class="lit">0.6</span><span class="pun">)*</span><span class="pln">$ratio</span><span class="pun">;</span><span class="pln">
+            </span><span class="pun">}</span><span class="pln">
+            $Z3</span><span class="pun">=(</span><span class="pln">$MaxZone0</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">+</span><span class="pln">$MaxZone1</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">+</span><span class="pln">$MinZone2</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">*</span><span class="lit">0.25</span><span class="pun">)*</span><span class="pln">$ratio</span><span class="pun">;</span><span class="pln">
+            $Zs</span><span class="pun">=(</span><span class="pln">$MaxZoneb1</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">+</span><span class="pln">$MaxZoneb2</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">)*</span><span class="pln">$ratio</span><span class="pun">;</span><span class="pln">
+        </span><span class="pun">}</span><span class="kwd">else</span><span class="pln"> </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">$_POST</span><span class="pun">[</span><span class="str">'kv'</span><span class="pun">]==</span><span class="str">"345kv"</span><span class="pln"> </span><span class="pun">||</span><span class="pln"> $_POST</span><span class="pun">[</span><span class="str">'kv'</span><span class="pun">]==</span><span class="str">"345kv_new"</span><span class="pun">){</span><span class="pln">
+            </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">$MinZone0</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">&gt;=</span><span class="lit">5</span><span class="pun">){</span><span class="pln">
+                $Z1</span><span class="pun">=(</span><span class="pln">$MinZone0</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">*</span><span class="lit">0.85</span><span class="pun">)*</span><span class="pln">$ratio</span><span class="pun">;</span><span class="pln">
+            </span><span class="pun">}</span><span class="kwd">else</span><span class="pun">{</span><span class="pln">
+                $Z1</span><span class="pun">=(</span><span class="pln">$MinZone0</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">*</span><span class="lit">0.8</span><span class="pun">)*</span><span class="pln">$ratio</span><span class="pun">;</span><span class="pln">        
+            </span><span class="pun">}</span><span class="pln">
+            </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">$MinZone1</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">&gt;=</span><span class="lit">2</span><span class="pun">){</span><span class="pln">
+                $Z2</span><span class="pun">=(</span><span class="pln">$MaxZone0</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">+</span><span class="pln">$MinZone1</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">*</span><span class="lit">0.5</span><span class="pun">)*</span><span class="pln">$ratio</span><span class="pun">;</span><span class="pln">
+            </span><span class="pun">}</span><span class="kwd">else</span><span class="pun">{</span><span class="pln">
+                $Z2</span><span class="pun">=(</span><span class="pln">$MaxZone0</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">+</span><span class="pln">$MinZone1</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">*</span><span class="lit">0.6</span><span class="pun">)*</span><span class="pln">$ratio</span><span class="pun">;</span><span class="pln">
+            </span><span class="pun">}</span><span class="pln">
+            $Z3</span><span class="pun">=(</span><span class="pln">$MaxZone0</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">+</span><span class="pln">$MaxZone1</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">+</span><span class="pln">$MinZone2</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">*</span><span class="lit">0.25</span><span class="pun">)*</span><span class="pln">$ratio</span><span class="pun">;</span><span class="pln">
+            $Zs</span><span class="pun">=(</span><span class="pln">$MaxZoneb1</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">+</span><span class="pln">$MaxZoneb2</span><span class="pun">-&gt;</span><span class="pln">z1</span><span class="pun">)*</span><span class="pln">$ratio</span><span class="pun">;</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+        $obj</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Obj_json</span><span class="pun">;</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="pln">name</span><span class="pun">=</span><span class="pln">$row</span><span class="pun">[</span><span class="str">"t"</span><span class="pun">];</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="kwd">from</span><span class="pun">=</span><span class="pln">$_POST</span><span class="pun">[</span><span class="str">"first"</span><span class="pun">];</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="pln">lineid</span><span class="pun">=</span><span class="pln">$row</span><span class="pun">[</span><span class="str">"lineid"</span><span class="pun">];</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="typ">Zone0Array</span><span class="pun">=</span><span class="pln">$Zone0Array</span><span class="pun">;</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="typ">MinZone0</span><span class="pun">=</span><span class="pln"> $MinZone0</span><span class="pun">;</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="typ">MaxZone0</span><span class="pun">=</span><span class="pln"> $MaxZone0</span><span class="pun">;</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="typ">Zone1Array</span><span class="pun">=</span><span class="pln">$Zone1Array</span><span class="pun">;</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="typ">MinZone1</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> $MinZone1</span><span class="pun">;</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="typ">MaxZone1</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> $MaxZone1</span><span class="pun">;</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="typ">Zone2Array</span><span class="pun">=</span><span class="pln">$Zone2Array</span><span class="pun">;</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="typ">MinZone2</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> $MinZone2</span><span class="pun">;</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="typ">Zoneb1Array</span><span class="pun">=</span><span class="pln">$Zoneb1Array</span><span class="pun">;</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="typ">MaxZoneb1</span><span class="pun">=</span><span class="pln">$MaxZoneb1</span><span class="pun">;</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="typ">Zoneb2Array</span><span class="pun">=</span><span class="pln">$Zoneb2Array</span><span class="pun">;</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="typ">MaxZoneb2</span><span class="pun">=</span><span class="pln">$MaxZoneb2</span><span class="pun">;</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="pln">Z1</span><span class="pun">=</span><span class="pln">$Z1</span><span class="pun">;</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="pln">Z2</span><span class="pun">=</span><span class="pln">$Z2</span><span class="pun">;</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="pln">Z3</span><span class="pun">=</span><span class="pln">$Z3</span><span class="pun">;</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="typ">Zs</span><span class="pun">=</span><span class="pln">$Zs</span><span class="pun">;</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="pln">l3s</span><span class="pun">=</span><span class="pln">$l3s</span><span class="pun">;</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="pln">l1g</span><span class="pun">=</span><span class="pln">$l1g</span><span class="pun">;</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="pln">r3s</span><span class="pun">=</span><span class="pln">$r3s</span><span class="pun">;</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="pln">r1g</span><span class="pun">=</span><span class="pln">$r1g</span><span class="pun">;</span><span class="pln">
+        $obj</span><span class="pun">-&gt;</span><span class="pln">cap</span><span class="pun">=</span><span class="pln">$MaxZone0</span><span class="pun">-&gt;</span><span class="pln">cap</span><span class="pun">;</span><span class="pln">
+        array_push</span><span class="pun">(</span><span class="pln">$objArray</span><span class="pun">,</span><span class="pln">$obj</span><span class="pun">);</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+    echo json_encode</span><span class="pun">(</span><span class="pln">$objArray</span><span class="pun">);</span></code></pre>
+
+<p>這邊會根據不同的電壓線路進行不同的zone1 zone2計算以後要根據不同的規則新增也是要看這裡，最後把此側看過去zone1zone2放入array裡面，最後把各個方向看過去的zone1zone2用json的方式回傳</p>
+
+<p>diff.php</p>
+
+<pre class="prettyprint prettyprinted"><code><span class="kwd">function</span><span class="pln"> diff</span><span class="pun">(){</span><span class="pln">
+    $con </span><span class="pun">=</span><span class="pln"> mysqli_connect</span><span class="pun">(</span><span class="str">"localhost"</span><span class="pun">,</span><span class="str">"relay"</span><span class="pun">,</span><span class="str">"lab228"</span><span class="pun">,</span><span class="str">"relay"</span><span class="pun">);</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(!</span><span class="pln">$con</span><span class="pun">){</span><span class="pln">
+        </span><span class="kwd">die</span><span class="pun">(</span><span class="str">'Could not connect: '</span><span class="pln"> </span><span class="pun">.</span><span class="pln"> mysqli_error</span><span class="pun">());</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+
+</span><span class="com">// mysqli_select_db("relay",$con);</span><span class="pln">
+    mysqli_query</span><span class="pun">(</span><span class="pln">$con</span><span class="pun">,</span><span class="str">"SET NAMES 'utf8'"</span><span class="pun">);</span><span class="pln"> 
+    mysqli_query</span><span class="pun">(</span><span class="pln">$con</span><span class="pun">,</span><span class="str">"SET CHARACTER_SET_CLIENT=utf8"</span><span class="pun">);</span><span class="pln"> 
+    mysqli_query</span><span class="pun">(</span><span class="pln">$con</span><span class="pun">,</span><span class="str">"SET CHARACTER_SET_RESULTS=utf8"</span><span class="pun">);</span><span class="pln">
+    $dresult</span><span class="pun">=</span><span class="pln">mysqli_query</span><span class="pun">(</span><span class="pln">$con</span><span class="pun">,</span><span class="str">"SELECT 161kv_new.* FROM 161kv_new
+    Left JOIN 161kv ON 161kv.id = 161kv_new.id
+    WHERE 161kv.f!=161kv_new.f 
+    or 161kv.t!=161kv_new.t 
+    or 161kv.lineid!=161kv_new.lineid 
+    or 161kv.cap!=161kv_new.cap 
+    or 161kv.length!=161kv_new.length 
+    or 161kv.R1!=161kv_new.R1 
+    or 161kv.X1!=161kv_new.X1 
+    or 161kv.R0!=161kv_new.R0 
+    or 161kv.X0!=161kv_new.X0
+    or 161kv.id is NULL
+    "</span><span class="pun">);</span></code></pre>
+
+<p>這一段sql是找出新舊電驛不一致的部份，後面的部份也類似getNewData一樣用遞迴的方式跳過搭接點。把不一樣的線路往外延伸兩個zone把範圍內的bus回傳。</p>
+
+<p>relay.js</p>
+
+<pre class="prettyprint prettyprinted"><code><span class="pln">$</span><span class="pun">(</span><span class="str">"#navbtm"</span><span class="pun">).</span><span class="pln">click</span><span class="pun">(</span><span class="kwd">function</span><span class="pun">(</span><span class="kwd">event</span><span class="pun">){</span><span class="pln">
+	</span><span class="kwd">event</span><span class="pun">.</span><span class="pln">preventDefault</span><span class="pun">();</span><span class="pln">
+    $</span><span class="pun">.</span><span class="pln">post</span><span class="pun">(</span><span class="str">"getNewData.php"</span><span class="pun">,</span><span class="pln"> </span><span class="pun">{</span><span class="pln">first</span><span class="pun">:</span><span class="pln">$</span><span class="pun">(</span><span class="str">'#bus'</span><span class="pun">).</span><span class="pln">val</span><span class="pun">(),</span><span class="pln">kv</span><span class="pun">:</span><span class="pln">$</span><span class="pun">(</span><span class="str">'#kv'</span><span class="pun">).</span><span class="pln">val</span><span class="pun">(),</span><span class="pln">relay</span><span class="pun">:</span><span class="pln">$</span><span class="pun">(</span><span class="str">'#relay'</span><span class="pun">).</span><span class="pln">val</span><span class="pun">(),</span><span class="pln">ratio</span><span class="pun">:</span><span class="pln">$</span><span class="pun">(</span><span class="str">'#ratio'</span><span class="pun">).</span><span class="pln">val</span><span class="pun">()},</span><span class="pln">
+        </span><span class="kwd">function</span><span class="pun">(</span><span class="pln">data</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+            </span><span class="com">//console.log($('#kv').val()+"\n");</span><span class="pln">
+            </span><span class="com">//console.log(data);</span><span class="pln">
+            </span><span class="kwd">var</span><span class="pln"> insertelement</span><span class="pun">=</span><span class="pln">postgetnewdata</span><span class="pun">(</span><span class="pln">$</span><span class="pun">(</span><span class="str">'#kv'</span><span class="pun">).</span><span class="pln">val</span><span class="pun">(),</span><span class="pln">$</span><span class="pun">(</span><span class="str">'#relay'</span><span class="pun">).</span><span class="pln">val</span><span class="pun">(),</span><span class="pln">$</span><span class="pun">(</span><span class="str">'#ratio'</span><span class="pun">).</span><span class="pln">val</span><span class="pun">(),</span><span class="pln">data</span><span class="pun">);</span><span class="pln">
+            </span><span class="kwd">var</span><span class="pln"> detail</span><span class="pun">=</span><span class="pln">detaildata</span><span class="pun">(</span><span class="pln">$</span><span class="pun">(</span><span class="str">'#kv'</span><span class="pun">).</span><span class="pln">val</span><span class="pun">(),</span><span class="pln">$</span><span class="pun">(</span><span class="str">'#relay'</span><span class="pun">).</span><span class="pln">val</span><span class="pun">(),</span><span class="pln">$</span><span class="pun">(</span><span class="str">'#ratio'</span><span class="pun">).</span><span class="pln">val</span><span class="pun">(),</span><span class="pln">data</span><span class="pun">);</span><span class="pln">
+            insert</span><span class="pun">(</span><span class="pln">insertelement</span><span class="pun">[</span><span class="lit">0</span><span class="pun">],</span><span class="pln">insertelement</span><span class="pun">[</span><span class="lit">1</span><span class="pun">],</span><span class="pln">detail</span><span class="pun">);</span><span class="pln">
+        </span><span class="pun">});</span><span class="pln">
+</span><span class="pun">});</span></code></pre>
+
+<p>這段程式碼是按下go按鈕做的動作，他會向getNewData.php post一個array，getNewdata會回傳一個json物件裡面有各個相鄰匯流排看過去的zone1,zone2,zone3的二次側組抗，回傳的data再傳到postgetNewdata這個function中，postgetNewdata再將json解開並將其電驛標置值算出，回傳成inserelement的array，insertelement[0]是網頁中間的標置值表單，insertelement[1]則是網頁右側的與匯流排種連接的輸電線list，detaildata則是產生zone1,zone2等詳細資訊的table的function，insert function會將這些table插入html去顯現</p>
+
+<p>relay.js(2)</p>
+
+<pre class="prettyprint prettyprinted"><code><span class="kwd">var</span><span class="pln"> postgetnewdata</span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">(</span><span class="pln">pkv</span><span class="pun">,</span><span class="pln">relay</span><span class="pun">,</span><span class="pln">ratio</span><span class="pun">,</span><span class="pln">data</span><span class="pun">){</span><span class="pln">
+            obj </span><span class="pun">=</span><span class="pln"> $</span><span class="pun">.</span><span class="pln">parseJSON</span><span class="pun">(</span><span class="pln">data</span><span class="pun">);</span><span class="pln">
+            </span><span class="com">//console.log(obj[1].name);</span><span class="pln">
+            </span><span class="kwd">var</span><span class="pln"> list</span><span class="pun">=[];</span><span class="pln">
+            </span><span class="kwd">var</span><span class="pln"> tableArr</span><span class="pun">=[];</span><span class="pln">
+            </span><span class="kwd">for</span><span class="pun">(</span><span class="kwd">var</span><span class="pln"> bj </span><span class="kwd">in</span><span class="pln"> obj</span><span class="pun">){</span><span class="pln">
+                </span><span class="kwd">var</span><span class="pln"> table</span><span class="pun">=</span><span class="str">""</span><span class="pun">;</span><span class="pln">
+                list</span><span class="pun">.</span><span class="pln">push</span><span class="pun">(</span><span class="str">"&lt;button type=\"button\" class=\"btn btn-lg btn-default\" id=\"line"</span><span class="pun">+</span><span class="pln">bj</span><span class="pun">+</span><span class="str">"\"&gt;"</span><span class="pun">+</span><span class="pln"> obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="kwd">from</span><span class="pun">+</span><span class="str">" to "</span><span class="pun">+</span><span class="pln"> obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="pln">name</span><span class="pun">+</span><span class="str">" "</span><span class="pun">+</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="pln">lineid</span><span class="pun">+</span><span class="str">"線&lt;/button&gt;"</span><span class="pun">);</span><span class="pln">
+                table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;h2&gt;"</span><span class="pun">+</span><span class="pln"> obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="kwd">from</span><span class="pun">+</span><span class="str">" to "</span><span class="pun">+</span><span class="pln"> obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="pln">name </span><span class="pun">+</span><span class="str">"&lt;/h2&gt;"</span><span class="pln">
+                table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;h3&gt;Relay setting value&lt;/h3&gt;"</span><span class="pln">
+                table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;table class=\"table table-striped table-bordered table-hover\"&gt;"</span><span class="pun">;</span><span class="pln">
+                table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Z1 = "</span><span class="pun">+</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="pln">Z1</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Z2 = "</span><span class="pun">+</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="pln">Z2</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Z3 = "</span><span class="pun">+</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="pln">Z3</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Zs = "</span><span class="pun">+</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">Zs</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                </span><span class="kwd">var</span><span class="pln"> kv</span><span class="pun">=</span><span class="lit">0</span><span class="pun">;</span><span class="pln">
+                </span><span class="kwd">var</span><span class="pln"> fac</span><span class="pun">=</span><span class="lit">0</span><span class="pun">;</span><span class="pln">
+                </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">pkv</span><span class="pun">==</span><span class="str">"161kv"</span><span class="pln"> </span><span class="pun">||</span><span class="pln"> pkv</span><span class="pun">==</span><span class="str">"161kv_new"</span><span class="pln"> </span><span class="pun">){</span><span class="pln">
+                    kv</span><span class="pun">=</span><span class="lit">161</span><span class="pun">;</span><span class="pln">
+                    fac</span><span class="pun">=</span><span class="lit">0.9</span><span class="pun">;</span><span class="pln">
+                </span><span class="pun">}</span><span class="pln">
+                </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">pkv</span><span class="pun">==</span><span class="str">"345kv"</span><span class="pun">){</span><span class="pln">
+                    kv</span><span class="pun">=</span><span class="lit">345</span><span class="pun">;</span><span class="pln">
+                    fac</span><span class="pun">=</span><span class="lit">0.78</span><span class="pun">;</span><span class="pln">
+                </span><span class="pun">}</span><span class="pln">
+                </span><span class="kwd">if</span><span class="pun">((</span><span class="pln">$</span><span class="pun">(</span><span class="str">'#relay'</span><span class="pun">).</span><span class="pln">val</span><span class="pun">())==</span><span class="str">"SEL311(L)"</span><span class="pun">){</span><span class="pln">            
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Z1P=Z1MG=XG1= "</span><span class="pun">+</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="pln">Z1</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Z2P=Z2MG=XG2=XG3= "</span><span class="pun">+</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="pln">Z2</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Z4P=Z4MG=XG4= "</span><span class="pun">+</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="pln">Z3</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; ZLF=ZLR = "</span><span class="pun">+</span><span class="pln">kv</span><span class="pun">*</span><span class="pln">kv</span><span class="pun">/</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="pln">cap</span><span class="pun">)*</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">ratio</span><span class="pun">)*</span><span class="pln">fac</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; RG1 = "</span><span class="pun">+</span><span class="lit">10</span><span class="pun">*</span><span class="lit">0.8</span><span class="pun">*</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">ratio</span><span class="pun">)+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; RG2 = "</span><span class="pun">+</span><span class="lit">10</span><span class="pun">*</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">ratio</span><span class="pun">)+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; RG2 = "</span><span class="pun">+</span><span class="lit">10</span><span class="pun">*</span><span class="lit">1.2</span><span class="pun">*</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">ratio</span><span class="pun">)+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; RG2 = "</span><span class="pun">+</span><span class="lit">10</span><span class="pun">*</span><span class="lit">1.5</span><span class="pun">*</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">ratio</span><span class="pun">)+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    </span><span class="kwd">var</span><span class="pln"> r1</span><span class="pun">,</span><span class="pln">x1</span><span class="pun">,</span><span class="pln">r0</span><span class="pun">,</span><span class="pln">x0</span><span class="pun">;</span><span class="pln">
+                    r1</span><span class="pun">=</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">MinZone0</span><span class="pun">.</span><span class="pln">r1</span><span class="pun">);</span><span class="pln">
+                    x1</span><span class="pun">=</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">MinZone0</span><span class="pun">.</span><span class="pln">x1</span><span class="pun">);</span><span class="pln">
+                    r0</span><span class="pun">=</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">MinZone0</span><span class="pun">.</span><span class="pln">r0</span><span class="pun">);</span><span class="pln">
+                    x0</span><span class="pun">=</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">MinZone0</span><span class="pun">.</span><span class="pln">x0</span><span class="pun">);</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Z1MAG = "</span><span class="pun">+</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">MinZone0</span><span class="pun">.</span><span class="pln">z1</span><span class="pun">)*</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">ratio</span><span class="pun">)+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Z1ANG = "</span><span class="pun">+</span><span class="typ">Math</span><span class="pun">.</span><span class="pln">atan</span><span class="pun">(</span><span class="pln">x1</span><span class="pun">/</span><span class="pln">r1</span><span class="pun">)*</span><span class="lit">180</span><span class="pun">/</span><span class="lit">3.14159265359</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Z0MAG = "</span><span class="pun">+</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">MinZone0</span><span class="pun">.</span><span class="pln">z0</span><span class="pun">)*</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">ratio</span><span class="pun">)+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Z0ANG = "</span><span class="pun">+</span><span class="typ">Math</span><span class="pun">.</span><span class="pln">atan</span><span class="pun">(</span><span class="pln">x0</span><span class="pun">/</span><span class="pln">r0</span><span class="pun">)*</span><span class="lit">180</span><span class="pun">/</span><span class="lit">3.14159265359</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    </span><span class="kwd">var</span><span class="pln"> kom1 </span><span class="pun">=(</span><span class="typ">Math</span><span class="pun">.</span><span class="pln">sqrt</span><span class="pun">((</span><span class="pln">r0</span><span class="pun">-</span><span class="pln">r1</span><span class="pun">)*(</span><span class="pln">r0</span><span class="pun">-</span><span class="pln">r1</span><span class="pun">)+(</span><span class="pln">x0</span><span class="pun">-</span><span class="pln">x1</span><span class="pun">)*(</span><span class="pln">x0</span><span class="pun">-</span><span class="pln">x1</span><span class="pun">)))/(</span><span class="lit">3</span><span class="pun">*</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">MinZone0</span><span class="pun">.</span><span class="pln">z1</span><span class="pun">));</span><span class="pln">
+                    </span><span class="kwd">var</span><span class="pln"> koa1 </span><span class="pun">=(</span><span class="typ">Math</span><span class="pun">.</span><span class="pln">atan</span><span class="pun">((</span><span class="pln">x0</span><span class="pun">-</span><span class="pln">x1</span><span class="pun">)/(</span><span class="pln">r0</span><span class="pun">-</span><span class="pln">r1</span><span class="pun">))*</span><span class="lit">180</span><span class="pun">/</span><span class="lit">3.14159265359</span><span class="pun">)-(</span><span class="typ">Math</span><span class="pun">.</span><span class="pln">atan</span><span class="pun">(</span><span class="pln">x1</span><span class="pun">/</span><span class="pln">r1</span><span class="pun">)*</span><span class="lit">180</span><span class="pun">/</span><span class="lit">3.14159265359</span><span class="pun">);</span><span class="pln">
+                    table</span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; KOM1 = "</span><span class="pun">+</span><span class="pln">kom1</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table</span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; KOA1 = "</span><span class="pun">+</span><span class="pln">koa1</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                </span><span class="pun">}</span><span class="kwd">else</span><span class="pln"> </span><span class="kwd">if</span><span class="pun">((</span><span class="pln">$</span><span class="pun">(</span><span class="str">'#relay'</span><span class="pun">).</span><span class="pln">val</span><span class="pun">())==</span><span class="str">"MDAR"</span><span class="pun">){</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Z1P=Z1G= "</span><span class="pun">+</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="pln">Z1</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Z2P=Z2G= "</span><span class="pun">+</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="pln">Z2</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Z3P=Z3G= "</span><span class="pun">+</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="pln">Z3</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; IL = 1.0&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; IM = 5&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; IOM = 1&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    </span><span class="kwd">var</span><span class="pln"> r1</span><span class="pun">,</span><span class="pln">x1</span><span class="pun">,</span><span class="pln">r0</span><span class="pun">,</span><span class="pln">x0</span><span class="pun">;</span><span class="pln">
+                    r1</span><span class="pun">=</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">MinZone0</span><span class="pun">.</span><span class="pln">r1</span><span class="pun">);</span><span class="pln">
+                    x1</span><span class="pun">=</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">MinZone0</span><span class="pun">.</span><span class="pln">x1</span><span class="pun">);</span><span class="pln">
+                    r0</span><span class="pun">=</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">MinZone0</span><span class="pun">.</span><span class="pln">r0</span><span class="pun">);</span><span class="pln">
+                    x0</span><span class="pun">=</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">MinZone0</span><span class="pun">.</span><span class="pln">x0</span><span class="pun">);</span><span class="pln">
+                    </span><span class="kwd">var</span><span class="pln"> gang</span><span class="pun">=(</span><span class="typ">Math</span><span class="pun">.</span><span class="pln">atan</span><span class="pun">(</span><span class="pln">x0</span><span class="pun">/</span><span class="pln">r0</span><span class="pun">)*</span><span class="lit">180</span><span class="pun">/</span><span class="lit">3.14159265359</span><span class="pun">);</span><span class="pln">
+                    </span><span class="kwd">var</span><span class="pln"> pang</span><span class="pun">=(</span><span class="typ">Math</span><span class="pun">.</span><span class="pln">atan</span><span class="pun">(</span><span class="pln">x1</span><span class="pun">/</span><span class="pln">r1</span><span class="pun">)*</span><span class="lit">180</span><span class="pun">/</span><span class="lit">3.14159265359</span><span class="pun">);</span><span class="pln">
+                    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">gang</span><span class="pun">&lt;</span><span class="lit">40</span><span class="pun">){</span><span class="pln">
+                        gang</span><span class="pun">=</span><span class="lit">40</span><span class="pun">;</span><span class="pln">
+                    </span><span class="pun">}</span><span class="pln">
+                    </span><span class="kwd">var</span><span class="pln"> z01</span><span class="pun">=</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">MinZone0</span><span class="pun">.</span><span class="pln">z0</span><span class="pun">)/</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">MinZone0</span><span class="pun">.</span><span class="pln">z1</span><span class="pun">);</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; PANG ="</span><span class="pun">+</span><span class="pln">pang</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; GANG ="</span><span class="pun">+</span><span class="pln">gang</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Z0/Z1 ="</span><span class="pun">+</span><span class="pln">z01</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                </span><span class="pun">}</span><span class="kwd">else</span><span class="pln"> </span><span class="kwd">if</span><span class="pun">((</span><span class="pln">$</span><span class="pun">(</span><span class="str">'#relay'</span><span class="pun">).</span><span class="pln">val</span><span class="pun">())==</span><span class="str">"GRZ100"</span><span class="pun">){</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Z1S = "</span><span class="pun">+</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="pln">Z1</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Z2S = "</span><span class="pun">+</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="pln">Z2</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Z3S = "</span><span class="pun">+</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="pln">Z3</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; KRS = "</span><span class="pun">+</span><span class="lit">100</span><span class="pun">*</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">MaxZone0</span><span class="pun">.</span><span class="pln">r0</span><span class="pun">)/</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">MaxZone0</span><span class="pun">.</span><span class="pln">r1</span><span class="pun">)+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; KRM = "</span><span class="pun">+</span><span class="lit">100</span><span class="pun">*</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">MaxZone0</span><span class="pun">.</span><span class="pln">rm</span><span class="pun">)/</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">MaxZone0</span><span class="pun">.</span><span class="pln">r1</span><span class="pun">)+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; KXS = "</span><span class="pun">+</span><span class="lit">100</span><span class="pun">*</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">MaxZone0</span><span class="pun">.</span><span class="pln">x0</span><span class="pun">)/</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">MaxZone0</span><span class="pun">.</span><span class="pln">x1</span><span class="pun">)+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; KXM = "</span><span class="pun">+</span><span class="lit">100</span><span class="pun">*</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">MaxZone0</span><span class="pun">.</span><span class="pln">xm</span><span class="pun">)/</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="typ">MaxZone0</span><span class="pun">.</span><span class="pln">x1</span><span class="pun">)+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; EF  = "</span><span class="pun">+</span><span class="lit">943</span><span class="pun">/</span><span class="lit">400</span><span class="pun">*</span><span class="lit">0.5</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; OCH = "</span><span class="pun">+</span><span class="lit">1646</span><span class="pun">/</span><span class="lit">400</span><span class="pun">*</span><span class="lit">0.8</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    </span><span class="kwd">var</span><span class="pln"> Z3FL</span><span class="pun">=</span><span class="lit">358.613</span><span class="pun">/(</span><span class="lit">1000</span><span class="pun">*</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="pln">l3s</span><span class="pun">))*</span><span class="lit">259.21</span><span class="pun">;</span><span class="pln">
+                    </span><span class="kwd">var</span><span class="pln"> Z1FL</span><span class="pun">=</span><span class="lit">3</span><span class="pun">*</span><span class="lit">358.613</span><span class="pun">/(</span><span class="lit">1000</span><span class="pun">*</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="pln">l1g</span><span class="pun">))*</span><span class="lit">259.21</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Z3FL = "</span><span class="pun">+</span><span class="pln">Z3FL</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Z1FL = "</span><span class="pun">+</span><span class="pln">Z1FL</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; SO1  = "</span><span class="pun">+(</span><span class="pln">Z1FL</span><span class="pun">-</span><span class="lit">2</span><span class="pun">*</span><span class="pln">Z3FL</span><span class="pun">)*</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">ratio</span><span class="pun">)+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    </span><span class="kwd">var</span><span class="pln"> Z3FR</span><span class="pun">=</span><span class="lit">358.613</span><span class="pun">/(</span><span class="lit">1000</span><span class="pun">*</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="pln">r3s</span><span class="pun">))*</span><span class="lit">259.21</span><span class="pun">;</span><span class="pln">
+                    </span><span class="kwd">var</span><span class="pln"> Z1FR</span><span class="pun">=</span><span class="lit">3</span><span class="pun">*</span><span class="lit">358.613</span><span class="pun">/(</span><span class="lit">1000</span><span class="pun">*</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">obj</span><span class="pun">[</span><span class="pln">bj</span><span class="pun">].</span><span class="pln">r1g</span><span class="pun">))*</span><span class="lit">259.21</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Z3FR = "</span><span class="pun">+</span><span class="pln">Z3FR</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; Z1FR = "</span><span class="pun">+</span><span class="pln">Z1FR</span><span class="pun">+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span><span class="pln">
+                    table </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"&lt;th&gt; SO2  = "</span><span class="pun">+(</span><span class="pln">Z1FR</span><span class="pun">-</span><span class="lit">2</span><span class="pun">*</span><span class="pln">Z3FR</span><span class="pun">)*</span><span class="pln">parseFloat</span><span class="pun">(</span><span class="pln">ratio</span><span class="pun">)+</span><span class="str">"&lt;/th&gt;&lt;tr&gt;"</span><span class="pun">;</span></code></pre>
+
+<p>這邊就是把jsonparse之後再把每個物件的參數取出根據不同電驛型別進行運算，要新增電驛型別主要也是在這邊操作</p>
+
+<p>index.html</p>
+
+<pre class="prettyprint prettyprinted"><code><span class="tag">&lt;select</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"relay"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"selectpicker form-group"</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">"relay"</span><span class="tag">&gt;</span><span class="pln">
+              </span><span class="tag">&lt;option</span><span class="pln"> </span><span class="atn">value</span><span class="pun">=</span><span class="atv">"SEL311(L)"</span><span class="tag">&gt;</span><span class="pln">SEL311(L)
+              </span><span class="tag">&lt;option</span><span class="pln"> </span><span class="atn">value</span><span class="pun">=</span><span class="atv">"MDAR"</span><span class="tag">&gt;</span><span class="pln">MDAR
+              </span><span class="tag">&lt;option</span><span class="pln"> </span><span class="atn">value</span><span class="pun">=</span><span class="atv">"GRZ100"</span><span class="tag">&gt;</span><span class="pln">GRZ100
+              </span><span class="tag">&lt;option</span><span class="pln"> </span><span class="atn">value</span><span class="pun">=</span><span class="atv">"GE D60"</span><span class="tag">&gt;</span><span class="pln">GE D60 
+            </span><span class="tag">&lt;/select&gt;</span></code></pre>
+
+<p>如果要增加電驛型別在index.html這邊新增</p></div></body>
+</html>
