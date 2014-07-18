@@ -47,7 +47,7 @@ class Obj_json{
     var $from,$name,$Z1,$Z2,$Z3,$Zs,$Zone0Array,$MinZone0,$MaxZone0,$Zone1Array,$MinZone1,$MaxZone1,$Zone2Array,$MinZone2,$lineid;
 }
     
-$con = mysqli_connect("localhost","root","lab228","relay");
+$con = mysqli_connect("localhost","relay","lab228","relay");
 if (!$con){
     die('Could not connect: ' . mysqli_error());
 }
