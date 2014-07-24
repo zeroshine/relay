@@ -1,15 +1,11 @@
 $(window).on('load', function () {
-
             $('.selectpicker').selectpicker({
                 'selectedText': 'cat'
             });
-
-            // $('.selectpicker').selectpicker('hide');
 });
 
-var detaildata=function(pkv,relay,ratio,data){
+var detaildata=function(pkv,relay,ratio,data){//calculate detail data
             obj = $.parseJSON(data);
-            //console.log(obj[1].name);
             var list=[];
             var tableArr=[];
             for(var bj in obj){
@@ -113,9 +109,8 @@ var detaildata=function(pkv,relay,ratio,data){
             return tableArr;
 };
 
-var postgetnewdata= function(pkv,relay,ratio,data){
+var postgetnewdata= function(pkv,relay,ratio,data){//compute the setting value
             obj = $.parseJSON(data);
-            //console.log(obj[1].name);
             var list=[];
             var tableArr=[];
             for(var bj in obj){
@@ -243,7 +238,7 @@ var postgetnewdata= function(pkv,relay,ratio,data){
             
             return [tableArr,list];
 };
-function insert(tableArr,list,detail){
+function insert(tableArr,list,detail){//insert table and list html
     $('#container').html("");
     var btnlist="<div class=\"btn-group-vertical btn-block\">";
     for(var btn in list){
@@ -257,7 +252,7 @@ function insert(tableArr,list,detail){
     $('#container').html(tableArr[0]+detail[0]);
 
 }
-$("#navbtm").click(function(event){
+$("#navbtm").click(function(event){//go click event
 	event.preventDefault();
     $.post("getNewData.php", {first:$('#bus').val(),kv:$('#kv').val(),relay:$('#relay').val(),ratio:$('#ratio').val()},
         function(data) {
@@ -268,7 +263,7 @@ $("#navbtm").click(function(event){
             insert(insertelement[0],insertelement[1],detail);
         });
 });
-$("#diff").click(function(event){
+$("#diff").click(function(event){//diff click event
     event.preventDefault();
     var table_need=[];
     var detail_need=[];
@@ -338,7 +333,7 @@ $("#diff").click(function(event){
         });
     
 }); 
-$("#pyupload").click(function(event){
+$("#pyupload").click(function(event){//python upload event
     event.preventDefault();
     console.log("click");
     var file =$("#pyfile").get(0).files[0];
@@ -355,7 +350,7 @@ $("#pyupload").click(function(event){
         }
     });
 });
-$("#savupload").click(function(event){
+$("#savupload").click(function(event){//sav upload event
     event.preventDefault();
     console.log("click");
     var file =$("#savfile").get(0).files[0];
@@ -372,7 +367,7 @@ $("#savupload").click(function(event){
         }
     });
 });
-$("#sequpload").click(function(event){
+$("#sequpload").click(function(event){//seq upload event
     event.preventDefault();
     console.log("click");
     var file =$("#seqfile").get(0).files[0];
@@ -389,12 +384,12 @@ $("#sequpload").click(function(event){
         }
     });
 });
-$("#runpsse").click(function(event){
+$("#runpsse").click(function(event){//run psse click event 
     event.preventDefault();
     var url=window.location.toString();
     window.open(url+"psse/psse.py");
 });
-$("#locate").click(function(event){
+$("#locate").click(function(event){//event location event
     event.preventDefault();
     var v_r=parseFloat($("#busvr").val());
     var v_i=parseFloat($("#busvi").val());

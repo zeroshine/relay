@@ -49,7 +49,7 @@ function diff(){
 	or 161kv.R0!=161kv_new.R0 
 	or 161kv.X0!=161kv_new.X0
 	or 161kv.id is NULL
-	");
+	");//select the different cable
     $objArray=array();
 	while($row=mysqli_fetch_array($dresult)){
         // echo $row['f']." ".$row['t']."\n";
@@ -58,19 +58,19 @@ function diff(){
         foreach ($arr as $result) {
 		    $f1=mysqli_query($con,"SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$result[0]."\" and id !=\"".$result[1]."\")
 			 or (t=\"".$result[0]."\" and id !=\"".$result[1]."\")
-			 and break=1");
+			 and break=1");//select zone1 in f
     		while ($row1=mysqli_fetch_array($f1)) {
-    			if($row1["f"]!=$result[0]){
+    			if($row1["f"]!=$result[0]){//let cable from end are the same
                 	$tmp=$row1["f"];
                 	$row1["f"]=$row1["t"];
                 	$row1["t"]=$tmp;
             	}
             	$arr1=array();
-                recursiveRead($row1['t'],$row1['id'],$arr1,$objArray);
+                recursiveRead($row1['t'],$row1['id'],$arr1,$objArray);//jump tap point and save the name in objarray
                 foreach ($arr1 as $result1) {
             	    $f2=mysqli_query($con,"SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$result1[0]."\" and id !=\"".$result1[1]."\")
     			     or (t=\"".$result1[0]."\" and id !=\"".$result1[1]."\")
-    			     and break=1");
+    			     and break=1");//select zone2
                     while ($row2=mysqli_fetch_array($f2)) {
                         if($row2["f"]!=$result[0]){
                             $tmp=$row2["f"];
@@ -78,12 +78,12 @@ function diff(){
                             $row2["t"]=$tmp;
                         }
                         $arr2=array();
-                        recursiveRead($row2['t'],$row2['id'],$arr2,$objArray);
+                        recursiveRead($row2['t'],$row2['id'],$arr2,$objArray);//jump tap point and save in objarray
                     }
                 }	
     		}
         }
-		$arr=array();
+		$arr=array();//do the same thing in to-end
         recursiveRead($row['t'],$row['id'],$arr,$objArray);
         foreach ($arr as $result) {
             $f1=mysqli_query($con,"SELECT * FROM ".$_POST['kv']." WHERE (f=\"".$result[0]."\" and id !=\"".$result[1]."\")
